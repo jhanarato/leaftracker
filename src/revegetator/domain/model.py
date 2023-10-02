@@ -15,10 +15,13 @@ class Batch:
         self.reference = reference
         self.origin = origin
         self.date_received = date_received
-        self.quantity = defaultdict(int)
+        self._stock_quantites = defaultdict(int)
 
     def add(self, stock: Stock):
-        self.quantity[stock.species] += stock.quantity
+        self._stock_quantites[stock.species] += stock.quantity
 
     def species(self) -> list[str]:
-        return [species for species in self.quantity]
+        return [species for species in self._stock_quantites]
+
+    def quantity(self, species: str) -> int:
+        return self._stock_quantites[species]
