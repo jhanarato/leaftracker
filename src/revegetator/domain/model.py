@@ -3,7 +3,7 @@ from datetime import date
 
 
 @dataclass
-class SuppliedStock:
+class Stock:
     species: str
     quantity: int
     size: str
@@ -14,7 +14,7 @@ class Batch:
         self.reference = reference
         self.origin = origin
         self.date_received = date_received
-        self.stock: list[SuppliedStock] = []
+        self.stock: list[Stock] = []
 
-    def add(self, stock: SuppliedStock):
+    def add(self, stock: Stock):
         self.stock.append(stock)
