@@ -1,3 +1,4 @@
+from collections import defaultdict
 from dataclasses import dataclass
 from datetime import date
 
@@ -14,7 +15,7 @@ class Batch:
         self.reference = reference
         self.origin = origin
         self.date_received = date_received
-        self.stock: dict[str, int] = {}
+        self.quantity = defaultdict(int)
 
     def add(self, stock: Stock):
-        self.stock[stock.species] = stock.quantity
+        self.quantity[stock.species] += stock.quantity

@@ -16,6 +16,12 @@ def test_should_create_batch_with_single_species():
         size="tube"
     )
 
+    assert batch.quantity["Banksia littoralis"] == 0
+
     batch.add(stock)
 
-    assert batch.stock["Banksia littoralis"] == 20
+    assert batch.quantity["Banksia littoralis"] == 20
+
+    batch.add(stock)
+
+    assert batch.quantity["Banksia littoralis"] == 40
