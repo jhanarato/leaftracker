@@ -17,3 +17,5 @@ def test_should_create_batch_with_single_species():
     )
 
     batch.add(stock)
+
+    assert batch.stock["Banksia littoralis"] == 20

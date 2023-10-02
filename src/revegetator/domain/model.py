@@ -14,7 +14,7 @@ class Batch:
         self.reference = reference
         self.origin = origin
         self.date_received = date_received
-        self.stock: list[Stock] = []
+        self.stock: dict[str, int] = {}
 
     def add(self, stock: Stock):
-        self.stock.append(stock)
+        self.stock[stock.species] = stock.quantity
