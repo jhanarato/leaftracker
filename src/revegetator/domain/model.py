@@ -34,3 +34,11 @@ class Batch:
                 [stock.quantity for stock in self._stock
                  if stock.species == species]
             )
+
+    def __eq__(self, other):
+        if not isinstance(other, Batch):
+            return False
+        return other.reference == self.reference
+
+    def __hash__(self):
+        return hash(self.reference)

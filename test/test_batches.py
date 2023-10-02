@@ -54,3 +54,23 @@ def test_should_give_quantity_of_sized_stock(batch):
 
     assert batch.quantity(BANKSIA, size="tube") == 20
     assert batch.quantity(BANKSIA, size="pot") == 10
+
+
+def test_should_identify_batch_after_modification():
+    a_batch = Batch(
+        reference="batch-a",
+        origin="Trillion Trees",
+        date_received=date(2020, 5, 15),
+    )
+
+    same_batch_modified = Batch(
+        reference="batch-a",
+        origin="Origin Different",
+        date_received=date(2020, 5, 16)
+    )
+
+    same_batch_modified.add(Stock(species=BANKSIA, quantity=20, size="tube"))
+
+    assert a_batch == same_batch_modified
+    assert hash(a_batch) == hash(same_batch_modified)
+    assert len({a_batch, same_batch_modified}) == 1
