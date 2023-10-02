@@ -19,3 +19,6 @@ class Batch:
 
     def add(self, stock: Stock):
         self.quantity[stock.species] += stock.quantity
+
+    def species(self) -> list[str]:
+        return [species for species in self.quantity]
