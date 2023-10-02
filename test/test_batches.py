@@ -51,3 +51,24 @@ def test_should_get_species_list_from_batch(species_names, batch_of_three):
 
 def test_should_get_species_quantity(batch_of_three):
     assert batch_of_three.quantity("Banksia littoralis") == 20
+
+
+def test_should_give_quantity_of_sized_stock(batch):
+    batch.add(
+        Stock(
+            species="Banksia littoralis",
+            quantity=20,
+            size="tube"
+        )
+    )
+
+    batch.add(
+        Stock(
+            species="Banksia littoralis",
+            quantity=10,
+            size="pot"
+        )
+    )
+
+    assert batch.quantity("Banksia littoralis", size="tube") == 20
+    assert batch.quantity("Banksia littoralis", size="pot") == 10
