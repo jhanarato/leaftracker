@@ -26,13 +26,13 @@ def batch():
 @pytest.fixture
 def batch_of_three(batch, species_names):
     for species in species_names:
-        batch.add(Stock(species=species, quantity=20, size="tube"))
+        batch.add(Stock(species_ref=species, quantity=20, size="tube"))
 
     return batch
 
 
 def test_should_combine_quantities_of_same_stock(batch):
-    stock = Stock(species=BANKSIA, quantity=20, size="tube")
+    stock = Stock(species_ref=BANKSIA, quantity=20, size="tube")
 
     batch.add(stock)
     batch.add(stock)
@@ -48,8 +48,8 @@ def test_should_get_species_quantity(batch_of_three):
 
 
 def test_should_give_quantity_of_sized_stock(batch):
-    batch.add(Stock(species=BANKSIA, quantity=20, size="tube"))
-    batch.add(Stock(species=BANKSIA, quantity=10, size="pot"))
+    batch.add(Stock(species_ref=BANKSIA, quantity=20, size="tube"))
+    batch.add(Stock(species_ref=BANKSIA, quantity=10, size="pot"))
 
     assert batch.quantity_of_size(BANKSIA, "tube") == 20
     assert batch.quantity_of_size(BANKSIA, "pot") == 10
@@ -68,7 +68,7 @@ def test_should_identify_batch_after_modification():
         date_received=date(2020, 5, 16)
     )
 
-    same_batch_modified.add(Stock(species=BANKSIA, quantity=20, size="tube"))
+    same_batch_modified.add(Stock(species_ref=BANKSIA, quantity=20, size="tube"))
 
     assert a_batch == same_batch_modified
     assert hash(a_batch) == hash(same_batch_modified)
