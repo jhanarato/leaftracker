@@ -4,7 +4,6 @@ import pytest
 
 from revegetator.domain.model import Batch, Stock
 
-
 BANKSIA = "Banksia littoralis"
 HAKEA = "Hakea varia"
 HYPOCALYMNA = "Hypocalymma angustifolium"
@@ -74,8 +73,3 @@ def test_should_identify_batch_after_modification():
     assert a_batch == same_batch_modified
     assert hash(a_batch) == hash(same_batch_modified)
     assert len({a_batch, same_batch_modified}) == 1
-
-
-def test_should_prevent_changing_reference(batch):
-    with pytest.raises(AttributeError):
-        batch.reference = "New value"

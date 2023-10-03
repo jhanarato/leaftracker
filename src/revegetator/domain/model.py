@@ -1,4 +1,3 @@
-from collections import defaultdict
 from dataclasses import dataclass
 from datetime import date
 
@@ -12,14 +11,10 @@ class Stock:
 
 class Batch:
     def __init__(self, reference: str, origin: str, date_received: date):
-        self._reference = reference
+        self.reference = reference
         self.origin = origin
         self.date_received = date_received
         self._stock: list[Stock] = []
-
-    @property
-    def reference(self) -> str:
-        return self._reference
 
     def add(self, stock: Stock):
         self._stock.append(stock)
