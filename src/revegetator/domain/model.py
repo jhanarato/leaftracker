@@ -22,16 +22,17 @@ class Batch:
     def species(self) -> list[str]:
         return [stock.species for stock in self._stock]
 
-    def quantity(self, species: str, size: str = "") -> int:
+    def quantity(self, species: str) -> int:
+        return sum(
+            [stock.quantity for stock in self._stock
+             if stock.species == species]
+        )
+
+    def quantity_of_size(self, species: str, size: str) -> int:
         if size:
             return sum(
                 [stock.quantity for stock in self._stock
                  if stock.species == species and stock.size == size]
-            )
-        else:
-            return sum(
-                [stock.quantity for stock in self._stock
-                 if stock.species == species]
             )
 
     def __eq__(self, other):
@@ -41,3 +42,7 @@ class Batch:
 
     def __hash__(self):
         return hash(self.reference)
+
+
+class Species:
+    pass
