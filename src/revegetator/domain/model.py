@@ -14,9 +14,15 @@ class ScientificName:
 
 @dataclass(frozen=True)
 class WebReference:
-    reference: str
+    description: str
     site_name: str
     url: str
+
+
+@dataclass(frozen=True)
+class Photo:
+    description: str
+    name: str
 
 
 class Species:
@@ -25,6 +31,7 @@ class Species:
         self.names: list[ScientificName] = [name]
         self.common_names: list[str] = []
         self.web_references: list[WebReference] = []
+        self.photos: list[Photo] = []
 
 
 @dataclass(frozen=True)
