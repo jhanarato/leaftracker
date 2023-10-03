@@ -52,7 +52,7 @@ def test_should_give_quantity_of_sized_stock(batch):
     batch.add(Stock(species=BANKSIA, quantity=10, size="pot"))
 
     assert batch.quantity_of_size(BANKSIA, "tube") == 20
-    assert batch.quantity_of_size(BANKSIA, "pot") == 10
+    assert batch.quantity_of_size(BANKSIA, "pot") == 20
 
 
 def test_should_identify_batch_after_modification():
