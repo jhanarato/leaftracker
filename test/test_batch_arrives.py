@@ -8,8 +8,11 @@ class FakeBatchRepository:
     def __init__(self, batches: list[Batch]):
         self._batches = set(batches)
 
+    def _new_reference(self) -> str:
+        return "batch-01"
+
     def add(self, batch: Batch) -> str:
-        batch.reference = "trillion-trees-2020-05-15"
+        batch.reference = self._new_reference()
         self._batches.add(batch)
         return batch.reference
 
@@ -22,11 +25,13 @@ class FakeBatchRepository:
 def test_should_catalogue_batch():
     repo: BatchRepository = FakeBatchRepository([])
 
-    batch_ref = "trillion-trees-2020-05-15"
+    batch_ref = "batch-01"
 
     batch_to_repo = Batch(
         reference=None,
+        # TODO: Origin should be an entity
         origin="Trillion Trees",
+        # TODO: date should be on an order or delivery.
         date_received=date(2020, 5, 15)
     )
 
