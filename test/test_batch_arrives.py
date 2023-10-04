@@ -9,7 +9,9 @@ class FakeBatchRepository:
         self._batches = set(batches)
 
     def _new_reference(self) -> str:
-        return "batch-01"
+        highest = max([int(batch.reference[-2:]) for batch in self._batches], default=0)
+        new_number = highest + 1
+        return f"batch-{new_number:04}"
 
     def add(self, batch: Batch) -> str:
         batch.reference = self._new_reference()
@@ -22,10 +24,19 @@ class FakeBatchRepository:
         return next(matching, None)
 
 
+def test_fake_reference():
+    repo: BatchRepository = FakeBatchRepository([])
+    references = [repo.add(Batch(None, "Supplier X", date(2001, 1, 1))),
+                  repo.add(Batch(None, "Supplier X", date(2001, 1, 2))),
+                  repo.add(Batch(None, "Supplier Y", date(2001, 1, 3)))]
+
+    assert references == ["batch-0001", "batch-0002", "batch-0003"]
+
+
 def test_should_catalogue_batch():
     repo: BatchRepository = FakeBatchRepository([])
 
-    batch_ref = "batch-01"
+    batch_ref = "batch-0001"
 
     batch_to_repo = Batch(
         reference=None,
