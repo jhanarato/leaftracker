@@ -1,5 +1,5 @@
 from revegetator.adapters.repository import BatchRepository
-from revegetator.domain.model import Batch, Stock, Source, StockSize
+from revegetator.domain.model import Batch, Stock, Source, StockSize, BatchType
 
 
 class FakeBatchRepository:
@@ -28,9 +28,9 @@ def test_fake_reference():
     source_a = Source("Habitat Links")
     source_b = Source("Natural Area")
 
-    references = [repo.add(Batch(source_a)),
-                  repo.add(Batch(source_a)),
-                  repo.add(Batch(source_b))]
+    references = [repo.add(Batch(source_a, BatchType.DELIVERY)),
+                  repo.add(Batch(source_a, BatchType.DELIVERY)),
+                  repo.add(Batch(source_b, BatchType.DELIVERY))]
 
     assert references == ["batch-0001", "batch-0002", "batch-0003"]
 
@@ -38,7 +38,7 @@ def test_fake_reference():
 def test_should_catalogue_batch():
     repo: BatchRepository = FakeBatchRepository([])
 
-    batch_to_repo = Batch(source=Source("Trillion Trees"))
+    batch_to_repo = Batch(source=Source("Trillion Trees"), batch_type=BatchType.DELIVERY)
 
     batch_to_repo.add(Stock(species_ref="Acacia saligna", quantity=20, size=StockSize.TUBE))
 

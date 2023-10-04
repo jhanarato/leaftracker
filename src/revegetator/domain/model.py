@@ -57,8 +57,9 @@ class BatchType(Enum):
 
 
 class Batch:
-    def __init__(self, source: Source, reference: str | None = None):
+    def __init__(self, source: Source, batch_type: BatchType, reference: str | None = None):
         self.reference = reference
+        self.batch_type = batch_type
         self.source = source
         self._stock: list[Stock] = []
 
