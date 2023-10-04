@@ -1,15 +1,14 @@
 from dataclasses import dataclass
 from datetime import date
-from typing import Optional
 
 
 @dataclass(frozen=True)
 class ScientificName:
     genus: str
     species: str
-    subspecies: Optional[str]
-    year_name_given: Optional[int]
-    is_most_recently_used: bool
+    subspecies: str | None
+    year_name_given: str | None
+    is_most_recent: bool
 
 
 @dataclass(frozen=True)
@@ -42,7 +41,7 @@ class Stock:
 
 
 class Batch:
-    def __init__(self, reference: str, origin: str, date_received: date):
+    def __init__(self, reference: str | None, origin: str, date_received: date):
         self.reference = reference
         self.origin = origin
         self.date_received = date_received
