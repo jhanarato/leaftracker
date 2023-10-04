@@ -1,7 +1,7 @@
 from datetime import date
 
 from revegetator.adapters.repository import BatchRepository
-from revegetator.domain.model import Batch, Stock, Source
+from revegetator.domain.model import Batch, Stock, Source, StockSize
 
 
 class FakeBatchRepository:
@@ -42,7 +42,7 @@ def test_should_catalogue_batch():
 
     batch_to_repo = Batch(source=Source("Trillion Trees"), date_received=date(2020, 5, 15))
 
-    batch_to_repo.add(Stock(species_ref="Acacia saligna", quantity=20, size="tube"))
+    batch_to_repo.add(Stock(species_ref="Acacia saligna", quantity=20, size=StockSize.TUBE))
 
     ref = repo.add(batch_to_repo)
 

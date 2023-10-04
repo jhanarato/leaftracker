@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from datetime import date
+from enum import Enum, auto
 
 
 @dataclass(frozen=True)
@@ -33,11 +34,16 @@ class Species:
         self.photos: list[Photo] = []
 
 
+class StockSize(Enum):
+    TUBE = auto()
+    POT = auto()
+
+
 @dataclass(frozen=True)
 class Stock:
     species_ref: str
     quantity: int
-    size: str
+    size: StockSize
 
 
 class Source:
@@ -64,7 +70,7 @@ class Batch:
              if stock.species_ref == species_ref]
         )
 
-    def quantity_of_size(self, species_ref: str, size: str) -> int:
+    def quantity_of_size(self, species_ref: str, size: StockSize.POT) -> int:
         if size:
             return sum(
                 [stock.quantity for stock in self._stock
