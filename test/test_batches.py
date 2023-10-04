@@ -16,11 +16,7 @@ def species_names():
 
 @pytest.fixture
 def batch():
-    return Batch(
-        reference="trillion-trees-2020-05-15",
-        origin="Trillion Trees",
-        date_received=date(2020, 5, 15)
-    )
+    return Batch(source="Trillion Trees", date_received=date(2020, 5, 15), reference="trillion-trees-2020-05-15")
 
 
 @pytest.fixture
@@ -56,17 +52,9 @@ def test_should_give_quantity_of_sized_stock(batch):
 
 
 def test_should_identify_batch_after_modification():
-    a_batch = Batch(
-        reference="batch-a",
-        origin="Trillion Trees",
-        date_received=date(2020, 5, 15),
-    )
+    a_batch = Batch(source="Trillion Trees", date_received=date(2020, 5, 15), reference="batch-a")
 
-    same_batch_modified = Batch(
-        reference="batch-a",
-        origin="Origin Different",
-        date_received=date(2020, 5, 16)
-    )
+    same_batch_modified = Batch(source="Origin Different", date_received=date(2020, 5, 16), reference="batch-a")
 
     same_batch_modified.add(Stock(species_ref=BANKSIA, quantity=20, size="tube"))
 

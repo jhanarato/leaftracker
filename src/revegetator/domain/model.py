@@ -40,10 +40,15 @@ class Stock:
     size: str
 
 
+class Source:
+    def __init__(self, name: str):
+        self.name = name
+
+
 class Batch:
-    def __init__(self, reference: str | None, origin: str, date_received: date):
+    def __init__(self, source: Source, date_received: date, reference: str | None = None):
         self.reference = reference
-        self.origin = origin
+        self.source = source
         self.date_received = date_received
         self._stock: list[Stock] = []
 
