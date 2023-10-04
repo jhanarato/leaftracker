@@ -1,6 +1,6 @@
 import pytest
 
-from revegetator.domain.model import Batch, Stock, Source, StockSize, BatchType
+from revegetator.domain.model import Batch, Stock, Source, StockSize, BatchType, SourceType
 
 BANKSIA = "Banksia littoralis"
 HAKEA = "Hakea varia"
@@ -15,7 +15,7 @@ def species_names():
 @pytest.fixture
 def batch():
     return Batch(
-        source=Source("Trillion Trees"),
+        source=Source("Trillion Trees", SourceType.NURSERY),
         batch_type=BatchType.DELIVERY,
         reference="batch-0001")
 
@@ -53,9 +53,17 @@ def test_should_give_quantity_of_sized_stock(batch):
 
 
 def test_should_identify_batch_after_modification():
-    a_batch = Batch(source=Source("Trillion Trees"), batch_type=BatchType.DELIVERY, reference="batch-0001")
+    same_reference = "batch-0001"
+    a_batch = Batch(
+        source=Source("Trillion Trees", SourceType.NURSERY),
+        batch_type=BatchType.PICKUP,
+        reference=same_reference
+    )
 
-    same_batch_modified = Batch(source=Source("Natural Area"), batch_type=BatchType.DELIVERY, reference="batch-0001")
+    same_batch_modified = Batch(
+        source=Source("Habitat Links", SourceType.PROGRAM),
+        batch_type=BatchType.PICKUP,
+        reference=same_reference)
 
     same_batch_modified.add(Stock(species_ref=BANKSIA, quantity=20, size=StockSize.TUBE))
 

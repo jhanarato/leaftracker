@@ -45,15 +45,21 @@ class Stock:
     size: StockSize
 
 
+class SourceType(Enum):
+    NURSERY = auto()
+    PROGRAM = auto()
+
+
 class Source:
-    def __init__(self, nursery: str):
-        self.nursery = nursery
-        self.program = ""
+    def __init__(self, name: str, source_type: SourceType):
+        self.name = name
+        self.source_type = source_type
 
 
 class BatchType(Enum):
     ORDER = auto()
     DELIVERY = auto()
+    PICKUP = auto()
 
 
 class Batch:
