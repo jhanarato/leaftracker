@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-from datetime import date
 from enum import Enum, auto
 
 
@@ -47,15 +46,20 @@ class Stock:
 
 
 class Source:
-    def __init__(self, name: str):
-        self.name = name
+    def __init__(self, nursery: str):
+        self.nursery = nursery
+        self.program = ""
+
+
+class BatchType(Enum):
+    ORDER = auto()
+    DELIVERY = auto()
 
 
 class Batch:
-    def __init__(self, source: Source, date_received: date, reference: str | None = None):
+    def __init__(self, source: Source, reference: str | None = None):
         self.reference = reference
         self.source = source
-        self.date_received = date_received
         self._stock: list[Stock] = []
 
     def add(self, stock: Stock):
