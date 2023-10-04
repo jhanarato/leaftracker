@@ -39,7 +39,7 @@ def test_should_catalogue_batch():
     repo: BatchRepository = FakeBatchRepository([])
 
     batch_to_repo = Batch(
-        source=Source("Trillion Trees", SourceType.NURSERY), batch_type=BatchType.DELIVERY)
+        source=Source("Trillion Trees", SourceType.NURSERY), batch_type=BatchType.PICKUP)
 
     batch_to_repo.add(Stock(species_ref="Acacia saligna", quantity=20, size=StockSize.TUBE))
 
