@@ -135,5 +135,5 @@ def test_add_order():
 def test_missing_source():
     uow: UnitOfWork = FakeUnitOfWork()
 
-    with pytest.raises(InvalidSource):
+    with pytest.raises(InvalidSource, match="No such source of stock"):
         services.add_order("Missing", uow)

@@ -25,7 +25,7 @@ def add_order(source_name: str, uow: UnitOfWork):
         source = uow.sources().get(source_name)
 
         if not source:
-            raise InvalidSource
+            raise InvalidSource("No such source of stock")
 
         batchref = uow.batches().add(
             Batch(
