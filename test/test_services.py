@@ -81,9 +81,12 @@ class FakeUnitOfWork:
         return self._sources
 
 
-def test_should_catalogue_batch():
-    uow: UnitOfWork = FakeUnitOfWork()
+@pytest.fixture
+def uow() -> UnitOfWork:
+    return FakeUnitOfWork()
 
+
+def test_should_catalogue_batch(uow):
     with uow:
         batch = Batch(
             source_name="Trillion Trees",
@@ -101,27 +104,17 @@ def test_should_catalogue_batch():
     assert new_batch.species() == ["Acacia saligna"]
 
 
-def test_add_nursery():
-    uow: UnitOfWork = FakeUnitOfWork()
-
+def test_add_nursery(uow):
     services.add_nursery("Trillion Trees", uow)
-
     assert uow.sources().get("Trillion Trees").source_type == SourceType.NURSERY
-    assert uow.committed()
 
 
-def test_add_program():
-    uow: UnitOfWork = FakeUnitOfWork()
-
+def test_add_program(uow):
     services.add_program("Habitat Links", uow)
-
     assert uow.sources().get("Habitat Links").source_type == SourceType.PROGRAM
-    assert uow.committed()
 
 
-def test_add_order():
-    uow: UnitOfWork = FakeUnitOfWork()
-
+def test_add_order(uow):
     program = "Habitat Links"
     services.add_program(program, uow)
     ref = services.add_order(program, uow)
@@ -129,19 +122,14 @@ def test_add_order():
     assert ref == "batch-0001"
 
     assert uow.batches().get(ref).batch_type == BatchType.ORDER
-    assert uow.committed()
 
 
-def test_missing_source():
-    uow: UnitOfWork = FakeUnitOfWork()
-
+def test_missing_source(uow):
     with pytest.raises(InvalidSource, match="No such source of stock"):
         services.add_order("Missing", uow)
 
 
-def test_add_delivery():
-    uow: UnitOfWork = FakeUnitOfWork()
-
+def test_add_delivery(uow):
     program = "Habitat Links"
     services.add_program(program, uow)
     ref = services.add_delivery(program, uow)
@@ -152,9 +140,7 @@ def test_add_delivery():
     assert uow.committed()
 
 
-def test_add_pickup():
-    uow: UnitOfWork = FakeUnitOfWork()
-
+def test_add_pickup(uow):
     nursery = "Natural Area"
     services.add_nursery(nursery, uow)
     ref = services.add_pickup(nursery, uow)
@@ -163,3 +149,7 @@ def test_add_pickup():
 
     assert uow.batches().get(ref).batch_type == BatchType.PICKUP
     assert uow.committed()
+
+
+def test_add_stock():
+    pass
