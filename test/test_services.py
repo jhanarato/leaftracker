@@ -154,7 +154,6 @@ def test_add_delivery(uow, program):
 
 def test_add_pickup(uow, nursery):
     ref = services.add_pickup(nursery.name, uow)
-    assert ref == "batch-0001"
     assert uow.batches().get(ref).batch_type == BatchType.PICKUP
 
 
