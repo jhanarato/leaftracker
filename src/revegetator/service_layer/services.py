@@ -25,7 +25,7 @@ def _add_batch(source_name: str, batch_type: BatchType, uow: UnitOfWork) -> str:
         source = uow.sources().get(source_name)
 
         if not source:
-            raise InvalidSource("No such source of stock")
+            raise InvalidSource(f"No such source: {source_name}")
 
         batchref = uow.batches().add(
             Batch(
@@ -48,3 +48,4 @@ def add_delivery(source_name: str, uow: UnitOfWork) -> str:
 
 def add_pickup(source_name: str, uow: UnitOfWork) -> str:
     return _add_batch(source_name, BatchType.PICKUP, uow)
+
