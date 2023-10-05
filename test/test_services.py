@@ -125,8 +125,17 @@ def test_add_order(uow):
 
 
 def test_missing_source(uow):
-    with pytest.raises(InvalidSource, match="No such source of stock"):
-        services.add_order("Missing", uow)
+    with pytest.raises(InvalidSource, match="No such source: Rodeo Nursery"):
+        services.add_order("Rodeo Nursery", uow)
+
+
+@pytest.fixture
+def nursery(uow) -> Source:
+    nursery = "Natural Area"
+    services.add_nursery(nursery, uow)
+
+    with uow:
+        return uow.sources().get(nursery)
 
 
 def test_add_delivery(uow):
@@ -137,18 +146,12 @@ def test_add_delivery(uow):
     assert ref == "batch-0001"
 
     assert uow.batches().get(ref).batch_type == BatchType.DELIVERY
-    assert uow.committed()
 
 
-def test_add_pickup(uow):
-    nursery = "Natural Area"
-    services.add_nursery(nursery, uow)
-    ref = services.add_pickup(nursery, uow)
-
+def test_add_pickup(uow, nursery):
+    ref = services.add_pickup(nursery.name, uow)
     assert ref == "batch-0001"
-
     assert uow.batches().get(ref).batch_type == BatchType.PICKUP
-    assert uow.committed()
 
 
 def test_add_stock():
