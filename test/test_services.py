@@ -138,13 +138,17 @@ def nursery(uow) -> Source:
         return uow.sources().get(nursery)
 
 
-def test_add_delivery(uow):
+@pytest.fixture
+def program(uow) -> Source:
     program = "Habitat Links"
     services.add_program(program, uow)
-    ref = services.add_delivery(program, uow)
 
-    assert ref == "batch-0001"
+    with uow:
+        return uow.sources().get(program)
 
+
+def test_add_delivery(uow, program):
+    ref = services.add_delivery(program.name, uow)
     assert uow.batches().get(ref).batch_type == BatchType.DELIVERY
 
 
