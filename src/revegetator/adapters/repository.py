@@ -1,6 +1,6 @@
 from typing import Protocol
 
-from revegetator.domain.model import Batch, Species
+from revegetator.domain.model import Batch, Species, Source
 
 
 class BatchRepository(Protocol):
@@ -13,3 +13,9 @@ class SpeciesRepository(Protocol):
     def add(self, species: Species) -> str: ...
 
     def get(self, species_ref: str) -> Species: ...
+
+
+class SourceRepository(Protocol):
+    def add(self, source: Source) -> str: ...
+
+    def get(self, name: str) -> Source: ...

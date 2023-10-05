@@ -1,7 +1,8 @@
 from typing import Self
 
-from revegetator.adapters.repository import BatchRepository
+from revegetator.adapters.repository import BatchRepository, SourceRepository
 from revegetator.domain.model import Batch, Source, SourceType, BatchType, Stock, StockSize
+from revegetator.service_layer.services import add_nursery
 from revegetator.service_layer.unit_of_work import UnitOfWork
 
 
@@ -25,6 +26,20 @@ class FakeBatchRepository:
         return next(matching, None)
 
 
+class FakeSourceRepository:
+    def __init__(self, sources: list[Source]):
+        self._sources = set(sources)
+
+    def add(self, source: Source) -> str:
+        self._sources.add(source)
+        return source.name
+
+    def get(self, name: str) -> Source | None:
+        matching = (source for source in self._sources
+                    if source.name == name)
+        return next(matching, None)
+
+
 def test_fake_reference():
     repo: BatchRepository = FakeBatchRepository([])
 
@@ -41,7 +56,8 @@ def test_fake_reference():
 class FakeUnitOfWork:
     def __init__(self):
         self._batches: BatchRepository = FakeBatchRepository([])
-        self.commited = False
+        self._sources: SourceRepository = FakeSourceRepository([])
+        self._commited = False
 
     def __enter__(self) -> Self:
         return self
@@ -50,13 +66,19 @@ class FakeUnitOfWork:
         self.rollback()
 
     def commit(self) -> None:
-        self.commited = True
+        self._commited = True
+
+    def committed(self) -> bool:
+        return self._commited
 
     def rollback(self) -> None:
         pass
 
     def batches(self) -> BatchRepository:
         return self._batches
+
+    def sources(self) -> SourceRepository:
+        return self._sources
 
 
 def test_should_catalogue_batch():
@@ -78,3 +100,12 @@ def test_should_catalogue_batch():
     assert new_batch.source.name == "Trillion Trees"
     assert new_batch.source.source_type == SourceType.NURSERY
     assert new_batch.species() == ["Acacia saligna"]
+
+
+def test_add_source_of_stock():
+    uow: UnitOfWork = FakeUnitOfWork()
+
+    add_nursery("Trillion Trees", uow)
+
+    assert uow.sources().get("Trillion Trees") is not None
+    assert uow.committed()

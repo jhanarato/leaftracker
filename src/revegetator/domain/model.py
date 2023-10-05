@@ -55,6 +55,14 @@ class Source:
         self.name = name
         self.source_type = source_type
 
+    def __eq__(self, other):
+        if not isinstance(other, Source):
+            return False
+        return other.name == self.name
+
+    def __hash__(self):
+        return hash(self.name)
+
 
 class BatchType(Enum):
     ORDER = auto()

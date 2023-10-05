@@ -1,6 +1,6 @@
 from typing import Protocol, Self
 
-from revegetator.adapters.repository import BatchRepository
+from revegetator.adapters.repository import BatchRepository, SourceRepository
 
 
 class UnitOfWork(Protocol):
@@ -10,6 +10,10 @@ class UnitOfWork(Protocol):
 
     def commit(self) -> None: ...
 
+    def committed(self) -> bool: ...
+
     def rollback(self) -> None: ...
 
     def batches(self) -> BatchRepository: ...
+
+    def sources(self) -> SourceRepository: ...
