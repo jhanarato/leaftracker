@@ -40,3 +40,11 @@ def _add_batch(source_name: str, batch_type: BatchType, uow: UnitOfWork) -> str:
 
 def add_order(source_name: str, uow: UnitOfWork) -> str:
     return _add_batch(source_name, BatchType.ORDER, uow)
+
+
+def add_delivery(source_name: str, uow: UnitOfWork) -> str:
+    return _add_batch(source_name, BatchType.DELIVERY, uow)
+
+
+def add_pickup(source_name: str, uow: UnitOfWork) -> str:
+    return _add_batch(source_name, BatchType.PICKUP, uow)

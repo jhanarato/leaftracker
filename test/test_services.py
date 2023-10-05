@@ -137,3 +137,29 @@ def test_missing_source():
 
     with pytest.raises(InvalidSource, match="No such source of stock"):
         services.add_order("Missing", uow)
+
+
+def test_add_delivery():
+    uow: UnitOfWork = FakeUnitOfWork()
+
+    program = "Habitat Links"
+    services.add_program(program, uow)
+    ref = services.add_delivery(program, uow)
+
+    assert ref == "batch-0001"
+
+    assert uow.batches().get(ref).batch_type == BatchType.DELIVERY
+    assert uow.committed()
+
+
+def test_add_pickup():
+    uow: UnitOfWork = FakeUnitOfWork()
+
+    nursery = "Natural Area"
+    services.add_nursery(nursery, uow)
+    ref = services.add_pickup(nursery, uow)
+
+    assert ref == "batch-0001"
+
+    assert uow.batches().get(ref).batch_type == BatchType.PICKUP
+    assert uow.committed()
