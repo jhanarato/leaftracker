@@ -1,5 +1,7 @@
+from typing import Self
+
 from revegetator.adapters.repository import BatchRepository
-from revegetator.domain.model import Batch, Stock, Source, StockSize, BatchType, SourceType
+from revegetator.domain.model import Batch, Source, SourceType, BatchType, Stock, StockSize
 
 
 class FakeBatchRepository:
@@ -35,6 +37,24 @@ def test_fake_reference():
     assert references == ["batch-0001", "batch-0002", "batch-0003"]
 
 
+class FakeUnitOfWork:
+    def __init__(self):
+        self.batches: BatchRepository = FakeBatchRepository([])
+        self.commited = False
+
+    def __enter__(self) -> Self:
+        return self
+
+    def __exit__(self, *args):
+        self.rollback()
+
+    def commit(self) -> None:
+        self.commited = True
+
+    def rollback(self) -> None:
+        pass
+
+
 def test_should_catalogue_batch():
     repo: BatchRepository = FakeBatchRepository([])
 
@@ -50,3 +70,4 @@ def test_should_catalogue_batch():
     assert batch_from_repo.source.name == "Trillion Trees"
     assert batch_from_repo.source.source_type == SourceType.NURSERY
     assert batch_from_repo.species() == ["Acacia saligna"]
+   
