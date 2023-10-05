@@ -20,7 +20,7 @@ def add_program(name: str, uow: UnitOfWork):
         uow.commit()
 
 
-def add_order(source_name: str, uow: UnitOfWork):
+def _add_batch(source_name: str, batch_type: BatchType, uow: UnitOfWork) -> str:
     with uow:
         source = uow.sources().get(source_name)
 
@@ -30,9 +30,13 @@ def add_order(source_name: str, uow: UnitOfWork):
         batchref = uow.batches().add(
             Batch(
                 source_name=source_name,
-                batch_type=BatchType.ORDER
+                batch_type=batch_type
             )
         )
         uow.commit()
 
     return batchref
+
+
+def add_order(source_name: str, uow: UnitOfWork) -> str:
+    return _add_batch(source_name, BatchType.ORDER, uow)
