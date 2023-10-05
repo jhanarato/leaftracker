@@ -2,7 +2,7 @@ from typing import Self
 
 from revegetator.adapters.repository import BatchRepository, SourceRepository
 from revegetator.domain.model import Batch, Source, SourceType, BatchType, Stock, StockSize
-from revegetator.service_layer.services import add_nursery
+from revegetator.service_layer.services import add_nursery, add_program
 from revegetator.service_layer.unit_of_work import UnitOfWork
 
 
@@ -102,10 +102,19 @@ def test_should_catalogue_batch():
     assert new_batch.species() == ["Acacia saligna"]
 
 
-def test_add_source_of_stock():
+def test_add_nursery():
     uow: UnitOfWork = FakeUnitOfWork()
 
     add_nursery("Trillion Trees", uow)
 
-    assert uow.sources().get("Trillion Trees") is not None
+    assert uow.sources().get("Trillion Trees").source_type == SourceType.NURSERY
+    assert uow.committed()
+
+
+def test_add_program():
+    uow: UnitOfWork = FakeUnitOfWork()
+
+    add_program("Habitat Links", uow)
+
+    assert uow.sources().get("Habitat Links").source_type == SourceType.PROGRAM
     assert uow.committed()

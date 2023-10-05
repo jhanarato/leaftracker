@@ -7,3 +7,10 @@ def add_nursery(name: str, uow: UnitOfWork):
         source = Source(name, SourceType.NURSERY)
         uow.sources().add(source)
         uow.commit()
+
+
+def add_program(name: str, uow: UnitOfWork):
+    with uow:
+        source = Source(name, SourceType.PROGRAM)
+        uow.sources().add(source)
+        uow.commit()
