@@ -2,7 +2,7 @@ from typing import Self
 
 from revegetator.adapters.repository import BatchRepository, SourceRepository
 from revegetator.domain.model import Batch, Source, SourceType, BatchType, Stock, StockSize
-from revegetator.service_layer.services import add_nursery, add_program
+from revegetator.service_layer import services
 from revegetator.service_layer.unit_of_work import UnitOfWork
 
 
@@ -43,12 +43,9 @@ class FakeSourceRepository:
 def test_fake_reference():
     repo: BatchRepository = FakeBatchRepository([])
 
-    source_a = Source("Habitat Links", SourceType.PROGRAM)
-    source_b = Source("Natural Area", SourceType.NURSERY)
-
-    references = [repo.add(Batch(source_a, BatchType.DELIVERY)),
-                  repo.add(Batch(source_a, BatchType.DELIVERY)),
-                  repo.add(Batch(source_b, BatchType.DELIVERY))]
+    references = [repo.add(Batch("Habitat Links", BatchType.DELIVERY)),
+                  repo.add(Batch("Habitat Links", BatchType.DELIVERY)),
+                  repo.add(Batch("Natural Area", BatchType.DELIVERY))]
 
     assert references == ["batch-0001", "batch-0002", "batch-0003"]
 
@@ -86,7 +83,7 @@ def test_should_catalogue_batch():
 
     with uow:
         batch = Batch(
-            source=Source("Trillion Trees", SourceType.NURSERY),
+            source_name="Trillion Trees",
             batch_type=BatchType.PICKUP
         )
 
@@ -97,15 +94,14 @@ def test_should_catalogue_batch():
 
         new_batch = uow.batches().get(ref)
 
-    assert new_batch.source.name == "Trillion Trees"
-    assert new_batch.source.source_type == SourceType.NURSERY
+    assert new_batch.source_name == "Trillion Trees"
     assert new_batch.species() == ["Acacia saligna"]
 
 
 def test_add_nursery():
     uow: UnitOfWork = FakeUnitOfWork()
 
-    add_nursery("Trillion Trees", uow)
+    services.add_nursery("Trillion Trees", uow)
 
     assert uow.sources().get("Trillion Trees").source_type == SourceType.NURSERY
     assert uow.committed()
@@ -114,7 +110,22 @@ def test_add_nursery():
 def test_add_program():
     uow: UnitOfWork = FakeUnitOfWork()
 
-    add_program("Habitat Links", uow)
+    services.add_program("Habitat Links", uow)
 
     assert uow.sources().get("Habitat Links").source_type == SourceType.PROGRAM
     assert uow.committed()
+
+
+def test_add_order():
+    uow: UnitOfWork = FakeUnitOfWork()
+
+    ref = services.add_order("Habitat Links", uow)
+
+    assert ref == "batch-0001"
+
+    assert uow.batches().get(ref).batch_type == BatchType.ORDER
+    assert uow.committed()
+
+
+def test_missing_source():
+    pass

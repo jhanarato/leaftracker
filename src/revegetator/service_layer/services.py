@@ -1,4 +1,4 @@
-from revegetator.domain.model import Source, SourceType
+from revegetator.domain.model import Source, SourceType, Batch, BatchType
 from revegetator.service_layer.unit_of_work import UnitOfWork
 
 
@@ -14,3 +14,15 @@ def add_program(name: str, uow: UnitOfWork):
         source = Source(name, SourceType.PROGRAM)
         uow.sources().add(source)
         uow.commit()
+
+
+def add_order(source_name: str, uow: UnitOfWork):
+    with uow:
+        batchref = uow.batches().add(
+            Batch(
+                source_name=source_name,
+                batch_type=BatchType.ORDER
+            )
+        )
+        uow.commit()
+    return batchref
