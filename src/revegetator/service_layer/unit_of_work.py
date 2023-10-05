@@ -1,5 +1,7 @@
 from typing import Protocol, Self
 
+from revegetator.adapters.repository import BatchRepository
+
 
 class UnitOfWork(Protocol):
     def __enter__(self) -> Self: ...
@@ -9,3 +11,5 @@ class UnitOfWork(Protocol):
     def commit(self) -> None: ...
 
     def rollback(self) -> None: ...
+
+    def batches(self) -> BatchRepository: ...

@@ -2,6 +2,7 @@ from typing import Self
 
 from revegetator.adapters.repository import BatchRepository
 from revegetator.domain.model import Batch, Source, SourceType, BatchType, Stock, StockSize
+from revegetator.service_layer.unit_of_work import UnitOfWork
 
 
 class FakeBatchRepository:
@@ -39,7 +40,7 @@ def test_fake_reference():
 
 class FakeUnitOfWork:
     def __init__(self):
-        self.batches: BatchRepository = FakeBatchRepository([])
+        self._batches: BatchRepository = FakeBatchRepository([])
         self.commited = False
 
     def __enter__(self) -> Self:
@@ -54,20 +55,26 @@ class FakeUnitOfWork:
     def rollback(self) -> None:
         pass
 
+    def batches(self) -> BatchRepository:
+        return self._batches
+
 
 def test_should_catalogue_batch():
-    repo: BatchRepository = FakeBatchRepository([])
+    uow: UnitOfWork = FakeUnitOfWork()
 
-    batch_to_repo = Batch(
-        source=Source("Trillion Trees", SourceType.NURSERY), batch_type=BatchType.PICKUP)
+    with uow:
+        batch = Batch(
+            source=Source("Trillion Trees", SourceType.NURSERY),
+            batch_type=BatchType.PICKUP
+        )
 
-    batch_to_repo.add(Stock(species_ref="Acacia saligna", quantity=20, size=StockSize.TUBE))
+        batch.add(Stock(species_ref="Acacia saligna", quantity=20, size=StockSize.TUBE))
 
-    ref = repo.add(batch_to_repo)
+        ref = uow.batches().add(batch)
+        uow.commit()
 
-    batch_from_repo = repo.get(ref)
+        new_batch = uow.batches().get(ref)
 
-    assert batch_from_repo.source.name == "Trillion Trees"
-    assert batch_from_repo.source.source_type == SourceType.NURSERY
-    assert batch_from_repo.species() == ["Acacia saligna"]
-   
+    assert new_batch.source.name == "Trillion Trees"
+    assert new_batch.source.source_type == SourceType.NURSERY
+    assert new_batch.species() == ["Acacia saligna"]
