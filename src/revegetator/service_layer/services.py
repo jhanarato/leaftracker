@@ -2,6 +2,10 @@ from revegetator.domain.model import Source, SourceType, Batch, BatchType
 from revegetator.service_layer.unit_of_work import UnitOfWork
 
 
+class InvalidSource(Exception):
+    pass
+
+
 def add_nursery(name: str, uow: UnitOfWork):
     with uow:
         source = Source(name, SourceType.NURSERY)
@@ -18,6 +22,11 @@ def add_program(name: str, uow: UnitOfWork):
 
 def add_order(source_name: str, uow: UnitOfWork):
     with uow:
+        source = uow.sources().get(source_name)
+
+        if not source:
+            raise InvalidSource
+
         batchref = uow.batches().add(
             Batch(
                 source_name=source_name,
@@ -25,4 +34,5 @@ def add_order(source_name: str, uow: UnitOfWork):
             )
         )
         uow.commit()
+
     return batchref

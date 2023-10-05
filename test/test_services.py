@@ -1,8 +1,11 @@
 from typing import Self
 
+import pytest
+
 from revegetator.adapters.repository import BatchRepository, SourceRepository
 from revegetator.domain.model import Batch, Source, SourceType, BatchType, Stock, StockSize
 from revegetator.service_layer import services
+from revegetator.service_layer.services import InvalidSource
 from revegetator.service_layer.unit_of_work import UnitOfWork
 
 
@@ -119,7 +122,9 @@ def test_add_program():
 def test_add_order():
     uow: UnitOfWork = FakeUnitOfWork()
 
-    ref = services.add_order("Habitat Links", uow)
+    program = "Habitat Links"
+    services.add_program(program, uow)
+    ref = services.add_order(program, uow)
 
     assert ref == "batch-0001"
 
@@ -128,4 +133,7 @@ def test_add_order():
 
 
 def test_missing_source():
-    pass
+    uow: UnitOfWork = FakeUnitOfWork()
+
+    with pytest.raises(InvalidSource):
+        services.add_order("Missing", uow)
