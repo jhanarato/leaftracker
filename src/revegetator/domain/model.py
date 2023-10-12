@@ -89,12 +89,11 @@ class Batch:
              if stock.species_ref == species_ref]
         )
 
-    def quantity_of_size(self, species_ref: str, size: StockSize.POT) -> int:
-        if size:
-            return sum(
-                [stock.quantity for stock in self._stock
-                 if stock.species_ref == species_ref and stock.size == size]
-            )
+    def quantity_of_size(self, species_ref: str, size: StockSize) -> int:
+        return sum(
+            [stock.quantity for stock in self._stock
+             if stock.species_ref == species_ref and stock.size == size]
+        )
 
     def __eq__(self, other):
         if not isinstance(other, Batch):

@@ -157,5 +157,5 @@ def test_add_pickup(uow, nursery):
     assert uow.batches().get(ref).batch_type == BatchType.PICKUP
 
 
-def test_add_stock():
-    pass
+def test_add_species(uow):
+    assert 0
