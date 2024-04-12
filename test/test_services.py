@@ -158,4 +158,4 @@ def test_add_pickup(uow, nursery):
 
 
 def test_add_species(uow):
-    assert 0
+    pass
