@@ -1,5 +1,5 @@
-from revegetator.domain.model import Source, SourceType, Batch, BatchType
-from revegetator.service_layer.unit_of_work import UnitOfWork
+from leaftracker.domain.model import Source, SourceType, Batch, BatchType
+from leaftracker.service_layer.unit_of_work import UnitOfWork
 
 
 class InvalidSource(Exception):

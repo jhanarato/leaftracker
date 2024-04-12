@@ -1,6 +1,6 @@
 import pytest
 
-from revegetator.domain.model import Batch, Stock, Source, StockSize, BatchType, SourceType
+from leaftracker.domain.model import Batch, Stock, Source, StockSize, BatchType, SourceType
 
 BANKSIA = "Banksia littoralis"
 HAKEA = "Hakea varia"

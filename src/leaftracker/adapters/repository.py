@@ -1,6 +1,6 @@
 from typing import Protocol
 
-from revegetator.domain.model import Batch, Species, Source
+from leaftracker.domain.model import Batch, Species, Source
 
 
 class BatchRepository(Protocol):

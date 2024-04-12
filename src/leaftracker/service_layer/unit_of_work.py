@@ -1,6 +1,6 @@
 from typing import Protocol, Self
 
-from revegetator.adapters.repository import BatchRepository, SourceRepository
+from leaftracker.adapters.repository import BatchRepository, SourceRepository
 
 
 class UnitOfWork(Protocol):

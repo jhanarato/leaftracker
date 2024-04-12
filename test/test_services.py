@@ -2,11 +2,11 @@ from typing import Self
 
 import pytest
 
-from revegetator.adapters.repository import BatchRepository, SourceRepository
-from revegetator.domain.model import Batch, Source, SourceType, BatchType, Stock, StockSize
-from revegetator.service_layer import services
-from revegetator.service_layer.services import InvalidSource
-from revegetator.service_layer.unit_of_work import UnitOfWork
+from leaftracker.adapters.repository import BatchRepository, SourceRepository
+from leaftracker.domain.model import Batch, Source, SourceType, BatchType, Stock, StockSize
+from leaftracker.service_layer import services
+from leaftracker.service_layer.services import InvalidSource
+from leaftracker.service_layer.unit_of_work import UnitOfWork
 
 
 class FakeBatchRepository:
