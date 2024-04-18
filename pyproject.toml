@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "revegetator"
+name = "leaftracker"
 version = "0.1.0"
 description = "Manage revegetation projects"
 authors = ["Ajahn Jhanarato <jhanarato@gmail.com>"]
