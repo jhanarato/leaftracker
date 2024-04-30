@@ -46,9 +46,9 @@ class FakeSourceRepository:
 def test_fake_reference():
     repo: BatchRepository = FakeBatchRepository([])
 
-    references = [repo.add(Batch("Habitat Links", BatchType.DELIVERY)),
-                  repo.add(Batch("Habitat Links", BatchType.DELIVERY)),
-                  repo.add(Batch("Natural Area", BatchType.DELIVERY))]
+    references = [repo.add(Batch(Source("Habitat Links", SourceType.PROGRAM), BatchType.DELIVERY)),
+                  repo.add(Batch(Source("Habitat Links", SourceType.PROGRAM), BatchType.DELIVERY)),
+                  repo.add(Batch(Source("Natural Area", SourceType.NURSERY), BatchType.DELIVERY))]
 
     assert references == ["batch-0001", "batch-0002", "batch-0003"]
 
@@ -89,7 +89,7 @@ def uow() -> UnitOfWork:
 def test_should_catalogue_batch(uow):
     with uow:
         batch = Batch(
-            source="Trillion Trees",
+            source=Source("Trillion Trees", SourceType.NURSERY),
             batch_type=BatchType.PICKUP
         )
 
@@ -100,7 +100,7 @@ def test_should_catalogue_batch(uow):
 
         new_batch = uow.batches().get(ref)
 
-    assert new_batch.source_name == "Trillion Trees"
+    assert new_batch.source == Source("Trillion Trees", SourceType.NURSERY)
     assert new_batch.species() == ["Acacia saligna"]
 
 
