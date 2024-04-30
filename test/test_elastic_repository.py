@@ -16,6 +16,24 @@ def acacia_species() -> Species:
     return Species("acacia-saligna", name)
 
 
+@pytest.fixture
+def slow_refresh() -> None:
+    es = Elasticsearch(hosts="http://localhost:9200")
+    es.indices.put_settings(
+        index="species",
+        settings={
+            "refresh_interval": "60s"
+        }
+    )
+    yield
+    es.indices.put_settings(
+        index="species",
+        settings={
+            "refresh_interval": "1s"
+        }
+    )
+
+
 class TestSpeciesRepository:
     def test_should_add_a_species(self, acacia_species):
         es = Elasticsearch(hosts="http://localhost:9200")
@@ -27,7 +45,7 @@ class TestSpeciesRepository:
 
         assert es.exists(index="species", id="acacia-saligna")
 
-    def test_should_get_a_species(self, acacia_species):
+    def test_should_get_a_species(self, acacia_species, slow_refresh):
         repo = SpeciesRepository()
         repo.add(acacia_species)
         species = repo.get(acacia_species.reference)
