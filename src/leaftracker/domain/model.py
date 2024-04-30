@@ -6,9 +6,9 @@ from enum import Enum, auto
 class ScientificName:
     genus: str
     species: str
-    subspecies: str | None
-    year_name_given: str | None
     is_most_recent: bool
+    subspecies: str | None = None
+    year_name_given: str | None = None
 
 
 @dataclass(frozen=True)
