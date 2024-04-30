@@ -29,7 +29,7 @@ def _add_batch(source_name: str, batch_type: BatchType, uow: UnitOfWork) -> str:
 
         batchref = uow.batches().add(
             Batch(
-                source=source_name,
+                source=source,
                 batch_type=batch_type
             )
         )
