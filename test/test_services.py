@@ -11,16 +11,13 @@ from leaftracker.service_layer.unit_of_work import UnitOfWork
 
 class FakeBatchRepository:
     def __init__(self, batches: list[Batch]):
+        self._next_batch_number = 1
         self._batches = set(batches)
 
     def _new_reference(self) -> str:
-        if not self._batches:
-            return "batch-0001"
-
-        highest = max([int(batch.reference[-2:]) for batch in self._batches])
-
-        new_number = highest + 1
-        return f"batch-{new_number:04}"
+        reference = f"batch-{self._next_batch_number:04}"
+        self._next_batch_number += 1
+        return reference
 
     def add(self, batch: Batch) -> str:
         batch.reference = self._new_reference()
