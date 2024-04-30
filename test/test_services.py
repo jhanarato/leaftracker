@@ -89,7 +89,7 @@ def uow() -> UnitOfWork:
 def test_should_catalogue_batch(uow):
     with uow:
         batch = Batch(
-            source_name="Trillion Trees",
+            source="Trillion Trees",
             batch_type=BatchType.PICKUP
         )
 

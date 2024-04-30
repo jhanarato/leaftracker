@@ -15,7 +15,7 @@ def species_names():
 @pytest.fixture
 def batch():
     return Batch(
-        source_name=Source("Trillion Trees", SourceType.NURSERY),
+        source=Source("Trillion Trees", SourceType.NURSERY),
         batch_type=BatchType.DELIVERY,
         reference="batch-0001")
 
@@ -55,13 +55,13 @@ def test_should_give_quantity_of_sized_stock(batch):
 def test_should_identify_batch_after_modification():
     same_reference = "batch-0001"
     a_batch = Batch(
-        source_name=Source("Trillion Trees", SourceType.NURSERY),
+        source=Source("Trillion Trees", SourceType.NURSERY),
         batch_type=BatchType.PICKUP,
         reference=same_reference
     )
 
     same_batch_modified = Batch(
-        source_name=Source("Habitat Links", SourceType.PROGRAM),
+        source=Source("Habitat Links", SourceType.PROGRAM),
         batch_type=BatchType.PICKUP,
         reference=same_reference)
 
