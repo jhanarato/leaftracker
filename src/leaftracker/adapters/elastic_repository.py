@@ -5,10 +5,10 @@ from leaftracker.domain.model import Species
 
 class SpeciesRepository:
     def __init__(self):
-        self._client = Elasticsearch(hosts="http://localhost:9200")
+        self.es = Elasticsearch(hosts="http://localhost:9200")
 
     def add(self, species: Species) -> str:
-        self._client.index(
+        self.es.index(
             index="species",
             id=species.reference,
             document={
