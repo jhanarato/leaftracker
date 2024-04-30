@@ -14,7 +14,11 @@ class FakeBatchRepository:
         self._batches = set(batches)
 
     def _new_reference(self) -> str:
-        highest = max([int(batch.reference[-2:]) for batch in self._batches], default=0)
+        if not self._batches:
+            return "batch-0001"
+
+        highest = max([int(batch.reference[-2:]) for batch in self._batches])
+
         new_number = highest + 1
         return f"batch-{new_number:04}"
 
