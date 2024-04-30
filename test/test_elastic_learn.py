@@ -6,7 +6,7 @@ from elasticsearch import Elasticsearch
 def client() -> Elasticsearch:
     es = Elasticsearch(hosts="http://localhost:9200")
     es.options(ignore_status=404).indices.delete(index="test_index")
-    yield es
+    return es
 
 
 def test_should_create_document(client):
