@@ -6,6 +6,10 @@ from leaftracker.domain.model import Species, ScientificName
 
 class TestSpeciesRepository:
     def test_should_add_a_species(self):
+        es = Elasticsearch(hosts="http://localhost:9200")
+        assert es.indices.exists(index="species")
+        es.delete(index="species", id="acacia-saligna")
+
         name = ScientificName(
             genus="Acacia",
             species="Saligna",
@@ -16,5 +20,4 @@ class TestSpeciesRepository:
         repo = SpeciesRepository()
         repo.add(species_in)
 
-        es = Elasticsearch(hosts="http://localhost:9200")
         assert es.exists(index="species", id="acacia-saligna")
