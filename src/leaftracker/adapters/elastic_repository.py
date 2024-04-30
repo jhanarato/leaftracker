@@ -1,6 +1,6 @@
 from elasticsearch import Elasticsearch
 
-from leaftracker.domain.model import Species
+from leaftracker.domain.model import Species, ScientificName
 
 
 class SpeciesRepository:
@@ -19,5 +19,11 @@ class SpeciesRepository:
         return species.reference
 
     def get(self, species_ref: str) -> Species:
-        pass
+        doc = self.es.get(index="species", id=species_ref)
+        ref = doc["_id"]
+        name = ScientificName(
+            genus=doc["_source"]["genus"],
+            species=doc["_source"]["species"]
+        )
 
+        return Species(ref, name)

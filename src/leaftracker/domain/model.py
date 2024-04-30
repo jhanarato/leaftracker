@@ -6,7 +6,7 @@ from enum import Enum, auto
 class ScientificName:
     genus: str
     species: str
-    is_most_recent: bool
+    is_most_recent: bool = True
     subspecies: str | None = None
     year_name_given: str | None = None
 
@@ -31,6 +31,17 @@ class Species:
         self.common_names: list[str] = []
         self.web_references: list[WebReference] = []
         self.photos: list[Photo] = []
+
+    def __repr__(self):
+        return f"<Species {self.reference}>"
+
+    def __eq__(self, other):
+        if not isinstance(other, Species):
+            return False
+        return other.reference == self.reference
+
+    def __hash__(self):
+        return hash(self.reference)
 
 
 class StockSize(Enum):
