@@ -1,3 +1,5 @@
+from collections.abc import Generator
+
 import pytest
 from elasticsearch import Elasticsearch
 
@@ -17,7 +19,7 @@ def acacia_species() -> Species:
 
 
 @pytest.fixture
-def slow_refresh() -> None:
+def slow_refresh() -> Generator[None]:
     es = Elasticsearch(hosts="http://localhost:9200")
     es.indices.put_settings(
         index="species",
