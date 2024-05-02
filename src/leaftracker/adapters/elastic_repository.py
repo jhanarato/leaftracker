@@ -20,7 +20,7 @@ class SpeciesRepository:
         self._es.options(ignore_status=404).indices.delete(index="species")
 
     def add(self, species: Species) -> str:
-        self._es.index(
+        response = self._es.index(
             index="species",
             id=species.reference,
             document={
@@ -28,7 +28,7 @@ class SpeciesRepository:
                 "species": species.names[0].genus,
             }
         )
-        return species.reference
+        return response["_id"]
 
     def get(self, species_ref: str) -> Species:
         doc = self._es.get(index="species", id=species_ref)

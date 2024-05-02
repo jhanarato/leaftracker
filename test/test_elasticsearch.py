@@ -60,3 +60,12 @@ class TestSpeciesRepository:
         species_out = repo.get(species_in.reference)
 
         assert species_in == species_out
+
+    def test_should_generate_reference_if_none_provided(self, acacia, es):
+        repo = SpeciesRepository()
+        repo.delete_index()
+        repo.create_index()
+
+        species = Species(None, acacia)
+        reference = repo.add(species)
+        assert reference is not None
