@@ -22,7 +22,7 @@ def es() -> Elasticsearch:
 
 
 @pytest.fixture
-def empty_repository() -> SpeciesRepository:
+def new_repo() -> SpeciesRepository:
     repo = SpeciesRepository()
     repo.delete_index()
     repo.create_index()
@@ -40,36 +40,25 @@ class TestSpeciesRepository:
         repo = SpeciesRepository()
         repo.delete_index()
         repo.delete_index()
-
         assert not es.indices.exists(index="species")
 
     def test_should_delete_existing_index(self, es):
         repo = SpeciesRepository()
         repo.create_index()
         repo.delete_index()
-
         assert not es.indices.exists(index="species")
 
-    def test_should_add_a_species(self, empty_repository, acacia, es):
-        reference = empty_repository.add(Species("acacia-saligna", acacia))
+    def test_should_add_a_species(self, new_repo, acacia, es):
+        reference = new_repo.add(Species("acacia-saligna", acacia))
         assert es.exists(index="species", id=reference)
 
-    def test_should_get_a_species(self, acacia):
-        repo = SpeciesRepository()
-        repo.delete_index()
-        repo.create_index()
-
+    def test_should_get_a_species(self, new_repo, acacia):
         species_in = Species("acacia-saligna", acacia)
-        repo.add(species_in)
-        species_out = repo.get(species_in.reference)
-
+        new_repo.add(species_in)
+        species_out = new_repo.get(species_in.reference)
         assert species_in == species_out
 
-    def test_should_generate_reference_if_none_provided(self, acacia, es):
-        repo = SpeciesRepository()
-        repo.delete_index()
-        repo.create_index()
-
+    def test_should_generate_reference_if_none_provided(self, new_repo, acacia, es):
         species = Species(None, acacia)
-        reference = repo.add(species)
+        reference = new_repo.add(species)
         assert reference is not None
