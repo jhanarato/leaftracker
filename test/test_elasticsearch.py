@@ -21,6 +21,14 @@ def es() -> Elasticsearch:
     return Elasticsearch(hosts="http://localhost:9200")
 
 
+@pytest.fixture
+def empty_repository() -> SpeciesRepository:
+    repo = SpeciesRepository()
+    repo.delete_index()
+    repo.create_index()
+    return repo
+
+
 class TestSpeciesRepository:
     def test_should_create_new_index(self, es):
         es.options(ignore_status=404).indices.delete(index="species")
@@ -42,12 +50,8 @@ class TestSpeciesRepository:
 
         assert not es.indices.exists(index="species")
 
-    def test_should_add_a_species(self, acacia, es):
-        repo = SpeciesRepository()
-        repo.delete_index()
-        repo.create_index()
-        reference = repo.add(Species("acacia-saligna", acacia))
-
+    def test_should_add_a_species(self, empty_repository, acacia, es):
+        reference = empty_repository.add(Species("acacia-saligna", acacia))
         assert es.exists(index="species", id=reference)
 
     def test_should_get_a_species(self, acacia):
