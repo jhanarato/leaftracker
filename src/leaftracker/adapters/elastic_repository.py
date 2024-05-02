@@ -25,7 +25,7 @@ class SpeciesRepository:
             id=species.reference,
             document={
                 "genus": species.names[0].genus,
-                "species": species.names[0].genus,
+                "species": species.names[0].species,
             }
         )
         return response["_id"]
