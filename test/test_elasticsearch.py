@@ -21,24 +21,6 @@ def es() -> Elasticsearch:
     return Elasticsearch(hosts="http://localhost:9200")
 
 
-@pytest.fixture
-def slow_refresh() -> Generator[None]:
-    es = Elasticsearch(hosts="http://localhost:9200")
-    es.indices.put_settings(
-        index="species",
-        settings={
-            "refresh_interval": "60s"
-        }
-    )
-    yield
-    es.indices.put_settings(
-        index="species",
-        settings={
-            "refresh_interval": "1s"
-        }
-    )
-
-
 class TestSpeciesRepository:
     def test_should_create_new_index(self, es):
         es.options(ignore_status=404).indices.delete(index="species")
@@ -68,7 +50,7 @@ class TestSpeciesRepository:
 
         assert es.exists(index="species", id=reference)
 
-    def test_should_get_a_species(self, acacia, slow_refresh):
+    def test_should_get_a_species(self, acacia):
         repo = SpeciesRepository()
         repo.delete_index()
         repo.create_index()
