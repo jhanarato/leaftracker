@@ -68,9 +68,9 @@ class TestSpeciesRepository:
         repo = SpeciesRepository()
         repo.delete_index()
         repo.create_index()
-        repo.add(acacia_species)
+        reference = repo.add(acacia_species)
 
-        assert es.exists(index="species", id="acacia-saligna")
+        assert es.exists(index="species", id=reference)
 
     def test_should_get_a_species(self, acacia_species, slow_refresh):
         repo = SpeciesRepository()
