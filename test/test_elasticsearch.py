@@ -8,14 +8,12 @@ from leaftracker.domain.model import Species, ScientificName
 
 
 @pytest.fixture
-def acacia_species() -> Species:
-    name = ScientificName(
+def acacia() -> ScientificName:
+    return ScientificName(
         genus="Acacia",
         species="Saligna",
         is_most_recent=True
     )
-
-    return Species("acacia-saligna", name)
 
 
 @pytest.fixture
@@ -62,22 +60,23 @@ class TestSpeciesRepository:
 
         assert not es.indices.exists(index="species")
 
-    def test_should_add_a_species(self, acacia_species):
+    def test_should_add_a_species(self, acacia):
         es = Elasticsearch(hosts="http://localhost:9200")
 
         repo = SpeciesRepository()
         repo.delete_index()
         repo.create_index()
-        reference = repo.add(acacia_species)
+        reference = repo.add(Species("acacia-saligna", acacia))
 
         assert es.exists(index="species", id=reference)
 
-    def test_should_get_a_species(self, acacia_species, slow_refresh):
+    def test_should_get_a_species(self, acacia, slow_refresh):
         repo = SpeciesRepository()
         repo.delete_index()
         repo.create_index()
 
-        repo.add(acacia_species)
-        species = repo.get(acacia_species.reference)
+        species_in = Species("acacia-saligna", acacia)
+        repo.add(species_in)
+        species_out = repo.get(species_in.reference)
 
-        assert species == acacia_species
+        assert species_in == species_out
