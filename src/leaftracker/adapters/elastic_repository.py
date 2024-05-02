@@ -7,6 +7,18 @@ class SpeciesRepository:
     def __init__(self):
         self.es = Elasticsearch(hosts="http://localhost:9200")
 
+    def create_index(self):
+        mappings = {
+            "properties": {
+                "genus": {"type": "text"},
+                "species": {"type": "text"},
+            }
+        }
+        self.es.indices.create(index="species", mappings=mappings)
+
+    def delete_index(self):
+        self.es.options(ignore_status=404).indices.delete(index="species")
+
     def add(self, species: Species) -> str:
         self.es.index(
             index="species",
