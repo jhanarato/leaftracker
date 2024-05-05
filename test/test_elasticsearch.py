@@ -1,3 +1,4 @@
+import time
 from collections.abc import Generator
 
 import pytest
@@ -62,3 +63,12 @@ class TestSpeciesRepository:
         species = Species(None, acacia)
         reference = new_repo.add(species)
         assert reference is not None
+
+    def test_should_delete_all_documents(self, new_repo, acacia, es):
+        species = Species(None, acacia)
+        _ = new_repo.add(species)
+        es.indices.refresh(index="species")
+        assert es.count(index="species")["count"] == 1
+        new_repo.delete_all_documents()
+        es.indices.refresh(index="species")
+        assert es.count(index="species")["count"] == 0

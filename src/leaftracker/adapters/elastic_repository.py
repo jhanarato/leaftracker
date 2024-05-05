@@ -19,6 +19,14 @@ class SpeciesRepository:
     def delete_index(self):
         self._es.options(ignore_status=404).indices.delete(index="species")
 
+    def delete_all_documents(self) -> None:
+        self._es.delete_by_query(
+            index="species",
+            body={
+                "query": {"match_all": {}}
+            }
+        )
+
     def add(self, species: Species) -> str:
         response = self._es.index(
             index="species",
