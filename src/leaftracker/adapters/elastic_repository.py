@@ -6,6 +6,11 @@ from leaftracker.domain.model import Species, ScientificName
 class SpeciesRepository:
     def __init__(self):
         self._es = Elasticsearch(hosts="http://localhost:9200")
+        self._index = "species"
+
+    @property
+    def index(self) -> str:
+        return self._index
 
     def create_index(self):
         mappings = {
@@ -14,14 +19,14 @@ class SpeciesRepository:
                 "species": {"type": "text"},
             }
         }
-        self._es.indices.create(index="species", mappings=mappings)
+        self._es.indices.create(index=self.index, mappings=mappings)
 
     def delete_index(self):
-        self._es.options(ignore_status=404).indices.delete(index="species")
+        self._es.options(ignore_status=404).indices.delete(index=self.index)
 
     def delete_all_documents(self) -> None:
         self._es.delete_by_query(
-            index="species",
+            index=self.index,
             body={
                 "query": {"match_all": {}}
             }
@@ -29,7 +34,7 @@ class SpeciesRepository:
 
     def add(self, species: Species) -> str:
         response = self._es.index(
-            index="species",
+            index=self.index,
             id=species.reference,
             document={
                 "genus": species.names[0].genus,
@@ -39,7 +44,7 @@ class SpeciesRepository:
         return response["_id"]
 
     def get(self, species_ref: str) -> Species:
-        doc = self._es.get(index="species", id=species_ref)
+        doc = self._es.get(index=self.index, id=species_ref)
         ref = doc["_id"]
         name = ScientificName(
             genus=doc["_source"]["genus"],
