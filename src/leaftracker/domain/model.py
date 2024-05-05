@@ -25,7 +25,7 @@ class Photo:
 
 
 class Species:
-    def __init__(self, reference: str | None, name: ScientificName):
+    def __init__(self, name: ScientificName, reference: str | None = None):
         self.reference = reference
         self.names: list[ScientificName] = [name]
         self.common_names: list[str] = []

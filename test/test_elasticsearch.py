@@ -1,6 +1,3 @@
-import time
-from collections.abc import Generator
-
 import pytest
 from elasticsearch import Elasticsearch
 
@@ -39,7 +36,7 @@ class TestSpeciesRepository:
 
     def test_should_not_overwrite_repo_when_creating_index(self, es, acacia):
         repo = SpeciesRepository()
-        reference = repo.add(Species(None, acacia))
+        reference = repo.add(Species(acacia))
         repo.create_index()
         es.indices.refresh(index=repo.index)
         assert repo.get(reference)
@@ -57,22 +54,21 @@ class TestSpeciesRepository:
         assert not es.indices.exists(index=repo.index)
 
     def test_should_add_a_species(self, new_repo, acacia, es):
-        reference = new_repo.add(Species("acacia-saligna", acacia))
+        reference = new_repo.add(Species(acacia))
         assert es.exists(index=new_repo.index, id=reference)
 
     def test_should_get_a_species(self, new_repo, acacia):
-        species_in = Species("acacia-saligna", acacia)
-        new_repo.add(species_in)
-        species_out = new_repo.get(species_in.reference)
-        assert species_in == species_out
+        reference = new_repo.add(Species(acacia))
+        species = new_repo.get(reference)
+        assert species.reference == reference
 
     def test_should_generate_reference_if_none_provided(self, new_repo, acacia, es):
-        species = Species(None, acacia)
+        species = Species(acacia)
         reference = new_repo.add(species)
         assert reference is not None
 
     def test_should_delete_all_documents(self, new_repo, acacia, es):
-        species = Species(None, acacia)
+        species = Species(acacia)
         _ = new_repo.add(species)
         es.indices.refresh(index=new_repo.index)
         assert es.count(index=new_repo.index)["count"] == 1

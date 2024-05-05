@@ -48,10 +48,10 @@ class SpeciesRepository:
 
     def get(self, species_ref: str) -> Species:
         doc = self._es.get(index=self.index, id=species_ref)
-        ref = doc["_id"]
+        reference = doc["_id"]
         name = ScientificName(
             genus=doc["_source"]["genus"],
             species=doc["_source"]["species"]
         )
 
-        return Species(ref, name)
+        return Species(name, reference)
