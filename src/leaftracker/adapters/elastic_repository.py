@@ -13,6 +13,9 @@ class SpeciesRepository:
         return self._index
 
     def create_index(self):
+        if self._es.indices.exists(index=self._index):
+            return
+
         mappings = {
             "properties": {
                 "genus": {"type": "text"},

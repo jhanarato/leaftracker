@@ -37,6 +37,13 @@ class TestSpeciesRepository:
         repo.create_index()
         assert es.indices.exists(index=repo.index)
 
+    def test_should_not_overwrite_repo_when_creating_index(self, es, acacia):
+        repo = SpeciesRepository()
+        reference = repo.add(Species(None, acacia))
+        repo.create_index()
+        es.indices.refresh(index=repo.index)
+        assert repo.get(reference)
+
     def test_should_delete_missing_index(self, es):
         repo = SpeciesRepository()
         repo.delete_index()
