@@ -51,7 +51,7 @@ class TestSpeciesRepository:
         repo = SpeciesRepository()
         repo.create_index()
         repo.delete_index()
-        assert not es.indices.exists(index=repo.index)
+        assert not repo.index_exists()
 
     def test_should_add_a_species(self, new_repo, acacia, es):
         reference = new_repo.add(Species(acacia))
