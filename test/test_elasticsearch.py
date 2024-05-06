@@ -42,11 +42,12 @@ class TestSpeciesRepository:
         repo.refresh()
         assert repo.get(reference)
 
-    def test_should_delete_missing_index(self, es):
+    def test_should_delete_when_missing(self, es):
         repo = SpeciesRepository()
         repo.delete_index()
+        assert not repo.index_exists()
         repo.delete_index()
-        assert not es.indices.exists(index=repo.index)
+        assert not repo.index_exists()
 
     def test_should_delete_existing_index(self, es):
         repo = SpeciesRepository()
