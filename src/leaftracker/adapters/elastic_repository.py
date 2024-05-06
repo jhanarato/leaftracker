@@ -27,6 +27,9 @@ class SpeciesRepository:
     def refresh(self) -> None:
         self._es.indices.refresh(index=self.index)
 
+    def count(self) -> int:
+        return self._es.count(index=self.index)["count"]
+
     def delete_index(self) -> None:
         self._es.options(ignore_status=404).indices.delete(index=self.index)
 

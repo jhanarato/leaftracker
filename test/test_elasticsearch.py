@@ -71,7 +71,7 @@ class TestSpeciesRepository:
         species = Species(acacia)
         _ = new_repo.add(species)
         new_repo.refresh()
-        assert es.count(index=new_repo.index)["count"] == 1
+        assert new_repo.count() == 1
         new_repo.delete_all_documents()
         new_repo.refresh()
-        assert es.count(index=new_repo.index)["count"] == 0
+        assert new_repo.count() == 0
