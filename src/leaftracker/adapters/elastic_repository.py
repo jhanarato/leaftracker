@@ -24,7 +24,10 @@ class SpeciesRepository:
         }
         self._es.indices.create(index=self.index, mappings=mappings)
 
-    def delete_index(self):
+    def refresh(self) -> None:
+        self._es.indices.refresh(index=self.index)
+
+    def delete_index(self) -> None:
         self._es.options(ignore_status=404).indices.delete(index=self.index)
 
     def delete_all_documents(self) -> None:

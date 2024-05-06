@@ -38,7 +38,7 @@ class TestSpeciesRepository:
         repo = SpeciesRepository()
         reference = repo.add(Species(acacia))
         repo.create_index()
-        es.indices.refresh(index=repo.index)
+        repo.refresh()
         assert repo.get(reference)
 
     def test_should_delete_missing_index(self, es):
@@ -70,8 +70,8 @@ class TestSpeciesRepository:
     def test_should_delete_all_documents(self, new_repo, acacia, es):
         species = Species(acacia)
         _ = new_repo.add(species)
-        es.indices.refresh(index=new_repo.index)
+        new_repo.refresh()
         assert es.count(index=new_repo.index)["count"] == 1
         new_repo.delete_all_documents()
-        es.indices.refresh(index=new_repo.index)
+        new_repo.refresh()
         assert es.count(index=new_repo.index)["count"] == 0
