@@ -33,6 +33,9 @@ class SpeciesRepository:
     def delete_index(self) -> None:
         self._es.options(ignore_status=404).indices.delete(index=self.index)
 
+    def index_exists(self) -> bool:
+        return self._es.indices.exists(index=self.index)
+
     def delete_all_documents(self) -> None:
         self._es.delete_by_query(
             index=self.index,

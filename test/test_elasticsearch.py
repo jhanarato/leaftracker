@@ -32,7 +32,7 @@ class TestSpeciesRepository:
         repo = SpeciesRepository()
         es.options(ignore_status=404).indices.delete(index=repo.index)
         repo.create_index()
-        assert es.indices.exists(index=repo.index)
+        assert repo.index_exists()
 
     def test_should_not_overwrite_repo_when_creating_index(self, es, acacia):
         repo = SpeciesRepository()
