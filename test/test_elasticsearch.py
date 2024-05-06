@@ -30,7 +30,8 @@ def new_repo() -> SpeciesRepository:
 class TestSpeciesRepository:
     def test_should_create_new_index(self, es):
         repo = SpeciesRepository()
-        es.options(ignore_status=404).indices.delete(index=repo.index)
+        repo.delete_index()
+        assert not repo.index_exists()
         repo.create_index()
         assert repo.index_exists()
 
