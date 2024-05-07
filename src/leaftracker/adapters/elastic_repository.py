@@ -13,7 +13,7 @@ class SpeciesRepository:
         return self._index
 
     def create_index(self):
-        if self._es.indices.exists(index=self._index):
+        if self._es.indices.exists(index=self._index).body:
             return
 
         mappings = {
@@ -34,7 +34,7 @@ class SpeciesRepository:
         self._es.options(ignore_status=404).indices.delete(index=self.index)
 
     def index_exists(self) -> bool:
-        return self._es.indices.exists(index=self.index)
+        return self._es.indices.exists(index=self.index).body
 
     def delete_all_documents(self) -> None:
         self._es.delete_by_query(

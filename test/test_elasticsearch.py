@@ -57,6 +57,7 @@ class TestSpeciesRepository:
 
     def test_should_add_a_species(self, new_repo, acacia, es):
         reference = new_repo.add(Species(acacia))
+        # TODO Implement this as SpeciesRepository.__contains__
         assert es.exists(index=new_repo.index, id=reference)
 
     def test_should_get_a_species(self, new_repo, acacia):
