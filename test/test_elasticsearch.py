@@ -24,15 +24,7 @@ def new_repo() -> SpeciesRepository:
 
 @pytest.fixture
 def index() -> Index:
-    name = "species"
-    mappings = {
-        "properties": {
-            "genus": {"type": "text"},
-            "species": {"type": "text"},
-        }
-    }
-
-    return Index(name, mappings)
+    return SpeciesRepository()._index
 
 
 @pytest.fixture
