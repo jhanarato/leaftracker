@@ -59,28 +59,19 @@ class TestIndex:
         index.create()
         assert index.count() == 1
 
+    def test_should_delete_missing(self, index):
+        index.delete()
+        assert not index.exists()
+        index.delete()
+        assert not index.exists()
+
+    def test_should_delete_existing(self, index):
+        index.create()
+        index.delete()
+        assert not index.exists()
+
 
 class TestSpeciesRepository:
-    def test_should_not_overwrite_repo_when_creating_index(self, es, acacia):
-        repo = SpeciesRepository()
-        reference = repo.add(Species(acacia))
-        repo._index.create()
-        repo._index.refresh()
-        assert repo.get(reference)
-
-    def test_should_delete_when_missing(self, es):
-        repo = SpeciesRepository()
-        repo._index.delete()
-        assert not repo._index.exists()
-        repo._index.delete()
-        assert not repo._index.exists()
-
-    def test_should_delete_existing_index(self, es):
-        repo = SpeciesRepository()
-        repo._index.create()
-        repo._index.delete()
-        assert not repo._index.exists()
-
     def test_should_add_a_species(self, new_repo, acacia, es):
         reference = new_repo.add(Species(acacia))
         assert es.exists(index=new_repo._index.name, id=reference)
