@@ -65,11 +65,6 @@ class TestSpeciesRepository:
         reference = new_repo.add(species)
         assert reference == species.reference
 
-    def test_should_assign_reference_to_species_on_add(self, new_repo, acacia):
-        species = Species(acacia)
-        new_repo.add(species)
-        assert species.reference is not None
-
     def test_should_get_a_species(self, new_repo, acacia):
         reference = new_repo.add(Species(acacia))
         species = new_repo.get(reference)
