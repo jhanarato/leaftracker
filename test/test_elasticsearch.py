@@ -15,11 +15,6 @@ def acacia() -> ScientificName:
 
 
 @pytest.fixture
-def es() -> Elasticsearch:
-    return Elasticsearch(hosts="http://localhost:9200")
-
-
-@pytest.fixture
 def new_repo() -> SpeciesRepository:
     repo = SpeciesRepository()
     repo._index.delete()
@@ -78,7 +73,7 @@ class TestIndex:
 
 
 class TestSpeciesRepository:
-    def test_should_add(self, new_repo, acacia, es):
+    def test_should_add(self, new_repo, acacia):
         species = Species(acacia)
         reference = new_repo.add(species)
         assert reference == species.reference
