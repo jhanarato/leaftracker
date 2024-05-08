@@ -40,6 +40,13 @@ def index() -> Index:
     return Index(name, mappings)
 
 
+@pytest.fixture
+def populate(index, acacia) -> None:
+    repo = SpeciesRepository()
+    _ = repo.add(Species(acacia))
+    index.refresh()
+
+
 class TestIndex:
     def test_should_create_missing_index(self, index):
         index.delete()
@@ -47,15 +54,13 @@ class TestIndex:
         index.create()
         assert index.exists()
 
+    def test_should_not_overwrite(self, index, populate):
+        assert index.count() == 1
+        index.create()
+        assert index.count() == 1
+
 
 class TestSpeciesRepository:
-    def test_should_create_new_index(self, es):
-        repo = SpeciesRepository()
-        repo._index.delete()
-        assert not repo._index.exists()
-        repo._index.create()
-        assert repo._index.exists()
-
     def test_should_not_overwrite_repo_when_creating_index(self, es, acacia):
         repo = SpeciesRepository()
         reference = repo.add(Species(acacia))
