@@ -27,17 +27,21 @@ def new_repo() -> SpeciesRepository:
     return repo
 
 
-class TestIndex:
-    def test_should_create_missing_index(self):
-        name = "species"
-        mappings = {
-            "properties": {
-                "genus": {"type": "text"},
-                "species": {"type": "text"},
-            }
+@pytest.fixture
+def index() -> Index:
+    name = "species"
+    mappings = {
+        "properties": {
+            "genus": {"type": "text"},
+            "species": {"type": "text"},
         }
+    }
 
-        index = Index(name, mappings)
+    return Index(name, mappings)
+
+
+class TestIndex:
+    def test_should_create_missing_index(self, index):
         index.delete()
         assert not index.exists()
         index.create()
