@@ -70,6 +70,12 @@ class TestIndex:
         index.delete()
         assert not index.exists()
 
+    def test_should_delete_documents(self, index, populate):
+        assert index.count() == 1
+        index.delete_all_documents()
+        index.refresh()
+        assert index.count() == 0
+
 
 class TestSpeciesRepository:
     def test_should_add_a_species(self, new_repo, acacia, es):
@@ -85,12 +91,3 @@ class TestSpeciesRepository:
         reference = new_repo.add(Species(acacia))
         species = new_repo.get(reference)
         assert species.reference == reference
-
-    def test_should_delete_all_documents(self, new_repo, acacia, es):
-        species = Species(acacia)
-        _ = new_repo.add(species)
-        new_repo._index.refresh()
-        assert new_repo._index.count() == 1
-        new_repo._index.delete_all_documents()
-        new_repo._index.refresh()
-        assert new_repo._index.count() == 0
