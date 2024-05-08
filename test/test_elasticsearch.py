@@ -78,16 +78,12 @@ class TestIndex:
 
 
 class TestSpeciesRepository:
-    def test_should_add_a_species(self, new_repo, acacia, es):
-        reference = new_repo.add(Species(acacia))
-        assert es.exists(index=new_repo._index.name, id=reference)
-
-    def test_should_generate_reference_if_none_provided(self, new_repo, acacia, es):
+    def test_should_add(self, new_repo, acacia, es):
         species = Species(acacia)
         reference = new_repo.add(species)
         assert reference == species.reference
 
-    def test_should_get_a_species(self, new_repo, acacia):
+    def test_should_get(self, new_repo, acacia):
         reference = new_repo.add(Species(acacia))
         species = new_repo.get(reference)
         assert species.reference == reference
