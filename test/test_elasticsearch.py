@@ -22,43 +22,43 @@ def es() -> Elasticsearch:
 @pytest.fixture
 def new_repo() -> SpeciesRepository:
     repo = SpeciesRepository()
-    repo.delete_index()
-    repo.create_index()
+    repo._index.delete()
+    repo._index.create()
     return repo
 
 
 class TestSpeciesRepository:
     def test_should_create_new_index(self, es):
         repo = SpeciesRepository()
-        repo.delete_index()
-        assert not repo.index_exists()
-        repo.create_index()
-        assert repo.index_exists()
+        repo._index.delete()
+        assert not repo._index.exists()
+        repo._index.create()
+        assert repo._index.exists()
 
     def test_should_not_overwrite_repo_when_creating_index(self, es, acacia):
         repo = SpeciesRepository()
         reference = repo.add(Species(acacia))
-        repo.create_index()
-        repo.refresh()
+        repo._index.create()
+        repo._index.refresh()
         assert repo.get(reference)
 
     def test_should_delete_when_missing(self, es):
         repo = SpeciesRepository()
-        repo.delete_index()
-        assert not repo.index_exists()
-        repo.delete_index()
-        assert not repo.index_exists()
+        repo._index.delete()
+        assert not repo._index.exists()
+        repo._index.delete()
+        assert not repo._index.exists()
 
     def test_should_delete_existing_index(self, es):
         repo = SpeciesRepository()
-        repo.create_index()
-        repo.delete_index()
-        assert not repo.index_exists()
+        repo._index.create()
+        repo._index.delete()
+        assert not repo._index.exists()
 
     def test_should_add_a_species(self, new_repo, acacia, es):
         reference = new_repo.add(Species(acacia))
         # TODO Implement this as SpeciesRepository.__contains__
-        assert es.exists(index=new_repo.index, id=reference)
+        assert es.exists(index=new_repo._index.name, id=reference)
 
     def test_should_get_a_species(self, new_repo, acacia):
         reference = new_repo.add(Species(acacia))
@@ -73,8 +73,8 @@ class TestSpeciesRepository:
     def test_should_delete_all_documents(self, new_repo, acacia, es):
         species = Species(acacia)
         _ = new_repo.add(species)
-        new_repo.refresh()
-        assert new_repo.count() == 1
-        new_repo.delete_all_documents()
-        new_repo.refresh()
-        assert new_repo.count() == 0
+        new_repo._index.refresh()
+        assert new_repo._index.count() == 1
+        new_repo._index.delete_all_documents()
+        new_repo._index.refresh()
+        assert new_repo._index.count() == 0

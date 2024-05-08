@@ -3,18 +3,47 @@ from elasticsearch import Elasticsearch
 from leaftracker.domain.model import Species, ScientificName
 
 
+class Index:
+    def __init__(self, name: str, mappings: dict):
+        self._es = Elasticsearch(hosts="http://localhost:9200")
+        self._name = name
+        self._mappings = mappings
+
+    @property
+    def name(self) -> str:
+        return self._name
+
+    def create(self):
+        if self._es.indices.exists(index=self._name).body:
+            return
+
+        self._es.indices.create(index=self._name, mappings=self._mappings)
+
+    def delete(self) -> None:
+        self._es.options(ignore_status=404).indices.delete(index=self._name)
+
+    def exists(self) -> bool:
+        return self._es.indices.exists(index=self._name).body
+
+    def refresh(self) -> None:
+        self._es.indices.refresh(index=self._name)
+
+    def count(self) -> int:
+        return self._es.count(index=self._name)["count"]
+
+    def delete_all_documents(self) -> None:
+        self._es.delete_by_query(
+            index=self._name,
+            body={
+                "query": {"match_all": {}}
+            }
+        )
+
+
 class SpeciesRepository:
     def __init__(self):
         self._es = Elasticsearch(hosts="http://localhost:9200")
-        self._index = "species"
-
-    @property
-    def index(self) -> str:
-        return self._index
-
-    def create_index(self):
-        if self._es.indices.exists(index=self._index).body:
-            return
+        self._index_name = "species"
 
         mappings = {
             "properties": {
@@ -22,31 +51,12 @@ class SpeciesRepository:
                 "species": {"type": "text"},
             }
         }
-        self._es.indices.create(index=self.index, mappings=mappings)
 
-    def refresh(self) -> None:
-        self._es.indices.refresh(index=self.index)
-
-    def count(self) -> int:
-        return self._es.count(index=self.index)["count"]
-
-    def delete_index(self) -> None:
-        self._es.options(ignore_status=404).indices.delete(index=self.index)
-
-    def index_exists(self) -> bool:
-        return self._es.indices.exists(index=self.index).body
-
-    def delete_all_documents(self) -> None:
-        self._es.delete_by_query(
-            index=self.index,
-            body={
-                "query": {"match_all": {}}
-            }
-        )
+        self._index = Index("species", mappings)
 
     def add(self, species: Species) -> str:
         response = self._es.index(
-            index=self.index,
+            index=self._index.name,
             id=species.reference,
             document={
                 "genus": species.names[0].genus,
@@ -56,7 +66,7 @@ class SpeciesRepository:
         return response["_id"]
 
     def get(self, species_ref: str) -> Species:
-        doc = self._es.get(index=self.index, id=species_ref)
+        doc = self._es.get(index=self._index.name, id=species_ref)
         reference = doc["_id"]
         name = ScientificName(
             genus=doc["_source"]["genus"],
