@@ -6,16 +6,7 @@ from leaftracker.domain.model import Species, ScientificName
 
 
 @pytest.fixture
-def acacia() -> ScientificName:
-    return ScientificName(
-        genus="Acacia",
-        species="Saligna",
-        is_most_recent=True
-    )
-
-
-@pytest.fixture
-def new_repo() -> SpeciesRepository:
+def repository() -> SpeciesRepository:
     repo = SpeciesRepository()
     repo._index.delete()
     repo._index.create()
@@ -28,9 +19,9 @@ def index() -> Index:
 
 
 @pytest.fixture
-def populate(index, acacia) -> None:
+def populate(index, species) -> None:
     repo = SpeciesRepository()
-    _ = repo.add(Species(acacia))
+    _ = repo.add(species)
     index.refresh()
 
 
@@ -64,13 +55,23 @@ class TestIndex:
         assert index.count() == 0
 
 
+@pytest.fixture
+def species() -> Species:
+    return Species(
+        ScientificName(
+            genus="Acacia",
+            species="Saligna",
+            is_most_recent=True
+        )
+    )
+
+
 class TestSpeciesRepository:
-    def test_should_add(self, new_repo, acacia):
-        species = Species(acacia)
-        reference = new_repo.add(species)
+    def test_should_add(self, repository, species):
+        reference = repository.add(species)
         assert reference == species.reference
 
-    def test_should_get(self, new_repo, acacia):
-        reference = new_repo.add(Species(acacia))
-        species = new_repo.get(reference)
-        assert species.reference == reference
+    def test_should_get(self, repository, species):
+        reference = repository.add(species)
+        got = repository.get(reference)
+        assert got.reference == reference
