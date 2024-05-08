@@ -63,7 +63,9 @@ class SpeciesRepository:
                 "species": species.names[0].species,
             }
         )
-        return response["_id"]
+        reference = response["_id"]
+        species.reference = reference
+        return reference
 
     def get(self, species_ref: str) -> Species:
         doc = self._es.get(index=self._index.name, id=species_ref)
