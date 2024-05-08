@@ -63,7 +63,7 @@ class TestSpeciesRepository:
     def test_should_generate_reference_if_none_provided(self, new_repo, acacia, es):
         species = Species(acacia)
         reference = new_repo.add(species)
-        assert reference is not None
+        assert reference == species.reference
 
     def test_should_assign_reference_to_species_on_add(self, new_repo, acacia):
         species = Species(acacia)
