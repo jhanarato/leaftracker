@@ -1,7 +1,7 @@
 import pytest
 from elasticsearch import Elasticsearch
 
-from leaftracker.adapters.elastic_repository import SpeciesRepository
+from leaftracker.adapters.elastic_repository import SpeciesRepository, Index
 from leaftracker.domain.model import Species, ScientificName
 
 
@@ -25,6 +25,23 @@ def new_repo() -> SpeciesRepository:
     repo._index.delete()
     repo._index.create()
     return repo
+
+
+class TestIndex:
+    def test_should_create_missing_index(self):
+        name = "species"
+        mappings = {
+            "properties": {
+                "genus": {"type": "text"},
+                "species": {"type": "text"},
+            }
+        }
+
+        index = Index(name, mappings)
+        index.delete()
+        assert not index.exists()
+        index.create()
+        assert index.exists()
 
 
 class TestSpeciesRepository:
