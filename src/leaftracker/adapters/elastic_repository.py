@@ -39,10 +39,10 @@ class Index:
             }
         )
 
-    def add_document(self, document: dict, reference: str | None):
+    def add_document(self, document: dict, document_id: str | None):
         return self._client.index(
             index=self.name,
-            id=reference,
+            id=document_id,
             document=document
         )
 
