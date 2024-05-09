@@ -53,8 +53,6 @@ class Index:
 
 class SpeciesRepository:
     def __init__(self):
-        self._index_name = "species"
-
         mappings = {
             "properties": {
                 "genus": {"type": "text"},
