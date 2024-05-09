@@ -53,7 +53,6 @@ class Index:
 
 class SpeciesRepository:
     def __init__(self):
-        self._es = Elasticsearch(hosts="http://localhost:9200")
         self._index_name = "species"
 
         mappings = {
