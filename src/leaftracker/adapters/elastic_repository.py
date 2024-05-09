@@ -47,6 +47,9 @@ class Index:
         )
         return response["_id"]
 
+    def get_document(self, document_id) -> dict:
+        return self._client.get(index=self.name, id=document_id)
+
 
 class SpeciesRepository:
     def __init__(self):
@@ -71,7 +74,7 @@ class SpeciesRepository:
         return species.reference
 
     def get(self, reference: str) -> Species:
-        doc = self.get_document(reference)
+        doc = self._index.get_document(reference)
         reference = doc["_id"]
         name = ScientificName(
             genus=doc["_source"]["genus"],
@@ -79,6 +82,3 @@ class SpeciesRepository:
         )
 
         return Species(name, reference)
-
-    def get_document(self, reference: str) -> dict:
-        return self._es.get(index=self._index.name, id=reference)
