@@ -61,15 +61,18 @@ class SpeciesRepository:
             "species": species.names[0].species,
         }
 
-        response = self._es.index(
-            index=self._index.name,
-            id=reference,
-            document=document
-        )
+        response = self.index_document(document, reference)
 
         reference = response["_id"]
         species.reference = reference
         return reference
+
+    def index_document(self, document: dict, reference: str):
+        return self._es.index(
+            index=self._index.name,
+            id=reference,
+            document=document
+        )
 
     def get(self, species_ref: str) -> Species:
         doc = self._es.get(index=self._index.name, id=species_ref)
