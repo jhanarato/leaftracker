@@ -8,8 +8,8 @@ from leaftracker.domain.model import Species, ScientificName
 @pytest.fixture
 def repository() -> SpeciesRepository:
     repo = SpeciesRepository()
-    repo._index.delete()
     repo._index.create()
+    repo._index.delete_all_documents()
     return repo
 
 
