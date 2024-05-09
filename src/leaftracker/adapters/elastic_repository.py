@@ -39,7 +39,7 @@ class Index:
             }
         )
 
-    def add_document(self, document: dict, reference: str):
+    def add_document(self, document: dict, reference: str | None):
         return self._client.index(
             index=self.name,
             id=reference,
@@ -70,16 +70,9 @@ class SpeciesRepository:
 
         response = self._index.add_document(document, reference)
 
-        reference = response["_id"]
-        species.reference = reference
-        return reference
-
-    def index_document(self, document: dict, reference: str):
-        return self._es.index(
-            index=self._index.name,
-            id=reference,
-            document=document
-        )
+        document_id = response["_id"]
+        species.reference = document_id
+        return document_id
 
     def get(self, species_ref: str) -> Species:
         doc = self._es.get(index=self._index.name, id=species_ref)
