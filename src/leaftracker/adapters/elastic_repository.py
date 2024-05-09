@@ -55,14 +55,17 @@ class SpeciesRepository:
         self._index = Index("species", mappings)
 
     def add(self, species: Species) -> str:
+        document = {
+            "genus": species.names[0].genus,
+            "species": species.names[0].species,
+        }
+
         response = self._es.index(
             index=self._index.name,
             id=species.reference,
-            document={
-                "genus": species.names[0].genus,
-                "species": species.names[0].species,
-            }
+            document=document
         )
+
         reference = response["_id"]
         species.reference = reference
         return reference
