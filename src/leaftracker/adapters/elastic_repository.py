@@ -39,6 +39,13 @@ class Index:
             }
         )
 
+    def add_document(self, document: dict, reference: str):
+        return self._es.index(
+            index=self.name,
+            id=reference,
+            document=document
+        )
+
 
 class SpeciesRepository:
     def __init__(self):
@@ -61,7 +68,7 @@ class SpeciesRepository:
             "species": species.names[0].species,
         }
 
-        response = self.index_document(document, reference)
+        response = self._index.add_document(document, reference)
 
         reference = response["_id"]
         species.reference = reference
