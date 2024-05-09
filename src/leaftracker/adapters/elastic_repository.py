@@ -5,7 +5,7 @@ from leaftracker.domain.model import Species, ScientificName
 
 class Index:
     def __init__(self, name: str, mappings: dict):
-        self._es = Elasticsearch(hosts="http://localhost:9200")
+        self._client = Elasticsearch(hosts="http://localhost:9200")
         self._name = name
         self._mappings = mappings
 
@@ -14,25 +14,25 @@ class Index:
         return self._name
 
     def create(self):
-        if self._es.indices.exists(index=self._name).body:
+        if self._client.indices.exists(index=self._name).body:
             return
 
-        self._es.indices.create(index=self._name, mappings=self._mappings)
+        self._client.indices.create(index=self._name, mappings=self._mappings)
 
     def delete(self) -> None:
-        self._es.options(ignore_status=404).indices.delete(index=self._name)
+        self._client.options(ignore_status=404).indices.delete(index=self._name)
 
     def exists(self) -> bool:
-        return self._es.indices.exists(index=self._name).body
+        return self._client.indices.exists(index=self._name).body
 
     def refresh(self) -> None:
-        self._es.indices.refresh(index=self._name)
+        self._client.indices.refresh(index=self._name)
 
     def count(self) -> int:
-        return self._es.count(index=self._name)["count"]
+        return self._client.count(index=self._name)["count"]
 
     def delete_all_documents(self) -> None:
-        self._es.delete_by_query(
+        self._client.delete_by_query(
             index=self._name,
             body={
                 "query": {"match_all": {}}
@@ -40,7 +40,7 @@ class Index:
         )
 
     def add_document(self, document: dict, reference: str):
-        return self._es.index(
+        return self._client.index(
             index=self.name,
             id=reference,
             document=document
