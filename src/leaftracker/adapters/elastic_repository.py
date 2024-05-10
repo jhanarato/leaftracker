@@ -1,3 +1,6 @@
+from typing import Any
+
+from elastic_transport import ObjectApiResponse
 from elasticsearch import Elasticsearch
 
 from leaftracker.domain.model import Species, ScientificName
@@ -47,7 +50,7 @@ class Index:
         )
         return response["_id"]
 
-    def get_document(self, document_id) -> dict:
+    def get_document(self, document_id) -> ObjectApiResponse[Any]:
         return self._client.get(index=self.name, id=document_id)
 
 
