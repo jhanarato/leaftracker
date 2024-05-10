@@ -68,10 +68,10 @@ def species() -> Species:
 
 class TestSpeciesRepository:
     def test_should_add(self, repository, species):
-        reference = repository.add(species)
-        assert reference == species.reference
+        repository.add(species)
+        assert species.reference is not None
 
     def test_should_get(self, repository, species):
-        reference = repository.add(species)
-        got = repository.get(reference)
-        assert got.reference == reference
+        repository.add(species)
+        got = repository.get(species.reference)
+        assert got.reference == species.reference
