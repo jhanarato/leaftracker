@@ -68,6 +68,7 @@ def species() -> Species:
 
 class TestSpeciesRepository:
     def test_should_add(self, repository, species):
+        assert species.reference is None
         repository.add(species)
         assert species.reference is not None
 
