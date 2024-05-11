@@ -8,51 +8,51 @@ from leaftracker.domain.model import Species, ScientificName
 @pytest.fixture
 def repository() -> SpeciesRepository:
     repo = SpeciesRepository()
-    repo._index.create()
-    repo._index.delete_all_documents()
+    repo.index.create()
+    repo.index.delete_all_documents()
     return repo
 
 
 @pytest.fixture
-def index() -> Index:
-    return SpeciesRepository()._index
+def species_index() -> Index:
+    return SpeciesRepository().index
 
 
 @pytest.fixture
-def populate(index, species) -> None:
+def populate(species_index, species) -> None:
     repo = SpeciesRepository()
     _ = repo.add(species)
-    index.refresh()
+    species_index.refresh()
 
 
 class TestIndex:
-    def test_should_create_missing_index(self, index):
-        index.delete()
-        assert not index.exists()
-        index.create()
-        assert index.exists()
+    def test_should_create_missing_index(self, species_index):
+        species_index.delete()
+        assert not species_index.exists()
+        species_index.create()
+        assert species_index.exists()
 
-    def test_should_not_overwrite(self, index, populate):
-        assert index.count() == 1
-        index.create()
-        assert index.count() == 1
+    def test_should_not_overwrite(self, species_index, populate):
+        assert species_index.count() == 1
+        species_index.create()
+        assert species_index.count() == 1
 
-    def test_should_delete_missing(self, index):
-        index.delete()
-        assert not index.exists()
-        index.delete()
-        assert not index.exists()
+    def test_should_delete_missing(self, species_index):
+        species_index.delete()
+        assert not species_index.exists()
+        species_index.delete()
+        assert not species_index.exists()
 
-    def test_should_delete_existing(self, index):
-        index.create()
-        index.delete()
-        assert not index.exists()
+    def test_should_delete_existing(self, species_index):
+        species_index.create()
+        species_index.delete()
+        assert not species_index.exists()
 
-    def test_should_delete_documents(self, index, populate):
-        assert index.count() == 1
-        index.delete_all_documents()
-        index.refresh()
-        assert index.count() == 0
+    def test_should_delete_documents(self, species_index, populate):
+        assert species_index.count() == 1
+        species_index.delete_all_documents()
+        species_index.refresh()
+        assert species_index.count() == 0
 
 
 @pytest.fixture
