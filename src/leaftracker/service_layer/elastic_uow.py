@@ -27,4 +27,4 @@ class ElasticUnitOfWork:
         pass
 
     def species(self) -> SpeciesRepository:
-        pass
+        return SpeciesRepository()

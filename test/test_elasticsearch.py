@@ -3,6 +3,7 @@ from elasticsearch import Elasticsearch
 
 from leaftracker.adapters.elastic_repository import SpeciesRepository, Index
 from leaftracker.domain.model import Species, ScientificName
+from leaftracker.service_layer.elastic_uow import ElasticUnitOfWork
 
 
 @pytest.fixture
@@ -75,4 +76,15 @@ class TestSpeciesRepository:
     def test_should_get(self, repository, species):
         repository.add(species)
         got = repository.get(species.reference)
+        assert got.reference == species.reference
+
+
+class TestElasticUnitOfWork:
+    def test_should_commit_a_change(self, species):
+        uow = ElasticUnitOfWork()
+
+        with uow:
+            uow.species().add(species)
+
+        got = uow.species().get(species.reference)
         assert got.reference == species.reference
