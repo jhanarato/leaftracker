@@ -56,6 +56,9 @@ class TestIndex:
         species_index.refresh()
         assert species_index.count() == 0
 
+    def test_should_indicate_missing_document(self, species_index):
+        assert not species_index.document_exists("missing-species-reference")
+
 
 @pytest.fixture
 def species() -> Species:
