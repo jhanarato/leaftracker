@@ -20,10 +20,11 @@ def species_index() -> Index:
 
 
 @pytest.fixture
-def populate(species_index, species) -> None:
+def added_species(species_index, species) -> Species:
     repo = SpeciesRepository()
     _ = repo.add(species)
     species_index.refresh()
+    return species
 
 
 class TestIndex:
@@ -33,7 +34,7 @@ class TestIndex:
         species_index.create()
         assert species_index.exists()
 
-    def test_should_not_overwrite(self, species_index, populate):
+    def test_should_not_overwrite(self, species_index, added_species):
         assert species_index.count() == 1
         species_index.create()
         assert species_index.count() == 1
@@ -49,7 +50,7 @@ class TestIndex:
         species_index.delete()
         assert not species_index.exists()
 
-    def test_should_delete_documents(self, species_index, populate):
+    def test_should_delete_documents(self, species_index, added_species):
         assert species_index.count() == 1
         species_index.delete_all_documents()
         species_index.refresh()
