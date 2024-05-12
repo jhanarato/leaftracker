@@ -1,6 +1,6 @@
 from typing import Protocol, Self
 
-from leaftracker.adapters.repository import BatchRepository, SourceRepository
+from leaftracker.adapters.repository import BatchRepository, SourceRepository, SpeciesRepository
 
 
 class UnitOfWork(Protocol):
@@ -17,3 +17,5 @@ class UnitOfWork(Protocol):
     def batches(self) -> BatchRepository: ...
 
     def sources(self) -> SourceRepository: ...
+
+    def species(self) -> SpeciesRepository: ...
