@@ -35,9 +35,9 @@ class TestIndex:
         assert species_index.exists()
 
     def test_should_not_overwrite(self, species_index, added_species):
-        assert species_index.count() == 1
+        assert species_index.document_count() == 1
         species_index.create()
-        assert species_index.count() == 1
+        assert species_index.document_count() == 1
 
     def test_should_delete_missing(self, species_index):
         species_index.delete()
@@ -51,10 +51,10 @@ class TestIndex:
         assert not species_index.exists()
 
     def test_should_delete_documents(self, species_index, added_species):
-        assert species_index.count() == 1
+        assert species_index.document_count() == 1
         species_index.delete_all_documents()
         species_index.refresh()
-        assert species_index.count() == 0
+        assert species_index.document_count() == 0
 
     def test_should_indicate_missing_document(self, species_index):
         assert not species_index.document_exists("missing-species-reference")

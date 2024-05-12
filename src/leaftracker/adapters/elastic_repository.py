@@ -31,7 +31,7 @@ class Index:
     def refresh(self) -> None:
         self._client.indices.refresh(index=self._name)
 
-    def count(self) -> int:
+    def document_count(self) -> int:
         return self._client.count(index=self._name)["count"]
 
     def delete_all_documents(self) -> None:
