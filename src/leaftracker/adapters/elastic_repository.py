@@ -43,7 +43,7 @@ class Index:
         )
 
     def document_exists(self, document_id: str) -> bool:
-        return False
+        return self._client.exists(index=self.name, id=document_id).body
 
     def add_document(self, document: dict, document_id: str | None) -> str:
         response = self._client.index(
