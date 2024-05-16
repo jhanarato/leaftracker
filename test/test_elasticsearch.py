@@ -90,6 +90,10 @@ class TestSpeciesRepository:
         got = repository.get(species.reference)
         assert got.reference == species.reference
 
+    def test_should_keep_added_documents(self, repository, species):
+        repository.add(species)
+        assert len(repository.added()) == 1
+
 
 class TestElasticUnitOfWork:
     def test_should_commit_a_change(self, species):

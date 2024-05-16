@@ -1,9 +1,16 @@
+from dataclasses import dataclass
 from typing import Any
 
 from elastic_transport import ObjectApiResponse
 from elasticsearch import Elasticsearch
 
 from leaftracker.domain.model import Species, ScientificName
+
+
+@dataclass
+class Document:
+    document_id: str
+    source: dict
 
 
 class Index:
@@ -84,3 +91,9 @@ class SpeciesRepository:
                 species=response["_source"]["species"]
             )
         )
+
+    def added(self) -> list[Document]:
+        return [Document(
+            document_id="abc",
+            source={"genus": "Acacia", "species": "Saligna"}
+        )]
