@@ -92,7 +92,7 @@ class SpeciesRepository:
             )
         )
 
-    def added(self) -> list[Document]:
+    def to_commit(self) -> list[Document]:
         return [Document(
             document_id="abc",
             source={"genus": "Acacia", "species": "Saligna"}

@@ -92,7 +92,7 @@ class TestSpeciesRepository:
 
     def test_should_keep_added_documents(self, repository, species):
         repository.add(species)
-        assert len(repository.added()) == 1
+        assert len(repository.to_commit()) == 1
 
 
 class TestElasticUnitOfWork:
