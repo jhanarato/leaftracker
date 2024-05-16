@@ -1,5 +1,4 @@
 import pytest
-from elasticsearch import Elasticsearch
 
 from leaftracker.adapters.elastic_repository import SpeciesRepository, Index
 from leaftracker.domain.model import Species, ScientificName
@@ -93,6 +92,11 @@ class TestSpeciesRepository:
     def test_should_queue_documents_to_commit(self, repository, species):
         repository.add(species)
         assert repository.queued()[0].source["genus"] == species.names[0].genus
+
+    def test_should_clear_queue(self, repository, species):
+        repository.add(species)
+        repository.clear_queue()
+        assert not repository.queued()
 
 
 class TestElasticUnitOfWork:

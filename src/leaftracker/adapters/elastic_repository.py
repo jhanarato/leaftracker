@@ -103,4 +103,4 @@ class SpeciesRepository:
         return self._queued
 
     def clear_queue(self) -> None:
-        pass
+        self._queued.clear()
