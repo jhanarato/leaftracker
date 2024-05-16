@@ -2,8 +2,8 @@ from typing import Self
 
 import pytest
 
-from leaftracker.adapters.repository import BatchRepository, SourceRepository
-from leaftracker.domain.model import Batch, Source, SourceType, BatchType, Stock, StockSize
+from leaftracker.adapters.repository import BatchRepository, SourceRepository, SpeciesRepository
+from leaftracker.domain.model import Batch, Source, SourceType, BatchType, Stock, StockSize, Species
 from leaftracker.service_layer import services
 from leaftracker.service_layer.services import InvalidSource
 from leaftracker.service_layer.unit_of_work import UnitOfWork
@@ -44,6 +44,20 @@ class FakeSourceRepository:
         return next(matching, None)
 
 
+class FakeSpeciesRepository:
+    def __init__(self, species: list[Species]):
+        self._species = set(species)
+
+    def add(self, species: Species) -> str | None:
+        self._species.add(species)
+        return species.reference
+
+    def get(self, reference: str) -> Species | None:
+        matching = (species for species in self._species
+                    if species.reference == reference)
+        return next(matching, None)
+
+
 def test_fake_reference():
     repo: BatchRepository = FakeBatchRepository([])
 
@@ -58,6 +72,7 @@ class FakeUnitOfWork:
     def __init__(self):
         self._batches: BatchRepository = FakeBatchRepository([])
         self._sources: SourceRepository = FakeSourceRepository([])
+        self._species: SpeciesRepository = FakeSpeciesRepository([])
         self._commited = False
 
     def __enter__(self) -> Self:
@@ -80,6 +95,9 @@ class FakeUnitOfWork:
 
     def sources(self) -> SourceRepository:
         return self._sources
+
+    def species(self) -> SpeciesRepository:
+        return self._species
 
 
 @pytest.fixture
