@@ -9,7 +9,7 @@ from leaftracker.domain.model import Species, ScientificName
 
 @dataclass
 class Document:
-    document_id: str
+    document_id: str | None
     source: dict
 
 
