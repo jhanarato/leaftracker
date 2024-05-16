@@ -74,6 +74,7 @@ class SpeciesRepository:
         }
 
         self.index = Index("species", mappings)
+        self._to_commit: list[Document] = []
 
     def add(self, species: Species):
         document = Document(
@@ -83,6 +84,9 @@ class SpeciesRepository:
                 "species": species.names[0].species,
             }
         )
+
+        self._to_commit.append(document)
+
         species.reference = self.index.add_document(document.source, document.document_id)
 
     def get(self, reference: str) -> Species:
@@ -96,7 +100,4 @@ class SpeciesRepository:
         )
 
     def to_commit(self) -> list[Document]:
-        return [Document(
-            document_id="abc",
-            source={"genus": "Acacia", "species": "Saligna"}
-        )]
+        return self._to_commit

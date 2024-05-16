@@ -90,9 +90,9 @@ class TestSpeciesRepository:
         got = repository.get(species.reference)
         assert got.reference == species.reference
 
-    def test_should_keep_added_documents(self, repository, species):
+    def test_should_queue_documents_to_commit(self, repository, species):
         repository.add(species)
-        assert len(repository.to_commit()) == 1
+        assert repository.to_commit()[0].source["genus"] == species.names[0].genus
 
 
 class TestElasticUnitOfWork:
