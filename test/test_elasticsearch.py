@@ -11,6 +11,7 @@ def repository() -> SpeciesRepository:
     repo = SpeciesRepository()
     repo.index.create()
     repo.index.delete_all_documents()
+    repo.index.refresh()
     return repo
 
 
@@ -25,6 +26,10 @@ def added_species(species_index, species) -> Species:
     _ = repo.add(species)
     species_index.refresh()
     return species
+
+
+def test_repository_empty(repository):
+    assert repository.index.document_count() == 0
 
 
 class TestIndex:
