@@ -92,7 +92,7 @@ class TestSpeciesRepository:
 
     def test_should_queue_documents_to_commit(self, repository, species):
         repository.add(species)
-        assert repository.to_commit()[0].source["genus"] == species.names[0].genus
+        assert repository.queued()[0].source["genus"] == species.names[0].genus
 
 
 class TestElasticUnitOfWork:

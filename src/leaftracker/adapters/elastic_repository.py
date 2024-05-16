@@ -74,7 +74,7 @@ class SpeciesRepository:
         }
 
         self.index = Index("species", mappings)
-        self._to_commit: list[Document] = []
+        self._queued: list[Document] = []
 
     def add(self, species: Species):
         document = Document(
@@ -85,7 +85,7 @@ class SpeciesRepository:
             }
         )
 
-        self._to_commit.append(document)
+        self._queued.append(document)
 
         species.reference = self.index.add_document(document.source, document.document_id)
 
@@ -99,5 +99,8 @@ class SpeciesRepository:
             )
         )
 
-    def to_commit(self) -> list[Document]:
-        return self._to_commit
+    def queued(self) -> list[Document]:
+        return self._queued
+
+    def clear_queue(self) -> None:
+        pass
