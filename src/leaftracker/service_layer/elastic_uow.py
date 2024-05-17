@@ -8,8 +8,8 @@ class ElasticUnitOfWork:
     def __init__(self):
         self._species = SpeciesRepository()
 
-    def __enter__(self) -> Self:  # type: ignore
-        pass
+    def __enter__(self) -> Self:
+        return self
 
     def __exit__(self, *args):
         pass
