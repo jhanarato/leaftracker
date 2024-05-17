@@ -5,6 +5,9 @@ from leaftracker.adapters.elastic_repository import SpeciesRepository
 
 
 class ElasticUnitOfWork:
+    def __init__(self):
+        self._species = SpeciesRepository()
+
     def __enter__(self) -> Self:  # type: ignore
         pass
 
@@ -27,4 +30,4 @@ class ElasticUnitOfWork:
         pass
 
     def species(self) -> SpeciesRepository:
-        return SpeciesRepository()
+        return self._species
