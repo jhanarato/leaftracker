@@ -1,7 +1,4 @@
 from dataclasses import dataclass
-from typing import Any
-
-from elastic_transport import ObjectApiResponse
 from elasticsearch import Elasticsearch
 
 from leaftracker.domain.model import Species, ScientificName
@@ -105,7 +102,7 @@ class SpeciesRepository:
         self._queued.append(document)
         species.reference = self.index.add_document(document.source, document.document_id)
 
-    def get(self, reference: str) -> Species:
+    def get(self, reference: str) -> Species | None:
         document = self.index.get_document(reference)
         return document_to_species(document)
 
