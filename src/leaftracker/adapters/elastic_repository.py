@@ -60,8 +60,12 @@ class Index:
         )
         return response["_id"]
 
-    def get_document(self, document_id) -> ObjectApiResponse[Any]:
-        return self._client.get(index=self.name, id=document_id)
+    def get_document(self, document_id) -> Document:
+        response = self._client.get(index=self.name, id=document_id)
+        return Document(
+            document_id=response["_id"],
+            source=response["_source"],
+        )
 
 
 class SpeciesRepository:
@@ -90,12 +94,12 @@ class SpeciesRepository:
         species.reference = self.index.add_document(document.source, document.document_id)
 
     def get(self, reference: str) -> Species:
-        response = self.index.get_document(reference)
+        document = self.index.get_document(reference)
         return Species(
-            reference=response["_id"],
+            reference=document.document_id,
             name=ScientificName(
-                genus=response["_source"]["genus"],
-                species=response["_source"]["species"]
+                genus=document.source["genus"],
+                species=document.source["species"]
             )
         )
 
