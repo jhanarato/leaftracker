@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from elasticsearch import Elasticsearch
+from elasticsearch import Elasticsearch, NotFoundError
 
 from leaftracker.domain.model import Species, ScientificName
 
@@ -103,7 +103,11 @@ class SpeciesRepository:
         species.reference = self.index.add_document(document.source, document.document_id)
 
     def get(self, reference: str) -> Species | None:
-        document = self.index.get_document(reference)
+        try:
+            document = self.index.get_document(reference)
+        except NotFoundError:
+            return None
+
         return document_to_species(document)
 
     def queued(self) -> list[Document]:

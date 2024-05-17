@@ -89,6 +89,9 @@ class TestSpeciesRepository:
         got = repository.get(species.reference)
         assert got.reference == species.reference
 
+    def test_should_indicate_missing_document(self, repository):
+        assert repository.get("Nothing") is None
+
     def test_should_queue_documents_to_commit(self, repository, species):
         repository.add(species)
         assert repository.queued()[0].source["genus"] == species.names[0].genus
