@@ -95,6 +95,7 @@ class SpeciesRepository:
 
     def get(self, reference: str) -> Species:
         document = self.index.get_document(reference)
+
         return Species(
             reference=document.document_id,
             name=ScientificName(
