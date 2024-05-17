@@ -78,6 +78,16 @@ def species_to_document(species: Species) -> Document:
     )
 
 
+def document_to_species(document: Document) -> Species:
+    return Species(
+        reference=document.document_id,
+        name=ScientificName(
+            genus=document.source["genus"],
+            species=document.source["species"]
+        )
+    )
+
+
 class SpeciesRepository:
     def __init__(self):
         mappings = {
@@ -97,14 +107,7 @@ class SpeciesRepository:
 
     def get(self, reference: str) -> Species:
         document = self.index.get_document(reference)
-
-        return Species(
-            reference=document.document_id,
-            name=ScientificName(
-                genus=document.source["genus"],
-                species=document.source["species"]
-            )
-        )
+        return document_to_species(document)
 
     def queued(self) -> list[Document]:
         return self._queued
