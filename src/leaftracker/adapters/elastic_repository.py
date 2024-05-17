@@ -68,6 +68,16 @@ class Index:
         )
 
 
+def species_to_document(species: Species) -> Document:
+    return Document(
+        document_id=species.reference,
+        source={
+            "genus": species.names[0].genus,
+            "species": species.names[0].species,
+        }
+    )
+
+
 class SpeciesRepository:
     def __init__(self):
         mappings = {
@@ -81,16 +91,8 @@ class SpeciesRepository:
         self._queued: list[Document] = []
 
     def add(self, species: Species):
-        document = Document(
-            document_id=species.reference,
-            source={
-                "genus": species.names[0].genus,
-                "species": species.names[0].species,
-            }
-        )
-
+        document = species_to_document(species)
         self._queued.append(document)
-
         species.reference = self.index.add_document(document.source, document.document_id)
 
     def get(self, reference: str) -> Species:
