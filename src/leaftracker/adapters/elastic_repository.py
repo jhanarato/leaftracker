@@ -65,16 +65,6 @@ class Index:
         )
 
 
-def species_to_document(species: Species) -> Document:
-    return Document(
-        document_id=species.reference,
-        source={
-            "genus": species.names[0].genus,
-            "species": species.names[0].species,
-        }
-    )
-
-
 def document_to_species(document: Document) -> Species:
     return Species(
         reference=document.document_id,
@@ -95,12 +85,10 @@ class SpeciesRepository:
         }
 
         self.index = Index("species", mappings)
-        self._queued: list[Document] = []
+        self._queued: list[Species] = []
 
     def add(self, species: Species):
-        document = species_to_document(species)
-        self._queued.append(document)
-        species.reference = self.index.add_document(document.source, document.document_id)
+        self._queued.append(species)
 
     def get(self, reference: str) -> Species | None:
         try:
@@ -110,7 +98,7 @@ class SpeciesRepository:
 
         return document_to_species(document)
 
-    def queued(self) -> list[Document]:
+    def queued(self) -> list[Species]:
         return self._queued
 
     def clear_queue(self) -> None:

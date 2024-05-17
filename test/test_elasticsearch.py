@@ -21,9 +21,12 @@ def species_index() -> Index:
 
 @pytest.fixture
 def added_species(species_index, species) -> Species:
-    repo = SpeciesRepository()
-    _ = repo.add(species)
-    species_index.refresh()
+    uow = ElasticUnitOfWork()
+
+    with uow:
+        uow.species().add(species)
+        uow.commit()
+
     return species
 
 
@@ -79,22 +82,12 @@ def species() -> Species:
 
 
 class TestSpeciesRepository:
-    def test_should_add(self, repository, species):
-        assert species.reference is None
-        repository.add(species)
-        assert species.reference is not None
-
-    def test_should_get(self, repository, species):
-        repository.add(species)
-        got = repository.get(species.reference)
-        assert got.reference == species.reference
-
     def test_should_indicate_missing_document(self, repository):
         assert repository.get("Nothing") is None
 
     def test_should_queue_documents_to_commit(self, repository, species):
         repository.add(species)
-        assert repository.queued()[0].source["genus"] == species.names[0].genus
+        assert len(repository.queued()) == 1
 
     def test_should_clear_queue(self, repository, species):
         repository.add(species)
@@ -103,11 +96,23 @@ class TestSpeciesRepository:
 
 
 class TestElasticUnitOfWork:
-    def test_should_commit_a_change(self, species):
+    def test_should_rollback_if_not_committed(self, species):
         uow = ElasticUnitOfWork()
+        uow.species().index.delete_all_documents()
+        uow.species().index.refresh()
 
         with uow:
             uow.species().add(species)
 
-        got = uow.species().get(species.reference)
-        assert got.reference == species.reference
+        assert species.reference is None
+
+    def test_should_commit(self, species):
+        uow = ElasticUnitOfWork()
+        uow.species().index.delete_all_documents()
+        uow.species().index.refresh()
+
+        with uow:
+            uow.species().add(species)
+            uow.commit()
+
+        assert species.reference is not None

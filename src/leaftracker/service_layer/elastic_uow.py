@@ -1,7 +1,18 @@
 from typing import Self
 
 from leaftracker.adapters.repository import BatchRepository, SourceRepository
-from leaftracker.adapters.elastic_repository import SpeciesRepository
+from leaftracker.adapters.elastic_repository import SpeciesRepository, Document
+from leaftracker.domain.model import Species
+
+
+def species_to_document(species: Species) -> Document:
+    return Document(
+        document_id=species.reference,
+        source={
+            "genus": species.names[0].genus,
+            "species": species.names[0].species,
+        }
+    )
 
 
 class ElasticUnitOfWork:
@@ -15,7 +26,10 @@ class ElasticUnitOfWork:
         pass
 
     def commit(self) -> None:
-        pass
+        species = self._species.queued()[0]
+        document = species_to_document(species)
+        species.reference = self._species.index.add_document(document.source, document.document_id)
+        self._species.index.refresh()
 
     def committed(self) -> bool:  # type: ignore
         pass
