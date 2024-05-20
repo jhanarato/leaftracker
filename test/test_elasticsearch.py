@@ -151,3 +151,12 @@ class TestElasticUnitOfWork:
 
         assert not uow.species().queued()
 
+    def test_explicit_rollback(self, saligna):
+        uow = ElasticUnitOfWork()
+        uow.species().index.delete_all_documents()
+        uow.species().index.refresh()
+
+        with uow:
+            uow.species().add(saligna)
+            uow.rollback()
+            assert not uow.species().queued()
