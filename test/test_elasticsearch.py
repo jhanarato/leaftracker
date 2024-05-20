@@ -106,6 +106,7 @@ class TestSpeciesRepository:
         repository.clear_queue()
         assert not repository.queued()
 
+
 @pytest.fixture
 def uow() -> ElasticUnitOfWork:
     uow = ElasticUnitOfWork()
@@ -115,28 +116,20 @@ def uow() -> ElasticUnitOfWork:
 
 
 class TestElasticUnitOfWork:
-    def test_should_rollback_if_not_committed(self, saligna, uow):
+    def test_should_rollback_if_not_committed(self, uow, saligna):
         with uow:
             uow.species().add(saligna)
 
         assert saligna.reference is None
 
-    def test_should_commit(self, saligna):
-        uow = ElasticUnitOfWork()
-        uow.species().index.delete_all_documents()
-        uow.species().index.refresh()
-
+    def test_should_commit(self, uow, saligna):
         with uow:
             uow.species().add(saligna)
             uow.commit()
 
         assert saligna.reference is not None
 
-    def test_should_add_two_species(self, saligna, dentifera):
-        uow = ElasticUnitOfWork()
-        uow.species().index.delete_all_documents()
-        uow.species().index.refresh()
-
+    def test_should_add_two_species(self, uow, saligna, dentifera):
         with uow:
             uow.species().add(saligna)
             uow.species().add(dentifera)
@@ -144,21 +137,13 @@ class TestElasticUnitOfWork:
 
         assert uow.species().index.document_count() == 2
 
-    def test_should_clear_queue_on_rollback(self, saligna):
-        uow = ElasticUnitOfWork()
-        uow.species().index.delete_all_documents()
-        uow.species().index.refresh()
-
+    def test_should_clear_queue_on_rollback(self, uow, saligna):
         with uow:
             uow.species().add(saligna)
 
         assert not uow.species().queued()
 
-    def test_explicit_rollback(self, saligna):
-        uow = ElasticUnitOfWork()
-        uow.species().index.delete_all_documents()
-        uow.species().index.refresh()
-
+    def test_explicit_rollback(self, uow, saligna):
         with uow:
             uow.species().add(saligna)
             uow.rollback()
