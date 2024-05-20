@@ -7,6 +7,28 @@ from leaftracker.service_layer.elastic_uow import ElasticUnitOfWork
 
 
 @pytest.fixture
+def saligna() -> Species:
+    return Species(
+        ScientificName(
+            genus="Acacia",
+            species="Saligna",
+            is_most_recent=True
+        )
+    )
+
+
+@pytest.fixture
+def dentifera() -> Species:
+    return Species(
+        ScientificName(
+            genus="Acacia",
+            species="Dentifera",
+            is_most_recent=True
+        )
+    )
+
+
+@pytest.fixture
 def repository() -> SpeciesRepository:
     repo = SpeciesRepository()
     repo.index.create()
@@ -21,14 +43,14 @@ def species_index() -> Index:
 
 
 @pytest.fixture
-def added_species(species_index, species) -> Species:
+def added_species(species_index, saligna) -> Species:
     uow = ElasticUnitOfWork()
 
     with uow:
-        uow.species().add(species)
+        uow.species().add(saligna)
         uow.commit()
 
-    return species
+    return saligna
 
 
 def test_repository_empty(repository):
@@ -71,49 +93,38 @@ class TestIndex:
         assert species_index.document_exists(added_species.reference)
 
 
-@pytest.fixture
-def species() -> Species:
-    return Species(
-        ScientificName(
-            genus="Acacia",
-            species="Saligna",
-            is_most_recent=True
-        )
-    )
-
-
 class TestSpeciesRepository:
     def test_should_indicate_missing_document(self, repository):
         assert repository.get("Nothing") is None
 
-    def test_should_queue_documents_to_commit(self, repository, species):
-        repository.add(species)
+    def test_should_queue_documents_to_commit(self, repository, saligna):
+        repository.add(saligna)
         assert len(repository.queued()) == 1
 
-    def test_should_clear_queue(self, repository, species):
-        repository.add(species)
+    def test_should_clear_queue(self, repository, saligna):
+        repository.add(saligna)
         repository.clear_queue()
         assert not repository.queued()
 
 
 class TestElasticUnitOfWork:
-    def test_should_rollback_if_not_committed(self, species):
+    def test_should_rollback_if_not_committed(self, saligna):
         uow = ElasticUnitOfWork()
         uow.species().index.delete_all_documents()
         uow.species().index.refresh()
 
         with uow:
-            uow.species().add(species)
+            uow.species().add(saligna)
 
-        assert species.reference is None
+        assert saligna.reference is None
 
-    def test_should_commit(self, species):
+    def test_should_commit(self, saligna):
         uow = ElasticUnitOfWork()
         uow.species().index.delete_all_documents()
         uow.species().index.refresh()
 
         with uow:
-            uow.species().add(species)
+            uow.species().add(saligna)
             uow.commit()
 
-        assert species.reference is not None
+        assert saligna.reference is not None
