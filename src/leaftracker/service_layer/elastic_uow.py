@@ -24,7 +24,7 @@ class ElasticUnitOfWork:
         return self
 
     def __exit__(self, *args):
-        pass
+        self.rollback()
 
     def commit(self) -> None:
         for species in self._species.queued():
@@ -34,7 +34,7 @@ class ElasticUnitOfWork:
         self._species.index.refresh()
 
     def rollback(self) -> None:
-        pass
+        self._species.clear_queue()
 
     def batches(self) -> BatchRepository:  # type: ignore
         pass

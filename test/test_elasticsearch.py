@@ -140,3 +140,14 @@ class TestElasticUnitOfWork:
             uow.commit()
 
         assert uow.species().index.document_count() == 2
+
+    def test_should_clear_queue_on_rollback(self, saligna):
+        uow = ElasticUnitOfWork()
+        uow.species().index.delete_all_documents()
+        uow.species().index.refresh()
+
+        with uow:
+            uow.species().add(saligna)
+
+        assert not uow.species().queued()
+
