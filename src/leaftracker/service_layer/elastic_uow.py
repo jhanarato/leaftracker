@@ -33,9 +33,6 @@ class ElasticUnitOfWork:
 
         self._species.index.refresh()
 
-    def committed(self) -> bool:  # type: ignore
-        pass
-
     def rollback(self) -> None:
         pass
 
