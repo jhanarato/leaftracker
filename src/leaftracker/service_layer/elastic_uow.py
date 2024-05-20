@@ -1,7 +1,8 @@
 from typing import Self
 
 from leaftracker.adapters.repository import BatchRepository, SourceRepository
-from leaftracker.adapters.elastic_repository import SpeciesRepository, Document
+from leaftracker.adapters.elastic_repository import SpeciesRepository
+from leaftracker.adapters.elastic import Document
 from leaftracker.domain.model import Species
 
 

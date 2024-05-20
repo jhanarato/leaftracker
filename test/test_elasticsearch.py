@@ -1,6 +1,7 @@
 import pytest
 
-from leaftracker.adapters.elastic_repository import SpeciesRepository, Index
+from leaftracker.adapters.elastic_repository import SpeciesRepository
+from leaftracker.adapters.elastic import Index
 from leaftracker.domain.model import Species, ScientificName
 from leaftracker.service_layer.elastic_uow import ElasticUnitOfWork
 
