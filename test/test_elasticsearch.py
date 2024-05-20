@@ -1,7 +1,7 @@
 import pytest
 
-from leaftracker.adapters.elastic_repository import SpeciesRepository
 from leaftracker.adapters.elastic import Index
+from leaftracker.adapters.elastic_repository import SpeciesRepository
 from leaftracker.domain.model import Species, ScientificName
 from leaftracker.service_layer.elastic_uow import ElasticUnitOfWork
 
@@ -106,13 +106,16 @@ class TestSpeciesRepository:
         repository.clear_queue()
         assert not repository.queued()
 
+@pytest.fixture
+def uow() -> ElasticUnitOfWork:
+    uow = ElasticUnitOfWork()
+    uow.species().index.delete_all_documents()
+    uow.species().index.refresh()
+    return uow
+
 
 class TestElasticUnitOfWork:
-    def test_should_rollback_if_not_committed(self, saligna):
-        uow = ElasticUnitOfWork()
-        uow.species().index.delete_all_documents()
-        uow.species().index.refresh()
-
+    def test_should_rollback_if_not_committed(self, saligna, uow):
         with uow:
             uow.species().add(saligna)
 
