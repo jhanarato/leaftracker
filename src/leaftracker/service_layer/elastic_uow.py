@@ -27,9 +27,12 @@ class ElasticUnitOfWork:
         pass
 
     def commit(self) -> None:
-        species = self._species.queued()[0]
-        document = species_to_document(species)
-        species.reference = self._species.index.add_document(document.source, document.document_id)
+        for species in self._species.queued():
+            document = species_to_document(species)
+            species.reference = self._species.index.add_document(
+                document.source, document.document_id
+            )
+
         self._species.index.refresh()
 
     def committed(self) -> bool:  # type: ignore

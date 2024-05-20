@@ -128,3 +128,15 @@ class TestElasticUnitOfWork:
             uow.commit()
 
         assert saligna.reference is not None
+
+    def test_should_add_two_species(self, saligna, dentifera):
+        uow = ElasticUnitOfWork()
+        uow.species().index.delete_all_documents()
+        uow.species().index.refresh()
+
+        with uow:
+            uow.species().add(saligna)
+            uow.species().add(dentifera)
+            uow.commit()
+
+        assert uow.species().index.document_count() == 2
