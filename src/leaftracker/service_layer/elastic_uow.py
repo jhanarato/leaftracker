@@ -32,6 +32,7 @@ class ElasticUnitOfWork:
             species.reference = self._species.index.add_document(document)
 
         self._species.index.refresh()
+        self._species.clear_queue()
 
     def rollback(self) -> None:
         self._species.clear_queue()

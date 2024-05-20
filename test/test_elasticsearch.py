@@ -143,8 +143,14 @@ class TestElasticUnitOfWork:
 
         assert not uow.species().queued()
 
-    def test_explicit_rollback(self, uow, saligna):
+    def test_should_rollback_explicitly(self, uow, saligna):
         with uow:
             uow.species().add(saligna)
             uow.rollback()
+            assert not uow.species().queued()
+
+    def test_should_clear_queue_after_commit(self, uow, saligna):
+        with uow:
+            uow.species().add(saligna)
+            uow.commit()
             assert not uow.species().queued()
