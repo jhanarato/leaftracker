@@ -86,6 +86,12 @@ class TestIndex:
         species_index.refresh()
         assert species_index.document_count() == 0
 
+    def test_should_allow_delete_documents_when_empty(self, species_index):
+        species_index.delete_all_documents()
+        assert species_index.document_count() == 0
+        species_index.delete_all_documents()
+        assert species_index.document_count() == 0
+
     def test_should_indicate_missing_document(self, species_index):
         assert not species_index.document_exists("missing-species-reference")
 
@@ -105,6 +111,11 @@ class TestSpeciesRepository:
         repository.add(saligna)
         repository.clear_queue()
         assert not repository.queued()
+
+    def test_should_allow_renaming_index(self):
+        new_name = "renamed"
+        renamed = SpeciesRepository(index_name=new_name)
+        assert renamed.index.name == new_name
 
 
 @pytest.fixture
@@ -154,3 +165,23 @@ class TestElasticUnitOfWork:
             uow.species().add(saligna)
             uow.commit()
             assert not uow.species().queued()
+
+
+class TestTestIndicies:
+    def test_should_normally_use_production_index(self):
+        uow = ElasticUnitOfWork(use_test_indexes=False)
+        assert uow.species().index.name == "species"
+
+    def test_should_use_test_index(self):
+        uow = ElasticUnitOfWork(use_test_indexes=True)
+        assert uow.species().index.name == "test_species"
+
+    def test_should_recreate_test_index(self, saligna):
+        uow = ElasticUnitOfWork(use_test_indexes=True)
+
+        with uow:
+            uow.species().add(saligna)
+            uow.commit()
+
+        new_uow = ElasticUnitOfWork(use_test_indexes=True)
+        assert new_uow.species().index.document_count() == 0

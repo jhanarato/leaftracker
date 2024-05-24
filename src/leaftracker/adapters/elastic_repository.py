@@ -15,7 +15,7 @@ def document_to_species(document: Document) -> Species:
 
 
 class SpeciesRepository:
-    def __init__(self):
+    def __init__(self, index_name: str = "species"):
         mappings = {
             "properties": {
                 "genus": {"type": "text"},
@@ -23,7 +23,7 @@ class SpeciesRepository:
             }
         }
 
-        self.index = Index("species", mappings)
+        self.index = Index(index_name, mappings)
         self._queued: list[Species] = []
 
     def add(self, species: Species):

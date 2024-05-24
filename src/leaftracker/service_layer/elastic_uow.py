@@ -17,8 +17,13 @@ def species_to_document(species: Species) -> Document:
 
 
 class ElasticUnitOfWork:
-    def __init__(self):
-        self._species = SpeciesRepository()
+    def __init__(self, use_test_indexes: bool = False):
+        if use_test_indexes:
+            self._species = SpeciesRepository(index_name="test_species")
+            self._species.index.delete()
+            self._species.index.create()
+        else:
+            self._species = SpeciesRepository()
 
     def __enter__(self) -> Self:
         return self
