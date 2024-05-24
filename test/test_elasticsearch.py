@@ -31,9 +31,7 @@ def dentifera() -> Species:
 @pytest.fixture
 def repository() -> SpeciesRepository:
     repo = SpeciesRepository()
-    repo.index.create()
-    repo.index.delete_all_documents()
-    repo.index.refresh()
+    repo.use_test_index()
     return repo
 
 
