@@ -37,12 +37,14 @@ def repository() -> SpeciesRepository:
 
 @pytest.fixture
 def species_index() -> Index:
-    return SpeciesRepository().index
+    repo = SpeciesRepository()
+    repo.use_test_index()
+    return repo.index
 
 
 @pytest.fixture
 def added_species(species_index, saligna) -> Species:
-    uow = ElasticUnitOfWork()
+    uow = ElasticUnitOfWork(use_test_indexes=True)
 
     with uow:
         uow.species().add(saligna)
@@ -109,9 +111,7 @@ class TestSpeciesRepository:
 
 @pytest.fixture
 def uow() -> ElasticUnitOfWork:
-    uow = ElasticUnitOfWork()
-    uow.species().index.delete_all_documents()
-    uow.species().index.refresh()
+    uow = ElasticUnitOfWork(use_test_indexes=True)
     return uow
 
 
