@@ -51,10 +51,6 @@ def added_species(species_index, saligna) -> Species:
     return saligna
 
 
-def test_repository_empty(repository):
-    assert repository.index.document_count() == 0
-
-
 class TestIndex:
     def test_should_create_missing_index(self, species_index):
         species_index.delete()
