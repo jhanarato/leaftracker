@@ -15,16 +15,21 @@ def document_to_species(document: Document) -> Species:
 
 
 class SpeciesRepository:
-    def __init__(self, index_name: str = "species"):
-        mappings = {
+    def __init__(self):
+        self._mappings = {
             "properties": {
                 "genus": {"type": "text"},
                 "species": {"type": "text"},
             }
         }
 
-        self.index = Index(index_name, mappings)
+        self.index = Index("species", self._mappings)
         self._queued: list[Species] = []
+
+    def use_test_index(self):
+        self.index = Index("test_species", self._mappings)
+        self.index.delete()
+        self.index.create()
 
     def add(self, species: Species):
         self._queued.append(species)

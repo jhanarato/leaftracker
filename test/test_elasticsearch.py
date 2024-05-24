@@ -112,11 +112,6 @@ class TestSpeciesRepository:
         repository.clear_queue()
         assert not repository.queued()
 
-    def test_should_allow_renaming_index(self):
-        new_name = "renamed"
-        renamed = SpeciesRepository(index_name=new_name)
-        assert renamed.index.name == new_name
-
 
 @pytest.fixture
 def uow() -> ElasticUnitOfWork:
