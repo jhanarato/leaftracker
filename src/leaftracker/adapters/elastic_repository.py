@@ -1,6 +1,6 @@
 from elasticsearch import NotFoundError
 
-from leaftracker.adapters.elastic import Document, Index
+from leaftracker.adapters.indexes import Document, Index
 from leaftracker.domain.model import Species, ScientificName
 
 
