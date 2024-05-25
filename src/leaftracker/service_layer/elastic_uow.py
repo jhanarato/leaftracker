@@ -2,7 +2,7 @@ from typing import Self
 
 from leaftracker.adapters.repository import BatchRepository, SourceRepository
 from leaftracker.adapters.elastic_repository import SpeciesRepository
-from leaftracker.adapters.indexes import Document
+from leaftracker.adapters.elastic_index import Document
 from leaftracker.domain.model import Species
 
 

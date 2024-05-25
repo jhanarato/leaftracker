@@ -1,6 +1,6 @@
 import pytest
 
-from leaftracker.adapters.indexes import Index
+from leaftracker.adapters.elastic_index import Index
 from leaftracker.adapters.elastic_repository import SpeciesRepository
 from leaftracker.domain.model import Species, ScientificName
 from leaftracker.service_layer.elastic_uow import ElasticUnitOfWork
@@ -51,48 +51,6 @@ def added_species(species_index, saligna) -> Species:
         uow.commit()
 
     return saligna
-
-
-class TestIndex:
-    def test_should_create_missing_index(self, species_index):
-        species_index.delete()
-        assert not species_index.exists()
-        species_index.create()
-        assert species_index.exists()
-
-    def test_should_not_overwrite(self, species_index, added_species):
-        assert species_index.document_count() == 1
-        species_index.create()
-        assert species_index.document_count() == 1
-
-    def test_should_delete_missing(self, species_index):
-        species_index.delete()
-        assert not species_index.exists()
-        species_index.delete()
-        assert not species_index.exists()
-
-    def test_should_delete_existing(self, species_index):
-        species_index.create()
-        species_index.delete()
-        assert not species_index.exists()
-
-    def test_should_delete_documents(self, species_index, added_species):
-        assert species_index.document_count() == 1
-        species_index.delete_all_documents()
-        species_index.refresh()
-        assert species_index.document_count() == 0
-
-    def test_should_allow_delete_documents_when_empty(self, species_index):
-        species_index.delete_all_documents()
-        assert species_index.document_count() == 0
-        species_index.delete_all_documents()
-        assert species_index.document_count() == 0
-
-    def test_should_indicate_missing_document(self, species_index):
-        assert not species_index.document_exists("missing-species-reference")
-
-    def test_should_confirm_document_exists(self, species_index, added_species):
-        assert species_index.document_exists(added_species.reference)
 
 
 class TestSpeciesRepository:
