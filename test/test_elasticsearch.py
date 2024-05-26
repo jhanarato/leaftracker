@@ -77,6 +77,7 @@ class TestSpeciesRepository:
 @pytest.fixture
 def uow() -> ElasticUnitOfWork:
     uow = ElasticUnitOfWork(use_test_indexes=True)
+    uow.species().index.delete_all_documents()
     return uow
 
 
@@ -133,13 +134,3 @@ class TestTestIndicies:
     def test_should_use_test_index(self):
         uow = ElasticUnitOfWork(use_test_indexes=True)
         assert uow.species().index.name == "test_species"
-
-    def test_should_recreate_test_index(self, saligna):
-        uow = ElasticUnitOfWork(use_test_indexes=True)
-
-        with uow:
-            uow.species().add(saligna)
-            uow.commit()
-
-        new_uow = ElasticUnitOfWork(use_test_indexes=True)
-        assert new_uow.species().index.document_count() == 0

@@ -21,9 +21,6 @@ class ElasticUnitOfWork:
     def __init__(self, use_test_indexes: bool = False):
         self._species = SpeciesRepository(use_test_index=use_test_indexes)
 
-        if use_test_indexes:
-            self._species.index.delete_all_documents()
-
     def __enter__(self) -> Self:
         return self
 
