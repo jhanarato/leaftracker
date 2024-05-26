@@ -30,8 +30,7 @@ class SpeciesRepository:
 
         self._queued: list[Species] = []
 
-    def use_test_index(self):
-        self.index = Index("test_species", self._mappings)
+    def clear(self):
         self.index.create()
         self.index.delete_all_documents()
         self.index.refresh()
