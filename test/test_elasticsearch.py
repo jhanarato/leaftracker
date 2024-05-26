@@ -38,14 +38,14 @@ def dentifera() -> Species:
 
 @pytest.fixture
 def repository() -> SpeciesRepository:
-    repo = SpeciesRepository()
+    repo = SpeciesRepository(use_test_index=True)
     repo.use_test_index()
     return repo
 
 
 @pytest.fixture
 def species_index() -> Index:
-    repo = SpeciesRepository()
+    repo = SpeciesRepository(use_test_index=True)
     repo.use_test_index()
     return repo.index
 

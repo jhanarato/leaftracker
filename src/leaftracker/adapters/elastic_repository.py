@@ -15,7 +15,7 @@ def document_to_species(document: Document) -> Species:
 
 
 class SpeciesRepository:
-    def __init__(self):
+    def __init__(self, use_test_index: bool = False):
         self._mappings = {
             "properties": {
                 "genus": {"type": "text"},
