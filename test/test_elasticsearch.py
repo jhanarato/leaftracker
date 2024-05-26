@@ -46,7 +46,6 @@ def repository() -> SpeciesRepository:
 @pytest.fixture
 def species_index() -> Index:
     repo = SpeciesRepository(use_test_index=True)
-    repo.index.delete_all_documents()
     return repo.index
 
 
