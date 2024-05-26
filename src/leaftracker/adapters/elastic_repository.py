@@ -23,7 +23,11 @@ class SpeciesRepository:
             }
         }
 
-        self.index = Index("species", self._mappings)
+        if use_test_index:
+            self.index = Index("test_species", self._mappings)
+        else:
+            self.index = Index("species", self._mappings)
+
         self._queued: list[Species] = []
 
     def use_test_index(self):
