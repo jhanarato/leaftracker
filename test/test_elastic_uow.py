@@ -61,7 +61,7 @@ def test_should_get_all_indexes(uow):
 
 
 def test_should_normally_use_production_index():
-    uow = ElasticUnitOfWork(use_test_indexes=False)
+    uow = ElasticUnitOfWork()
     assert uow.species().index.name == "species"
 
 
