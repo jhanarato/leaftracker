@@ -32,11 +32,6 @@ class SpeciesRepository:
 
         self._queued: list[Species] = []
 
-    def clear(self):
-        self.index.create()
-        self.index.delete_all_documents()
-        self.index.refresh()
-
     def add(self, species: Species):
         self._queued.append(species)
 

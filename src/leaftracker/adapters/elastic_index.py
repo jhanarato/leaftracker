@@ -44,6 +44,7 @@ class Index:
                 "query": {"match_all": {}}
             }
         )
+        self.refresh()
 
     def document_exists(self, document_id: str) -> bool:
         return self._client.exists(index=self.name, id=document_id).body
