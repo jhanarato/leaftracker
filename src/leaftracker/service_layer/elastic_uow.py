@@ -1,8 +1,9 @@
+from collections.abc import Iterator
 from typing import Self
 
 from leaftracker.adapters.repository import BatchRepository, SourceRepository
 from leaftracker.adapters.elastic_repository import SpeciesRepository
-from leaftracker.adapters.elastic_index import Document
+from leaftracker.adapters.elastic_index import Document, Index
 from leaftracker.domain.model import Species
 
 
@@ -48,3 +49,6 @@ class ElasticUnitOfWork:
 
     def species(self) -> SpeciesRepository:
         return self._species
+
+    def indexes(self) -> Iterator[Index]:
+        yield self.species().index
