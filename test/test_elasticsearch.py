@@ -43,17 +43,6 @@ def repository() -> SpeciesRepository:
     return repo
 
 
-@pytest.fixture
-def added_species(saligna) -> Species:
-    uow = ElasticUnitOfWork(use_test_indexes=True)
-
-    with uow:
-        uow.species().add(saligna)
-        uow.commit()
-
-    return saligna
-
-
 class TestSpeciesRepository:
     def test_should_indicate_missing_document(self, repository):
         assert repository.get("Nothing") is None
