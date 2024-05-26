@@ -44,13 +44,7 @@ def repository() -> SpeciesRepository:
 
 
 @pytest.fixture
-def species_index() -> Index:
-    repo = SpeciesRepository(use_test_index=True)
-    return repo.index
-
-
-@pytest.fixture
-def added_species(species_index, saligna) -> Species:
+def added_species(saligna) -> Species:
     uow = ElasticUnitOfWork(use_test_indexes=True)
 
     with uow:
