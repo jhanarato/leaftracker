@@ -3,6 +3,16 @@ import pytest
 from leaftracker.service_layer.elastic_uow import ElasticUnitOfWork
 
 
+def test_should_normally_use_production_index():
+    uow = ElasticUnitOfWork()
+    assert uow.species().index.name == "species"
+
+
+def test_should_use_test_index_if_specified():
+    uow = ElasticUnitOfWork(use_test_indexes=True)
+    assert uow.species().index.name == "test_species"
+
+
 @pytest.fixture
 def uow() -> ElasticUnitOfWork:
     uow = ElasticUnitOfWork(use_test_indexes=True)
@@ -58,13 +68,3 @@ def test_should_clear_queue_after_commit(uow, saligna):
 def test_should_get_all_indexes(uow):
     index_names = [index.name for index in uow.indexes()]
     assert index_names == ["test_species"]
-
-
-def test_should_normally_use_production_index():
-    uow = ElasticUnitOfWork()
-    assert uow.species().index.name == "species"
-
-
-def test_should_use_test_index():
-    uow = ElasticUnitOfWork(use_test_indexes=True)
-    assert uow.species().index.name == "test_species"
