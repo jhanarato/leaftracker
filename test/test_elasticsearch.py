@@ -1,9 +1,17 @@
 import pytest
+from elasticsearch import Elasticsearch
 
 from leaftracker.adapters.elastic_index import Index
 from leaftracker.adapters.elastic_repository import SpeciesRepository
 from leaftracker.domain.model import Species, ScientificName
 from leaftracker.service_layer.elastic_uow import ElasticUnitOfWork
+
+
+@pytest.fixture(autouse=True, scope='session')
+def delete_test_indexes():
+    yield
+    es = Elasticsearch(hosts="http://localhost:9200")
+    es.indices.delete(index=["test_index", "test_species"])
 
 
 @pytest.fixture
