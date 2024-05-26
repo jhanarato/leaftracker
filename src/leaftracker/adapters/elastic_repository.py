@@ -28,6 +28,8 @@ class SpeciesRepository:
         else:
             self.index = Index("species", self._mappings)
 
+        self.index.create()
+
         self._queued: list[Species] = []
 
     def clear(self):
