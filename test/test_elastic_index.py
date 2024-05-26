@@ -24,11 +24,17 @@ def document() -> Document:
 
 
 class TestIndex:
-    def test_should_create_missing_index(self, index):
+    def test_should_create_and_delete_indexes(self, index):
         index.delete()
         assert not index.exists()
         index.create()
         assert index.exists()
+        index.create()
+        assert index.exists()
+        index.delete()
+        assert not index.exists()
+        index.delete()
+        assert not index.exists()
 
     def test_should_not_overwrite(self, index, document):
         index.add_document(document)
@@ -36,17 +42,6 @@ class TestIndex:
         assert index.document_count() == 1
         index.create()
         assert index.document_count() == 1
-
-    def test_should_delete_missing(self, index):
-        index.delete()
-        assert not index.exists()
-        index.delete()
-        assert not index.exists()
-
-    def test_should_delete_existing(self, index):
-        index.create()
-        index.delete()
-        assert not index.exists()
 
     def test_should_delete_documents(self, index, document):
         index.add_document(document)
