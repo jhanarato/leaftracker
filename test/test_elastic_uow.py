@@ -9,14 +9,14 @@ def test_should_normally_use_production_index():
     assert uow.species().index.name == SPECIES_INDEX
 
 
-def test_should_use_test_index_if_specified():
-    uow = ElasticUnitOfWork(use_test_indexes=True)
+def test_should_add_index_prefix():
+    uow = ElasticUnitOfWork(index_prefix="test_")
     assert uow.species().index.name == "test_species"
 
 
 @pytest.fixture
 def uow() -> ElasticUnitOfWork:
-    uow = ElasticUnitOfWork(use_test_indexes=True)
+    uow = ElasticUnitOfWork(index_prefix="test_")
     uow.species().index.delete_all_documents()
     return uow
 
