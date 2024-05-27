@@ -4,19 +4,22 @@ from leaftracker.adapters.elastic_repository import SPECIES_INDEX
 from leaftracker.service_layer.elastic_uow import ElasticUnitOfWork
 
 
+INDEX_TEST_PREFIX = "test_"
+
+
 def test_should_normally_use_production_index():
     uow = ElasticUnitOfWork()
     assert uow.species().index.name == SPECIES_INDEX
 
 
 def test_should_add_index_prefix():
-    uow = ElasticUnitOfWork(index_prefix="test_")
+    uow = ElasticUnitOfWork(INDEX_TEST_PREFIX)
     assert uow.species().index.name == "test_species"
 
 
 @pytest.fixture
 def uow() -> ElasticUnitOfWork:
-    uow = ElasticUnitOfWork(index_prefix="test_")
+    uow = ElasticUnitOfWork(INDEX_TEST_PREFIX)
     uow.species().index.delete_all_documents()
     return uow
 
