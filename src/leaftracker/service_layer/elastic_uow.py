@@ -19,8 +19,10 @@ def species_to_document(species: Species) -> Document:
 
 class ElasticUnitOfWork:
     def __init__(self, index_prefix: str = ""):
-        index_name = index_prefix + SPECIES_INDEX
-        index = Index(index_name, SPECIES_MAPPING)
+        index = Index(
+            name=index_prefix + SPECIES_INDEX,
+            mappings=SPECIES_MAPPING
+        )
         self._species = SpeciesRepository(index)
 
     def __enter__(self) -> Self:
