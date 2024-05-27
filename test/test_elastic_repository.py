@@ -7,7 +7,7 @@ from leaftracker.adapters.elastic_repository import SpeciesRepository, SPECIES_M
 @pytest.fixture
 def repository() -> SpeciesRepository:
     index = Index("test_species", SPECIES_MAPPING)
-    repo = SpeciesRepository(use_test_index=True, index=index)
+    repo = SpeciesRepository(index=index)
     repo.index.delete_all_documents()
     return repo
 

@@ -21,12 +21,10 @@ class ElasticUnitOfWork:
     def __init__(self, use_test_indexes: bool = False):
         if use_test_indexes:
             self._species = SpeciesRepository(
-                use_test_index=True,
                 index=Index("test_species", SPECIES_MAPPING)
             )
         else:
             self._species = SpeciesRepository(
-                use_test_index=False,
                 index=Index("species", SPECIES_MAPPING)
             )
 
