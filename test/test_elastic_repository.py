@@ -1,14 +1,12 @@
 import pytest
 
 from conftest import INDEX_TEST_PREFIX
-from leaftracker.adapters.elastic_index import Index
-from leaftracker.adapters.elastic_repository import SpeciesRepository, SPECIES_MAPPINGS, SPECIES_INDEX
+from leaftracker.adapters.elastic_repository import SpeciesRepository, SPECIES_INDEX
 
 
 @pytest.fixture
 def repository() -> SpeciesRepository:
-    index = Index(INDEX_TEST_PREFIX + SPECIES_INDEX, SPECIES_MAPPINGS)
-    repo = SpeciesRepository(index=index)
+    repo = SpeciesRepository(INDEX_TEST_PREFIX + SPECIES_INDEX)
     repo.index.delete_all_documents()
     return repo
 

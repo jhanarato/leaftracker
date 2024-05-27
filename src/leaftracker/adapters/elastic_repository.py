@@ -24,8 +24,8 @@ def document_to_species(document: Document) -> Species:
 
 
 class SpeciesRepository:
-    def __init__(self, index: Index = Index(SPECIES_INDEX, SPECIES_MAPPINGS)):
-        self.index = index
+    def __init__(self, index_name: str = SPECIES_INDEX):
+        self.index = Index(index_name, SPECIES_MAPPINGS)
         self.index.create()
         self._queued: list[Species] = []
 
