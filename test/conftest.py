@@ -30,7 +30,7 @@ def dentifera() -> Species:
 
 
 @pytest.fixture(autouse=True, scope='session')
-def delete_test_indexes():
+def test_indexes():
     yield
     es = Elasticsearch(hosts="http://localhost:9200")
     es.indices.delete(index=["test_index", "test_species"])
