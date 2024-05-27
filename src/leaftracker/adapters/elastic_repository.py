@@ -4,6 +4,14 @@ from leaftracker.adapters.elastic_index import Document, Index
 from leaftracker.domain.model import Species, ScientificName
 
 
+SPECIES_MAPPING = {
+    "properties": {
+        "genus": {"type": "text"},
+        "species": {"type": "text"},
+    }
+}
+
+
 def document_to_species(document: Document) -> Species:
     return Species(
         reference=document.document_id,
@@ -16,17 +24,10 @@ def document_to_species(document: Document) -> Species:
 
 class SpeciesRepository:
     def __init__(self, use_test_index: bool = False):
-        self._mappings = {
-            "properties": {
-                "genus": {"type": "text"},
-                "species": {"type": "text"},
-            }
-        }
-
         if use_test_index:
-            self.index = Index("test_species", self._mappings)
+            self.index = Index("test_species", SPECIES_MAPPING)
         else:
-            self.index = Index("species", self._mappings)
+            self.index = Index("species", SPECIES_MAPPING)
 
         self.index.create()
 
