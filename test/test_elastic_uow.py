@@ -1,10 +1,8 @@
 import pytest
 
+from conftest import INDEX_TEST_PREFIX
 from leaftracker.adapters.elastic_repository import SPECIES_INDEX
 from leaftracker.service_layer.elastic_uow import ElasticUnitOfWork
-
-
-INDEX_TEST_PREFIX = "test_"
 
 
 def test_should_normally_use_production_index():

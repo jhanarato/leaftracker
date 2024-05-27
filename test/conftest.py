@@ -7,6 +7,9 @@ from leaftracker.adapters.repository import BatchRepository, SourceRepository, S
 from leaftracker.domain.model import Species, ScientificName, Batch, Source
 
 
+INDEX_TEST_PREFIX = "test_"
+
+
 @pytest.fixture
 def saligna() -> Species:
     return Species(
