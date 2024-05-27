@@ -23,7 +23,7 @@ def document_to_species(document: Document) -> Species:
 
 
 class SpeciesRepository:
-    def __init__(self, use_test_index: bool = False):
+    def __init__(self, use_test_index: bool = False, index: Index = None):
         if use_test_index:
             self.index = Index("test_species", SPECIES_MAPPING)
         else:

@@ -2,7 +2,7 @@ from collections.abc import Iterator
 from typing import Self
 
 from leaftracker.adapters.repository import BatchRepository, SourceRepository
-from leaftracker.adapters.elastic_repository import SpeciesRepository
+from leaftracker.adapters.elastic_repository import SpeciesRepository, SPECIES_MAPPING
 from leaftracker.adapters.elastic_index import Document, Index
 from leaftracker.domain.model import Species
 
@@ -19,7 +19,16 @@ def species_to_document(species: Species) -> Document:
 
 class ElasticUnitOfWork:
     def __init__(self, use_test_indexes: bool = False):
-        self._species = SpeciesRepository(use_test_index=use_test_indexes)
+        if use_test_indexes:
+            self._species = SpeciesRepository(
+                use_test_index=True,
+                index=Index("test_species", SPECIES_MAPPING)
+            )
+        else:
+            self._species = SpeciesRepository(
+                use_test_index=False,
+                index=Index("species", SPECIES_MAPPING)
+            )
 
     def __enter__(self) -> Self:
         return self

@@ -1,11 +1,13 @@
 import pytest
 
-from leaftracker.adapters.elastic_repository import SpeciesRepository
+from leaftracker.adapters.elastic_index import Index
+from leaftracker.adapters.elastic_repository import SpeciesRepository, SPECIES_MAPPING
 
 
 @pytest.fixture
 def repository() -> SpeciesRepository:
-    repo = SpeciesRepository(use_test_index=True)
+    index = Index("test_species", SPECIES_MAPPING)
+    repo = SpeciesRepository(use_test_index=True, index=index)
     repo.index.delete_all_documents()
     return repo
 
