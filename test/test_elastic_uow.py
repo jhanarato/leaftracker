@@ -1,11 +1,12 @@
 import pytest
 
+from leaftracker.adapters.elastic_repository import SPECIES_INDEX
 from leaftracker.service_layer.elastic_uow import ElasticUnitOfWork
 
 
 def test_should_normally_use_production_index():
     uow = ElasticUnitOfWork()
-    assert uow.species().index.name == "species"
+    assert uow.species().index.name == SPECIES_INDEX
 
 
 def test_should_use_test_index_if_specified():

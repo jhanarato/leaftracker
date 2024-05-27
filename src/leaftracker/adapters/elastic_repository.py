@@ -3,6 +3,7 @@ from elasticsearch import NotFoundError
 from leaftracker.adapters.elastic_index import Document, Index
 from leaftracker.domain.model import Species, ScientificName
 
+SPECIES_INDEX = "species"
 
 SPECIES_MAPPING = {
     "properties": {
@@ -23,7 +24,7 @@ def document_to_species(document: Document) -> Species:
 
 
 class SpeciesRepository:
-    def __init__(self, index: Index = Index("species", SPECIES_MAPPING)):
+    def __init__(self, index: Index = Index(SPECIES_INDEX, SPECIES_MAPPING)):
         self.index = index
         self.index.create()
         self._queued: list[Species] = []

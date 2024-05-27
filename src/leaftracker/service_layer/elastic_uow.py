@@ -2,7 +2,7 @@ from collections.abc import Iterator
 from typing import Self
 
 from leaftracker.adapters.repository import BatchRepository, SourceRepository
-from leaftracker.adapters.elastic_repository import SpeciesRepository, SPECIES_MAPPING
+from leaftracker.adapters.elastic_repository import SpeciesRepository, SPECIES_MAPPING, SPECIES_INDEX
 from leaftracker.adapters.elastic_index import Document, Index
 from leaftracker.domain.model import Species
 
@@ -25,7 +25,7 @@ class ElasticUnitOfWork:
             )
         else:
             self._species = SpeciesRepository(
-                index=Index("species", SPECIES_MAPPING)
+                index=Index(SPECIES_INDEX, SPECIES_MAPPING)
             )
 
     def __enter__(self) -> Self:
