@@ -5,7 +5,7 @@ from leaftracker.domain.model import Species, ScientificName
 
 SPECIES_INDEX = "species"
 
-SPECIES_MAPPING = {
+SPECIES_MAPPINGS = {
     "properties": {
         "genus": {"type": "text"},
         "species": {"type": "text"},
@@ -24,7 +24,7 @@ def document_to_species(document: Document) -> Species:
 
 
 class SpeciesRepository:
-    def __init__(self, index: Index = Index(SPECIES_INDEX, SPECIES_MAPPING)):
+    def __init__(self, index: Index = Index(SPECIES_INDEX, SPECIES_MAPPINGS)):
         self.index = index
         self.index.create()
         self._queued: list[Species] = []
