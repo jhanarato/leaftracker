@@ -46,6 +46,3 @@ class ElasticUnitOfWork:
 
     def species(self) -> SpeciesRepository:
         return self._species
-
-    def indexes(self) -> Iterator[Index]:
-        yield self.species().index

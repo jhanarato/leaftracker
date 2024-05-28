@@ -66,7 +66,3 @@ def test_should_clear_queue_after_commit(uow, saligna):
         uow.commit()
         assert not uow.species().queued()
 
-
-def test_should_get_all_indexes(uow):
-    index_names = [index.name for index in uow.indexes()]
-    assert index_names == ["test_species"]
