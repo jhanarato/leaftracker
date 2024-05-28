@@ -1,11 +1,10 @@
 from typing import Self
 
 import pytest
-from elasticsearch import Elasticsearch
 
 from leaftracker.adapters.repository import BatchRepository, SourceRepository, SpeciesRepository
 from leaftracker.domain.model import Species, ScientificName, Batch, Source
-
+from tools import delete_test_indexes
 
 INDEX_TEST_PREFIX = "test_"
 
@@ -35,8 +34,7 @@ def dentifera() -> Species:
 @pytest.fixture(autouse=True, scope='session')
 def test_indexes():
     yield
-    es = Elasticsearch(hosts="http://localhost:9200")
-    es.indices.delete(index=["test_index", "test_species"])
+    delete_test_indexes()
 
 
 class FakeBatchRepository:
