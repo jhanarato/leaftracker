@@ -20,7 +20,7 @@ class Index:
         return self._name
 
     def create(self):
-        if self._client.indices.exists(index=self._name).body:
+        if self.exists():
             return
 
         self._client.indices.create(index=self._name, mappings=self._mappings)
