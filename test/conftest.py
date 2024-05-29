@@ -37,20 +37,16 @@ def test_indexes():
     delete_test_indexes()
 
 
-class References(Iterator[str]):
-    def __init__(self, prefix: str):
-        self._prefix = prefix
-        self._digit = 1
-
-    def __next__(self) -> str:
-        reference = f"{self._prefix}{self._digit:04}"
-        self._digit += 1
-        return reference
+def references(prefix: str) -> Iterator[str]:
+    digit = 1
+    while True:
+        yield f"{prefix}{digit:04}"
+        digit += 1
 
 
 class FakeBatchRepository:
     def __init__(self, batches: list[Batch]):
-        self._references = References("batch-")
+        self._references = references("batch-")
         self._batches = set(batches)
 
     def add(self, batch: Batch) -> str:
