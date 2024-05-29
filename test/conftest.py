@@ -1,4 +1,4 @@
-from typing import Self
+from typing import Self, Iterator
 
 import pytest
 
@@ -37,18 +37,24 @@ def test_indexes():
     delete_test_indexes()
 
 
-class FakeBatchRepository:
-    def __init__(self, batches: list[Batch]):
-        self._next_batch_number = 1
-        self._batches = set(batches)
+class References(Iterator[str]):
+    def __init__(self, prefix: str):
+        self._prefix = prefix
+        self._digit = 1
 
-    def _new_reference(self) -> str:
-        reference = f"batch-{self._next_batch_number:04}"
-        self._next_batch_number += 1
+    def __next__(self) -> str:
+        reference = f"{self._prefix}{self._digit:04}"
+        self._digit += 1
         return reference
 
+
+class FakeBatchRepository:
+    def __init__(self, batches: list[Batch]):
+        self._references = References("batch-")
+        self._batches = set(batches)
+
     def add(self, batch: Batch) -> str:
-        batch.reference = self._new_reference()
+        batch.reference = next(self._references)
         self._batches.add(batch)
         return batch.reference
 
