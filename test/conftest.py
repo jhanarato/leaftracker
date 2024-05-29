@@ -1,3 +1,4 @@
+from itertools import count
 from typing import Self, Iterator
 
 import pytest
@@ -38,15 +39,13 @@ def test_indexes():
 
 
 def references(prefix: str) -> Iterator[str]:
-    digit = 1
-    while True:
-        yield f"{prefix}{digit:04}"
-        digit += 1
+    for i in count(start=1):
+        yield f"{prefix}-{i:04}"
 
 
 class FakeBatchRepository:
     def __init__(self, batches: list[Batch]):
-        self._references = references("batch-")
+        self._references = references("batch")
         self._batches = set(batches)
 
     def add(self, batch: Batch) -> str:
