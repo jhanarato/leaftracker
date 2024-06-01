@@ -39,4 +39,4 @@ class TestUnitOfWork:
             uow.species().add(dentifera)
             uow.commit()
 
-        assert uow.species().get("species-0001").names[0].species == "Dentifera"
+        assert uow.species().get("species-0001").names[0].species == "dentifera"

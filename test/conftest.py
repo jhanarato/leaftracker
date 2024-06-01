@@ -15,7 +15,7 @@ def saligna() -> Species:
     return Species(
         ScientificName(
             genus="Acacia",
-            species="Saligna",
+            species="saligna",
             is_most_recent=True
         )
     )
@@ -26,7 +26,7 @@ def dentifera() -> Species:
     return Species(
         ScientificName(
             genus="Acacia",
-            species="Dentifera",
+            species="dentifera",
             is_most_recent=True
         )
     )
