@@ -45,13 +45,14 @@ def references(prefix: str) -> Iterator[str]:
 
 class FakeSpeciesRepository:
     def __init__(self):
-        self._species = []
+        self.added = set()
+        self.committed = set()
 
     def add(self, species: Species):
-        self._species.append(species)
+        self.added.add(species)
 
     def get(self, reference: str) -> Species | None:
-        matching = (species for species in self._species
+        matching = (species for species in self.committed
                     if species.reference == reference)
         return next(matching, None)
 
@@ -90,8 +91,9 @@ class FakeUnitOfWork:
     def __init__(self):
         self._batches: BatchRepository = FakeBatchRepository([])
         self._sources: SourceRepository = FakeSourceRepository([])
-        self._species: SpeciesRepository = FakeSpeciesRepository()
+        self._species = FakeSpeciesRepository()
         self._commited = False
+        self._species_references = references("species")
 
     def __enter__(self) -> Self:
         return self
@@ -100,6 +102,9 @@ class FakeUnitOfWork:
         self.rollback()
 
     def commit(self) -> None:
+        for species in self._species.added:
+            species.reference = next(self._species_references)
+            self._species.committed.add(species)
         self._commited = True
 
     def committed(self) -> bool:
