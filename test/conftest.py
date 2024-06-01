@@ -47,6 +47,7 @@ class FakeSpeciesRepository:
     def __init__(self):
         self.added = set()
         self.committed = set()
+        self._references = references("species")
 
     def add(self, species: Species):
         self.added.add(species)
@@ -55,6 +56,11 @@ class FakeSpeciesRepository:
         matching = (species for species in self.committed
                     if species.reference == reference)
         return next(matching, None)
+
+    def commit(self):
+        for species in self.added:
+            species.reference = next(self._references)
+            self.committed.add(species)
 
 
 class FakeBatchRepository:
@@ -92,7 +98,6 @@ class FakeUnitOfWork:
         self._batches: BatchRepository = FakeBatchRepository([])
         self._sources: SourceRepository = FakeSourceRepository([])
         self._species = FakeSpeciesRepository()
-        self._species_references = references("species")
 
     def __enter__(self) -> Self:
         return self
@@ -101,9 +106,7 @@ class FakeUnitOfWork:
         self.rollback()
 
     def commit(self) -> None:
-        for species in self._species.added:
-            species.reference = next(self._species_references)
-            self._species.committed.add(species)
+        self._species.commit()
 
     def rollback(self) -> None:
         self._species.added.clear()
