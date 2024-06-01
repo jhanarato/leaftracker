@@ -1,6 +1,4 @@
-import pytest
-
-from conftest import FakeUnitOfWork, FakeSpeciesRepository
+from conftest import FakeUnitOfWork
 
 
 class TestUnitOfWork:
