@@ -92,7 +92,6 @@ class FakeUnitOfWork:
         self._batches: BatchRepository = FakeBatchRepository([])
         self._sources: SourceRepository = FakeSourceRepository([])
         self._species = FakeSpeciesRepository()
-        self._commited = False
         self._species_references = references("species")
 
     def __enter__(self) -> Self:
@@ -105,10 +104,6 @@ class FakeUnitOfWork:
         for species in self._species.added:
             species.reference = next(self._species_references)
             self._species.committed.add(species)
-        self._commited = True
-
-    def committed(self) -> bool:
-        return self._commited
 
     def rollback(self) -> None:
         self._species.added.clear()
