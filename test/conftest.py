@@ -49,7 +49,6 @@ class FakeSpeciesRepository:
 
     def add(self, species: Species):
         self._species.append(species)
-        return species.reference
 
     def get(self, reference: str) -> Species | None:
         matching = (species for species in self._species
