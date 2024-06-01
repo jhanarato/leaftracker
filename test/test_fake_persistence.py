@@ -27,7 +27,7 @@ class TestUnitOfWork:
             uow.commit()
 
         retrieved = uow.species().get(saligna.reference)
-        assert retrieved.reference == "species-0001"
+        assert retrieved.reference == "species-0001"  # type: ignore
 
     def test_should_discard_uncommitted_species_on_rollback(self, saligna, dentifera):
         uow = FakeUnitOfWork()
@@ -39,4 +39,4 @@ class TestUnitOfWork:
             uow.species().add(dentifera)
             uow.commit()
 
-        assert uow.species().get("species-0001").names[0].species == "dentifera"
+        assert uow.species().get("species-0001").names[0].species == "dentifera"  # type: ignore
