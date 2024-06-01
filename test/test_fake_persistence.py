@@ -1,7 +1,7 @@
-from conftest import FakeUnitOfWork
+from conftest import FakeUnitOfWork, FakeSpeciesRepository
 
 
-class TestUnitOfWork:
+class TestFakeUnitOfWork:
     def test_should_rollback_if_not_committed(self, saligna):
         uow = FakeUnitOfWork()
 
@@ -40,3 +40,8 @@ class TestUnitOfWork:
             uow.commit()
 
         assert uow.species().get("species-0001").names[0].species == "dentifera"  # type: ignore
+
+
+class TestFakeSpeciesRepository:
+    def test_should_return_none_when_missing(self):
+        assert FakeSpeciesRepository().get("missing") is None

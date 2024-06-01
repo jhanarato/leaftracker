@@ -46,21 +46,19 @@ def references(prefix: str) -> Iterator[str]:
 class FakeSpeciesRepository:
     def __init__(self):
         self._added = set()
-        self._committed = set()
+        self._committed = dict()
         self._references = references("species")
 
     def add(self, species: Species):
         self._added.add(species)
 
     def get(self, reference: str) -> Species | None:
-        matching = (species for species in self._committed
-                    if species.reference == reference)
-        return next(matching, None)
+        return self._committed.get(reference)
 
     def commit(self):
         for species in self._added:
             species.reference = next(self._references)
-            self._committed.add(species)
+            self._committed[species.reference] = species
 
     def rollback(self):
         self._added.clear()
