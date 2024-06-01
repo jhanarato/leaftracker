@@ -62,6 +62,9 @@ class FakeSpeciesRepository:
             species.reference = next(self._references)
             self.committed.add(species)
 
+    def rollback(self):
+        self.added.clear()
+
 
 class FakeBatchRepository:
     def __init__(self, batches: list[Batch]):
@@ -109,7 +112,7 @@ class FakeUnitOfWork:
         self._species.commit()
 
     def rollback(self) -> None:
-        self._species.added.clear()
+        self._species.rollback()
 
     def batches(self) -> BatchRepository:
         return self._batches
