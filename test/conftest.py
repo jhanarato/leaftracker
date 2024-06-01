@@ -43,6 +43,20 @@ def references(prefix: str) -> Iterator[str]:
         yield f"{prefix}-{i:04}"
 
 
+class FakeSpeciesRepository:
+    def __init__(self, species: list[Species]):
+        self._species = set(species)
+
+    def add(self, species: Species) -> str | None:
+        self._species.add(species)
+        return species.reference
+
+    def get(self, reference: str) -> Species | None:
+        matching = (species for species in self._species
+                    if species.reference == reference)
+        return next(matching, None)
+
+
 class FakeBatchRepository:
     def __init__(self, batches: list[Batch]):
         self._references = references("batch")
@@ -70,20 +84,6 @@ class FakeSourceRepository:
     def get(self, name: str) -> Source | None:
         matching = (source for source in self._sources
                     if source.name == name)
-        return next(matching, None)
-
-
-class FakeSpeciesRepository:
-    def __init__(self, species: list[Species]):
-        self._species = set(species)
-
-    def add(self, species: Species) -> str | None:
-        self._species.add(species)
-        return species.reference
-
-    def get(self, reference: str) -> Species | None:
-        matching = (species for species in self._species
-                    if species.reference == reference)
         return next(matching, None)
 
 
