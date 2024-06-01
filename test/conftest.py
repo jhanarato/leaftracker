@@ -44,11 +44,11 @@ def references(prefix: str) -> Iterator[str]:
 
 
 class FakeSpeciesRepository:
-    def __init__(self, species: list[Species]):
-        self._species = set(species)
+    def __init__(self):
+        self._species = []
 
-    def add(self, species: Species) -> str | None:
-        self._species.add(species)
+    def add(self, species: Species):
+        self._species.append(species)
         return species.reference
 
     def get(self, reference: str) -> Species | None:
@@ -91,7 +91,7 @@ class FakeUnitOfWork:
     def __init__(self):
         self._batches: BatchRepository = FakeBatchRepository([])
         self._sources: SourceRepository = FakeSourceRepository([])
-        self._species: SpeciesRepository = FakeSpeciesRepository([])
+        self._species: SpeciesRepository = FakeSpeciesRepository()
         self._commited = False
 
     def __enter__(self) -> Self:
