@@ -111,7 +111,7 @@ class FakeUnitOfWork:
         return self._commited
 
     def rollback(self) -> None:
-        pass
+        self._species.added.clear()
 
     def batches(self) -> BatchRepository:
         return self._batches
