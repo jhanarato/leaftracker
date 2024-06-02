@@ -28,15 +28,15 @@ class ElasticUnitOfWork:
         self.rollback()
 
     def commit(self) -> None:
-        for species in self._species.queued():
+        for species in self._species.added():
             document = species_to_document(species)
             species.reference = self._species.index.add_document(document)
 
         self._species.index.refresh()
-        self._species.clear_queue()
+        self._species.clear_added()
 
     def rollback(self) -> None:
-        self._species.clear_queue()
+        self._species.clear_added()
 
     def batches(self) -> BatchRepository:  # type: ignore
         pass

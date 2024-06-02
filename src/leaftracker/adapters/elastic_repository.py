@@ -27,10 +27,11 @@ class SpeciesRepository:
     def __init__(self, index_name: str = SPECIES_INDEX):
         self.index = Index(index_name, SPECIES_MAPPINGS)
         self.index.create()
-        self._queued: list[Species] = []
+
+        self._added: list[Species] = []
 
     def add(self, species: Species):
-        self._queued.append(species)
+        self._added.append(species)
 
     def get(self, reference: str) -> Species | None:
         try:
@@ -40,8 +41,14 @@ class SpeciesRepository:
 
         return document_to_species(document)
 
-    def queued(self) -> list[Species]:
-        return self._queued
+    def added(self) -> list[Species]:
+        return self._added
 
-    def clear_queue(self) -> None:
-        self._queued.clear()
+    def clear_added(self) -> None:
+        self._added.clear()
+
+    def commit(self):
+        pass
+
+    def rollback(self):
+        self.clear_added()

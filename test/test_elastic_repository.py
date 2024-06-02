@@ -17,9 +17,9 @@ class TestSpeciesRepository:
 
     def test_should_queue_documents_to_commit(self, repository, saligna):
         repository.add(saligna)
-        assert len(repository.queued()) == 1
+        assert len(repository.added()) == 1
 
     def test_should_clear_queue(self, repository, saligna):
         repository.add(saligna)
-        repository.clear_queue()
-        assert not repository.queued()
+        repository.clear_added()
+        assert not repository.added()

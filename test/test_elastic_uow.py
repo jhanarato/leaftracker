@@ -50,19 +50,18 @@ def test_should_clear_queue_on_rollback(uow, saligna):
     with uow:
         uow.species().add(saligna)
 
-    assert not uow.species().queued()
+    assert not uow.species().added()
 
 
 def test_should_rollback_explicitly(uow, saligna):
     with uow:
         uow.species().add(saligna)
         uow.rollback()
-        assert not uow.species().queued()
+        assert not uow.species().added()
 
 
 def test_should_clear_queue_after_commit(uow, saligna):
     with uow:
         uow.species().add(saligna)
         uow.commit()
-        assert not uow.species().queued()
-
+        assert not uow.species().added()
