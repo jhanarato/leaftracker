@@ -4,7 +4,7 @@ from conftest import FakeBatchRepository, FakeUnitOfWork
 from leaftracker.adapters.repository import BatchRepository
 from leaftracker.domain.model import Batch, Source, SourceType, BatchType, Stock, StockSize
 from leaftracker.service_layer import services
-from leaftracker.service_layer.services import InvalidSource
+from leaftracker.service_layer.services import InvalidSource, add_species, rename_species
 from leaftracker.service_layer.unit_of_work import UnitOfWork
 
 
@@ -95,4 +95,14 @@ def test_add_pickup(uow, nursery):
 
 
 def test_add_species(uow):
-    pass
+    reference = add_species("Acacia", "saligna", uow)
+    assert reference == "species-0001"
+
+
+def test_rename_species(uow):
+    reference = add_species("Baumea", "juncea", uow)
+    rename_species(reference, "Machaerina", "juncea", uow)
+    species = uow.species().get(reference)
+
+    assert species.names[0].genus == "Baumea"
+    assert species.names[1].genus == "Machaerina"

@@ -43,6 +43,9 @@ class Species:
     def __hash__(self):
         return hash(self.reference)
 
+    def new_scientific_name(self, name: ScientificName):
+        self.names.append(name)
+
 
 class StockSize(Enum):
     TUBE = auto()
