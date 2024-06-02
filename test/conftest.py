@@ -96,8 +96,8 @@ class FakeSourceRepository:
 
 class FakeUnitOfWork:
     def __init__(self):
-        self._batches: BatchRepository = FakeBatchRepository([])
-        self._sources: SourceRepository = FakeSourceRepository([])
+        self._batches = FakeBatchRepository([])
+        self._sources = FakeSourceRepository([])
         self._species = FakeSpeciesRepository()
 
     def __enter__(self) -> Self:
