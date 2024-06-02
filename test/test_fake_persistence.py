@@ -39,7 +39,7 @@ class TestFakeUnitOfWork:
             uow.species().add(dentifera)
             uow.commit()
 
-        assert uow.species().get("species-0001").scientific_names[0].species == "dentifera"  # type: ignore
+        assert uow.species().get("species-0001").current_scientific_name().species == "dentifera"  # type: ignore
 
 
 class TestFakeSpeciesRepository:
