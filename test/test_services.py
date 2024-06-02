@@ -101,8 +101,10 @@ def test_add_species(uow):
 
 def test_rename_species(uow):
     reference = add_species("Baumea", "juncea", uow)
-    rename_species(reference, "Machaerina", "juncea", uow)
     species = uow.species().get(reference)
 
+    assert species.current_scientific_name() == ScientificName("Baumea", "juncea")
+
+    rename_species(reference, "Machaerina", "juncea", uow)
     assert species.names[0] == ScientificName("Baumea", "juncea")
     assert species.names[1] == ScientificName("Machaerina", "juncea")

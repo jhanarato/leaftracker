@@ -46,6 +46,9 @@ class Species:
     def new_scientific_name(self, name: ScientificName):
         self.names.append(name)
 
+    def current_scientific_name(self) -> ScientificName:
+        return self.names[-1]
+
 
 class StockSize(Enum):
     TUBE = auto()
