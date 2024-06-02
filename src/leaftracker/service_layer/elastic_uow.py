@@ -18,7 +18,7 @@ class ElasticUnitOfWork:
         self._species.commit()
 
     def rollback(self) -> None:
-        self._species.clear_added()
+        self._species.rollback()
 
     def batches(self) -> BatchRepository:  # type: ignore
         pass
