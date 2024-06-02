@@ -19,7 +19,7 @@ class TestSpeciesRepository:
         repository.add(saligna)
         assert len(repository.added()) == 1
 
-    def test_should_clear_queue(self, repository, saligna):
+    def test_should_rollback(self, repository, saligna):
         repository.add(saligna)
-        repository.clear_added()
+        repository.rollback()
         assert not repository.added()
