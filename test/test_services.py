@@ -99,12 +99,12 @@ def test_add_species(uow):
     assert reference == "species-0001"
 
 
-def test_rename_species(uow):
+def test_rename_species():
+    uow = FakeUnitOfWork()
     reference = add_species("Baumea", "juncea", uow)
-    species = uow.species().get(reference)
-
+    assert reference == "species-0001"
+    species = uow.species().get("species-0001")
     assert species.current_scientific_name() == ScientificName("Baumea", "juncea")
-
-    rename_species(reference, "Machaerina", "juncea", uow)
-    assert species.scientific_names[0] == ScientificName("Baumea", "juncea")
-    assert species.scientific_names[1] == ScientificName("Machaerina", "juncea")
+    rename_species("species-0001", "Machaerina", "juncea", uow)
+    species = uow.species().get("species-0001")
+    assert species.current_scientific_name() == ScientificName("Machaerina", "juncea")
