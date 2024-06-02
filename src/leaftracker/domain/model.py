@@ -27,7 +27,7 @@ class Photo:
 class Species:
     def __init__(self, name: ScientificName, reference: str | None = None):
         self.reference = reference
-        self.names: list[ScientificName] = [name]
+        self.scientific_names: list[ScientificName] = [name]
         self.common_names: list[str] = []
         self.web_references: list[WebReference] = []
         self.photos: list[Photo] = []
@@ -44,10 +44,10 @@ class Species:
         return hash(self.reference)
 
     def new_scientific_name(self, name: ScientificName):
-        self.names.append(name)
+        self.scientific_names.append(name)
 
     def current_scientific_name(self) -> ScientificName:
-        return self.names[-1]
+        return self.scientific_names[-1]
 
 
 class StockSize(Enum):

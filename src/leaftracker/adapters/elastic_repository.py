@@ -27,8 +27,8 @@ def species_to_document(species: Species) -> Document:
     return Document(
         document_id=species.reference,
         source={
-            "genus": species.names[0].genus,
-            "species": species.names[0].species,
+            "genus": species.scientific_names[0].genus,
+            "species": species.scientific_names[0].species,
         }
     )
 
