@@ -23,6 +23,16 @@ def document_to_species(document: Document) -> Species:
     )
 
 
+def species_to_document(species: Species) -> Document:
+    return Document(
+        document_id=species.reference,
+        source={
+            "genus": species.names[0].genus,
+            "species": species.names[0].species,
+        }
+    )
+
+
 class SpeciesRepository:
     def __init__(self, index_name: str = SPECIES_INDEX):
         self.index = Index(index_name, SPECIES_MAPPINGS)
@@ -48,7 +58,12 @@ class SpeciesRepository:
         self._added.clear()
 
     def commit(self):
-        pass
+        for species in self.added():
+            document = species_to_document(species)
+            species.reference = self.index.add_document(document)
+
+        self.index.refresh()
+        self.clear_added()
 
     def rollback(self):
         self.clear_added()
