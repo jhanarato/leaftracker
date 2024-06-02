@@ -1,10 +1,7 @@
-from collections.abc import Iterator
 from typing import Self
 
-from leaftracker.adapters.elastic_index import Document, Index
 from leaftracker.adapters.elastic_repository import SpeciesRepository, SPECIES_INDEX
 from leaftracker.adapters.repository import BatchRepository, SourceRepository
-from leaftracker.domain.model import Species
 
 
 class ElasticUnitOfWork:
