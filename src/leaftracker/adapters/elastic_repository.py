@@ -54,16 +54,13 @@ class SpeciesRepository:
     def added(self) -> list[Species]:
         return self._added
 
-    def clear_added(self) -> None:
-        self._added.clear()
-
     def commit(self):
         for species in self.added():
             document = species_to_document(species)
             species.reference = self.index.add_document(document)
 
         self.index.refresh()
-        self.clear_added()
+        self._added.clear()
 
     def rollback(self):
-        self.clear_added()
+        self._added.clear()
