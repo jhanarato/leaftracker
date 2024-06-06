@@ -13,6 +13,22 @@ SPECIES_MAPPINGS = {
 }
 
 
+def new_document_to_species(document: Document) -> Species:
+    return Species(ScientificName("Baumea", "juncea"))
+
+
+def new_species_to_document(species: Species) -> Document:
+    scientific_names = [
+        {"genus": name.genus, "species": name.species}
+        for name in species.scientific_names
+    ]
+
+    return Document(
+        document_id=species.reference,
+        source={"scientific_names": scientific_names}
+    )
+
+
 def document_to_species(document: Document) -> Species:
     return Species(
         reference=document.document_id,
