@@ -14,11 +14,15 @@ def repository() -> SpeciesRepository:
 
 
 def test_should_add_scientific_names_to_document():
-    species = Species(ScientificName("Baumea", "juncea"))
+    species = Species(
+        name=ScientificName("Baumea", "juncea"),
+        reference="species-0001"
+    )
+
     species.new_scientific_name(ScientificName("Machaerina", "juncea"))
     document = new_species_to_document(species)
     assert document == Document(
-        document_id=None,
+        document_id="species-0001",
         source={
             "scientific_names": [
                 {"genus": "Baumea", "species": "juncea"},
