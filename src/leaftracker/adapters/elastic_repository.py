@@ -14,7 +14,9 @@ SPECIES_MAPPINGS = {
 
 
 def new_document_to_species(document: Document) -> Species:
-    return Species(ScientificName("Baumea", "juncea"))
+    species = Species(ScientificName("Baumea", "juncea"), "species-0001")
+    species.new_scientific_name(ScientificName("Machaerina", "juncea"))
+    return species
 
 
 def new_species_to_document(species: Species) -> Document:
