@@ -4,7 +4,7 @@ from typing import Self, Iterator
 import pytest
 
 from leaftracker.adapters.repository import BatchRepository, SourceRepository, SpeciesRepository
-from leaftracker.domain.model import Species, TaxonName, Batch, Source
+from leaftracker.domain.model import Species, TaxonName, Batch, Source, TaxonHistory
 from tools import delete_test_indexes
 
 INDEX_TEST_PREFIX = "test_"
@@ -12,23 +12,28 @@ INDEX_TEST_PREFIX = "test_"
 
 @pytest.fixture
 def saligna() -> Species:
+    taxons = TaxonHistory()
+    taxons.new_name("Acacia saligna")
     return Species(
         TaxonName(
             genus="Acacia",
             species="saligna",
             is_most_recent=True
-        )
+        ),
+        taxons
     )
 
 
 @pytest.fixture
 def dentifera() -> Species:
+    taxons = TaxonHistory()
     return Species(
         TaxonName(
             genus="Acacia",
             species="dentifera",
             is_most_recent=True
-        )
+        ),
+        taxons
     )
 
 
