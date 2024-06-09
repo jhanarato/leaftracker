@@ -24,6 +24,18 @@ class Photo:
     name: str
 
 
+class TaxonHistory:
+    def __init__(self):
+        self._names = []
+
+    def new_name(self, name: str):
+        parts = name.split()
+        self._names = [TaxonName(parts[0], parts[1])]
+
+    def current_name(self) -> TaxonName:
+        return self._names[-1]
+
+
 class Species:
     def __init__(self, name: TaxonName, reference: str | None = None):
         self.reference = reference
