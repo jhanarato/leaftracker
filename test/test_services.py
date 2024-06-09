@@ -2,7 +2,7 @@ import pytest
 
 from conftest import FakeBatchRepository, FakeUnitOfWork
 from leaftracker.adapters.repository import BatchRepository
-from leaftracker.domain.model import Batch, Source, SourceType, BatchType, Stock, StockSize, ScientificName
+from leaftracker.domain.model import Batch, Source, SourceType, BatchType, Stock, StockSize, TaxonName
 from leaftracker.service_layer import services
 from leaftracker.service_layer.services import InvalidSource, add_species, rename_species
 from leaftracker.service_layer.unit_of_work import UnitOfWork
@@ -104,7 +104,7 @@ def test_rename_species():
     reference = add_species("Baumea", "juncea", uow)
     assert reference == "species-0001"
     species = uow.species().get("species-0001")
-    assert species.current_scientific_name() == ScientificName("Baumea", "juncea")
+    assert species.current_taxon_name() == TaxonName("Baumea", "juncea")
     rename_species("species-0001", "Machaerina", "juncea", uow)
     species = uow.species().get("species-0001")
-    assert species.current_scientific_name() == ScientificName("Machaerina", "juncea")
+    assert species.current_taxon_name() == TaxonName("Machaerina", "juncea")

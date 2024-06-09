@@ -1,7 +1,7 @@
 from elasticsearch import NotFoundError
 
 from leaftracker.adapters.elastic_index import Document, Index
-from leaftracker.domain.model import Species, ScientificName
+from leaftracker.domain.model import Species, TaxonName
 
 SPECIES_INDEX = "species"
 
@@ -19,10 +19,10 @@ SPECIES_MAPPINGS = {
 
 def document_to_species(document: Document) -> Species:
     names = document.source["scientific_names"]
-    species = Species(ScientificName(names[0]["genus"], names[0]["species"]))
+    species = Species(TaxonName(names[0]["genus"], names[0]["species"]))
 
     for name in names[1:]:
-        species.new_scientific_name(ScientificName(name["genus"], name["species"]))
+        species.new_taxon_name(TaxonName(name["genus"], name["species"]))
 
     return species
 
@@ -30,7 +30,7 @@ def document_to_species(document: Document) -> Species:
 def species_to_document(species: Species) -> Document:
     scientific_names = [
         {"genus": name.genus, "species": name.species}
-        for name in species.scientific_names
+        for name in species.taxon_names
     ]
 
     return Document(

@@ -1,4 +1,4 @@
-from leaftracker.domain.model import Source, SourceType, Batch, BatchType, Species, ScientificName
+from leaftracker.domain.model import Source, SourceType, Batch, BatchType, Species, TaxonName
 from leaftracker.service_layer.unit_of_work import UnitOfWork
 
 
@@ -52,7 +52,7 @@ def add_pickup(source_name: str, uow: UnitOfWork) -> str:
 
 def add_species(genus: str, species: str, uow: UnitOfWork) -> str:
     species = Species(
-        ScientificName(genus=genus, species=species)
+        TaxonName(genus=genus, species=species)
     )
 
     with uow:
@@ -63,9 +63,9 @@ def add_species(genus: str, species: str, uow: UnitOfWork) -> str:
 
 
 def rename_species(reference: str, genus: str, species: str, uow: UnitOfWork) -> None:
-    new_name = ScientificName(genus=genus, species=species)
+    new_name = TaxonName(genus=genus, species=species)
 
     with uow:
         species = uow.species().get(reference)
-        species.new_scientific_name(new_name)
+        species.new_taxon_name(new_name)
         uow.commit()

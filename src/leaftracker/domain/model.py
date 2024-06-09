@@ -3,11 +3,11 @@ from enum import Enum, auto
 
 
 @dataclass(frozen=True)
-class ScientificName:
+class TaxonName:
     genus: str
     species: str
-    is_most_recent: bool = True
     subspecies: str | None = None
+    is_most_recent: bool = True
     year_name_given: str | None = None
 
 
@@ -25,9 +25,9 @@ class Photo:
 
 
 class Species:
-    def __init__(self, name: ScientificName, reference: str | None = None):
+    def __init__(self, name: TaxonName, reference: str | None = None):
         self.reference = reference
-        self.scientific_names: list[ScientificName] = [name]
+        self.taxon_names: list[TaxonName] = [name]
         self.common_names: list[str] = []
         self.web_references: list[WebReference] = []
         self.photos: list[Photo] = []
@@ -43,11 +43,11 @@ class Species:
     def __hash__(self):
         return hash(self.reference)
 
-    def new_scientific_name(self, name: ScientificName):
-        self.scientific_names.append(name)
+    def new_taxon_name(self, name: TaxonName):
+        self.taxon_names.append(name)
 
-    def current_scientific_name(self) -> ScientificName:
-        return self.scientific_names[-1]
+    def current_taxon_name(self) -> TaxonName:
+        return self.taxon_names[-1]
 
 
 class StockSize(Enum):
