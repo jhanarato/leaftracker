@@ -95,13 +95,13 @@ def test_add_pickup(uow, nursery):
 
 
 def test_add_species(uow):
-    reference = add_species("Acacia", "saligna", uow)
+    reference = add_species("Acacia saligna", uow)
     assert reference == "species-0001"
 
 
 def test_rename_species():
     uow = FakeUnitOfWork()
-    reference = add_species("Baumea", "juncea", uow)
+    reference = add_species("Baumea juncea", uow)
     assert reference == "species-0001"
     species = uow.species().get("species-0001")
     assert species.current_taxon_name() == TaxonName("Baumea", "juncea")

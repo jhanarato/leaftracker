@@ -1,4 +1,4 @@
-from leaftracker.domain.model import Source, SourceType, Batch, BatchType, Species, TaxonName
+from leaftracker.domain.model import Source, SourceType, Batch, BatchType, Species, TaxonName, TaxonHistory
 from leaftracker.service_layer.unit_of_work import UnitOfWork
 
 
@@ -50,9 +50,11 @@ def add_pickup(source_name: str, uow: UnitOfWork) -> str:
     return _add_batch(source_name, BatchType.PICKUP, uow)
 
 
-def add_species(genus: str, species: str, uow: UnitOfWork) -> str:
+def add_species(name: str, uow: UnitOfWork) -> str:
+    taxons = TaxonHistory()
+    taxons.new_name(name)
     species = Species(
-        TaxonName(genus=genus, species=species)
+        taxons.current_name(), taxons
     )
 
     with uow:
