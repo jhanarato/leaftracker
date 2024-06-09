@@ -44,7 +44,7 @@ def test_should_add_scientfic_names_to_domain_object():
         }
     )
 
-    expected = Species(TaxonName("Baumea", "juncea"), "species-0001")
+    expected = Species(TaxonName("Baumea", "juncea"), reference="species-0001")
     expected.new_taxon_name(TaxonName("Machaerina", "juncea"))
 
     result = document_to_species(document)
