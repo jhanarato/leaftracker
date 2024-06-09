@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from enum import Enum, auto
+from typing import Iterator
 
 
 @dataclass(frozen=True)
@@ -29,11 +30,15 @@ class TaxonHistory:
         self._names = []
 
     def new_name(self, name: str):
-        parts = name.split()
-        self._names = [TaxonName(parts[0], parts[1])]
+        genus, species = name.split()
+        taxon_name = TaxonName(genus, species)
+        self._names.append(taxon_name)
 
     def current_name(self) -> TaxonName:
         return self._names[-1]
+
+    def newest_to_oldest(self) -> Iterator[TaxonName]:
+        yield from reversed(self._names)
 
 
 class Species:
