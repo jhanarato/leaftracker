@@ -18,8 +18,12 @@ SPECIES_MAPPINGS = {
 
 
 def document_to_species(document: Document) -> Species:
-    species = Species(ScientificName("Baumea", "juncea"), "species-0001")
-    species.new_scientific_name(ScientificName("Machaerina", "juncea"))
+    names = document.source["scientific_names"]
+    species = Species(ScientificName(names[0]["genus"], names[0]["species"]))
+
+    for name in names[1:]:
+        species.new_scientific_name(ScientificName(name["genus"], name["species"]))
+
     return species
 
 
