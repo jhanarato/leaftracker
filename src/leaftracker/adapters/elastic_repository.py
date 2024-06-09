@@ -7,19 +7,23 @@ SPECIES_INDEX = "species"
 
 SPECIES_MAPPINGS = {
     "properties": {
-        "genus": {"type": "text"},
-        "species": {"type": "text"},
+        "scientific_names": {
+            "properties": {
+                "genus": {"type": "text"},
+                "species": {"type": "text"},
+            }
+        }
     }
 }
 
 
-def new_document_to_species(document: Document) -> Species:
+def document_to_species(document: Document) -> Species:
     species = Species(ScientificName("Baumea", "juncea"), "species-0001")
     species.new_scientific_name(ScientificName("Machaerina", "juncea"))
     return species
 
 
-def new_species_to_document(species: Species) -> Document:
+def species_to_document(species: Species) -> Document:
     scientific_names = [
         {"genus": name.genus, "species": name.species}
         for name in species.scientific_names
@@ -28,26 +32,6 @@ def new_species_to_document(species: Species) -> Document:
     return Document(
         document_id=species.reference,
         source={"scientific_names": scientific_names}
-    )
-
-
-def document_to_species(document: Document) -> Species:
-    return Species(
-        reference=document.document_id,
-        name=ScientificName(
-            genus=document.source["genus"],
-            species=document.source["species"]
-        )
-    )
-
-
-def species_to_document(species: Species) -> Document:
-    return Document(
-        document_id=species.reference,
-        source={
-            "genus": species.scientific_names[0].genus,
-            "species": species.scientific_names[0].species,
-        }
     )
 
 

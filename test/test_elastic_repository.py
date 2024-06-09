@@ -2,8 +2,8 @@ import pytest
 
 from conftest import INDEX_TEST_PREFIX
 from leaftracker.adapters.elastic_index import Document
-from leaftracker.adapters.elastic_repository import SpeciesRepository, SPECIES_INDEX, new_species_to_document, \
-    new_document_to_species
+from leaftracker.adapters.elastic_repository import SpeciesRepository, SPECIES_INDEX, species_to_document, \
+    document_to_species
 from leaftracker.domain.model import Species, ScientificName
 
 
@@ -21,7 +21,7 @@ def test_should_add_scientific_names_to_document():
     )
 
     species.new_scientific_name(ScientificName("Machaerina", "juncea"))
-    document = new_species_to_document(species)
+    document = species_to_document(species)
     assert document == Document(
         document_id="species-0001",
         source={
@@ -47,7 +47,7 @@ def test_should_add_scientfic_names_to_domain_object():
     expected = Species(ScientificName("Baumea", "juncea"), "species-0001")
     expected.new_scientific_name(ScientificName("Machaerina", "juncea"))
 
-    result = new_document_to_species(document)
+    result = document_to_species(document)
 
     assert expected.scientific_names == result.scientific_names
 
