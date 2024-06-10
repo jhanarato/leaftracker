@@ -36,7 +36,7 @@ def test_should_add_taxon_history_to_document():
     )
 
 
-def test_should_add_scientfic_names_to_domain_object():
+def test_should_add_taxon_history_to_domain_object():
     document = Document(
         document_id="species-0001",
         source={
@@ -47,13 +47,17 @@ def test_should_add_scientfic_names_to_domain_object():
         }
     )
 
-    expected = Species(name=TaxonName("Baumea", "juncea"), reference="species-0001")
-    expected.new_taxon_name(TaxonName("Machaerina", "juncea"))
+    expected = Species(name=TaxonName("XXX", "YYY"), reference="species-0001")
+
+    expected.taxon_history.new_name("Baumea juncea")
     expected.taxon_history.new_name("Machaerina juncea")
 
     result = document_to_species(document)
 
-    assert expected.taxon_names == result.taxon_names
+    assert list(result.taxon_history.oldest_to_newest()) == [
+        TaxonName("Baumea", "juncea"),
+        TaxonName("Machaerina", "juncea"),
+    ]
 
 
 class TestSpeciesRepository:
