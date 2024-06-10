@@ -53,9 +53,12 @@ def add_pickup(source_name: str, uow: UnitOfWork) -> str:
 def add_species(name: str, uow: UnitOfWork) -> str:
     taxons = TaxonHistory()
     taxons.new_name(name)
+
     species = Species(
-        taxons.current_name(), taxons
+        taxons.current_name()
     )
+
+    species.taxon_history.new_name(name)
 
     with uow:
         uow.species().add(species)
