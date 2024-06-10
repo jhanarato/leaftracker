@@ -67,12 +67,6 @@ class Species:
     def __hash__(self):
         return hash(self.reference)
 
-    def new_taxon_name(self, name: TaxonName):
-        self.taxon_names.append(name)
-
-    def current_taxon_name(self) -> TaxonName:
-        return self.taxon_names[-1]
-
 
 class StockSize(Enum):
     TUBE = auto()
