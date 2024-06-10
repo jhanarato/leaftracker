@@ -19,8 +19,7 @@ def saligna() -> Species:
             genus="Acacia",
             species="saligna",
             is_most_recent=True
-        ),
-        taxons
+        )
     )
 
 
@@ -32,8 +31,7 @@ def dentifera() -> Species:
             genus="Acacia",
             species="dentifera",
             is_most_recent=True
-        ),
-        taxons
+        )
     )
 
 
