@@ -12,27 +12,28 @@ INDEX_TEST_PREFIX = "test_"
 
 @pytest.fixture
 def saligna() -> Species:
-    taxons = TaxonHistory()
-    taxons.new_name("Acacia saligna")
-    return Species(
+    species = Species(
         TaxonName(
             genus="Acacia",
             species="saligna",
             is_most_recent=True
         )
     )
+    species.taxon_history.new_name("Acacia saligna")
+    return species
 
 
 @pytest.fixture
 def dentifera() -> Species:
-    taxons = TaxonHistory()
-    return Species(
+    species = Species(
         TaxonName(
             genus="Acacia",
             species="dentifera",
             is_most_recent=True
         )
     )
+    species.taxon_history.new_name("Acacia dentifera")
+    return species
 
 
 @pytest.fixture(autouse=True, scope='session')
