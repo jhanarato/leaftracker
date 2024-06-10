@@ -21,6 +21,7 @@ def test_should_add_scientific_names_to_document():
     )
 
     species.new_taxon_name(TaxonName("Machaerina", "juncea"))
+    species.taxon_history.new_name("Baumea juncea")
     species.taxon_history.new_name("Machaerina juncea")
     document = species_to_document(species)
     assert document == Document(

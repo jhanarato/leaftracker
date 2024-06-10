@@ -34,7 +34,7 @@ def document_to_species(document: Document) -> Species:
 def species_to_document(species: Species) -> Document:
     scientific_names = [
         {"genus": name.genus, "species": name.species}
-        for name in species.taxon_names
+        for name in species.taxon_history.oldest_to_newest()
     ]
 
     return Document(
