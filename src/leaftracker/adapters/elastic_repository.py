@@ -19,10 +19,14 @@ SPECIES_MAPPINGS = {
 
 def document_to_species(document: Document) -> Species:
     names = document.source["scientific_names"]
-    species = Species(TaxonName(names[0]["genus"], names[0]["species"]))
+    first_taxon_name = TaxonName(names[0]["genus"], names[0]["species"])
+    species = Species(first_taxon_name)
+    species.taxon_history.new_name(str(first_taxon_name))
 
     for name in names[1:]:
-        species.new_taxon_name(TaxonName(name["genus"], name["species"]))
+        next_taxon_name = TaxonName(name["genus"], name["species"])
+        species.new_taxon_name(next_taxon_name)
+        species.taxon_history.new_name(str(next_taxon_name))
 
     return species
 

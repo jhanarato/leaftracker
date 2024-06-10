@@ -11,6 +11,9 @@ class TaxonName:
     is_most_recent: bool = True
     year_name_given: str | None = None
 
+    def __str__(self) -> str:
+        return f"{self.genus} {self.species}"
+
 
 @dataclass(frozen=True)
 class WebReference:
