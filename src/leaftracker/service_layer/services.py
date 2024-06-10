@@ -67,10 +67,8 @@ def add_species(name: str, uow: UnitOfWork) -> str:
     return species.reference
 
 
-def rename_species(reference: str, genus: str, species: str, uow: UnitOfWork) -> None:
-    new_name = TaxonName(genus=genus, species=species)
-
+def rename_species(reference: str, name: str, uow: UnitOfWork) -> None:
     with uow:
         species = uow.species().get(reference)
-        species.new_taxon_name(new_name)
+        species.taxon_history.new_name(name)
         uow.commit()
