@@ -14,16 +14,17 @@ def repository() -> SpeciesRepository:
     return repo
 
 
-def test_should_add_scientific_names_to_document():
+def test_should_add_taxon_history_to_document():
     species = Species(
-        name=TaxonName("Baumea", "juncea"),
+        name=TaxonName("XXX", "YYY"),
         reference="species-0001"
     )
 
-    species.new_taxon_name(TaxonName("Machaerina", "juncea"))
     species.taxon_history.new_name("Baumea juncea")
     species.taxon_history.new_name("Machaerina juncea")
+
     document = species_to_document(species)
+
     assert document == Document(
         document_id="species-0001",
         source={
