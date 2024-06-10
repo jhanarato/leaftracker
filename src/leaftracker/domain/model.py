@@ -48,7 +48,7 @@ class TaxonHistory:
 
 
 class Species:
-    def __init__(self, name: TaxonName, reference: str | None = None):
+    def __init__(self, reference: str | None = None):
         self.reference = reference
         self.taxon_history = TaxonHistory()
         self.common_names: list[str] = []

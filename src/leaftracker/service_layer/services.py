@@ -54,9 +54,7 @@ def add_species(name: str, uow: UnitOfWork) -> str:
     taxons = TaxonHistory()
     taxons.new_name(name)
 
-    species = Species(
-        taxons.current_name()
-    )
+    species = Species()
 
     species.taxon_history.new_name(name)
 
