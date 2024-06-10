@@ -25,7 +25,6 @@ def document_to_species(document: Document) -> Species:
 
     for name in names[1:]:
         next_taxon_name = TaxonName(name["genus"], name["species"])
-        species.new_taxon_name(next_taxon_name)
         species.taxon_history.new_name(str(next_taxon_name))
 
     return species
