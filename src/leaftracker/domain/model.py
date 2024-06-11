@@ -37,7 +37,7 @@ class TaxonHistory:
         taxon_name = TaxonName(genus, species)
         self._names.append(taxon_name)
 
-    def current_name(self) -> TaxonName:
+    def current(self) -> TaxonName:
         return self._names[-1]
 
     def not_current(self) -> list[TaxonName]:

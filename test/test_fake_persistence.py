@@ -40,7 +40,7 @@ class TestFakeUnitOfWork:
             uow.commit()
 
         retrieved = uow.species().get("species-0001")
-        assert retrieved.taxon_history.current_name().species == "dentifera"  # type: ignore
+        assert retrieved.taxon_history.current().species == "dentifera"  # type: ignore
 
 
 class TestFakeSpeciesRepository:
