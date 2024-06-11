@@ -8,7 +8,7 @@ class TaxonName:
     genus: str
     species: str
     subspecies: str | None = None
-    is_most_recent: bool = True
+    current: bool = True
 
     def __str__(self) -> str:
         return f"{self.genus} {self.species}"
