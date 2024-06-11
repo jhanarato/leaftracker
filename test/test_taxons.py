@@ -13,3 +13,14 @@ def test_should_change_current_name():
     taxon.new_name("Machaerina juncea")
     assert taxon.current_name() == TaxonName(genus="Machaerina", species="juncea")
 
+
+def test_should_list_other_names():
+    taxon = TaxonHistory()
+    taxon.new_name("Genus speciesone")
+    taxon.new_name("Genus speciestwo")
+    taxon.new_name("Genus speciesthree")
+
+    assert taxon.not_current() == [
+        TaxonName("Genus", "speciesone"),
+        TaxonName("Genus", "speciestwo"),
+    ]

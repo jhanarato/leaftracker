@@ -40,6 +40,9 @@ class TaxonHistory:
     def current_name(self) -> TaxonName:
         return self._names[-1]
 
+    def not_current(self) -> list[TaxonName]:
+        return self._names[:-1]
+
     def __iter__(self) -> Iterator[TaxonName]:
         yield from self._names
 
