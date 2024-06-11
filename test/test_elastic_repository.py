@@ -53,7 +53,7 @@ def test_should_add_taxon_history_to_domain_object():
 
     result = document_to_species(document)
 
-    assert list(result.taxon_history.oldest_to_newest()) == [
+    assert list(result.taxon_history) == [
         TaxonName("Baumea", "juncea"),
         TaxonName("Machaerina", "juncea"),
     ]
