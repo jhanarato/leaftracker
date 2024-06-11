@@ -43,9 +43,6 @@ class TaxonHistory:
     def __iter__(self) -> Iterator[TaxonName]:
         yield from self._names
 
-    def newest_to_oldest(self) -> Iterator[TaxonName]:
-        yield from reversed(self._names)
-
 
 class Species:
     def __init__(self, reference: str | None = None):
