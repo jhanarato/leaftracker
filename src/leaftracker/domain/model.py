@@ -40,8 +40,11 @@ class TaxonHistory:
     def current_name(self) -> TaxonName:
         return self._names[-1]
 
-    def oldest_to_newest(self) -> Iterator[TaxonName]:
+    def __iter__(self) -> Iterator[TaxonName]:
         yield from self._names
+
+    def oldest_to_newest(self) -> Iterator[TaxonName]:
+        yield from self
 
     def newest_to_oldest(self) -> Iterator[TaxonName]:
         yield from reversed(self._names)
