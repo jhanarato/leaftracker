@@ -4,16 +4,6 @@ from typing import Iterator
 
 
 @dataclass(frozen=True)
-class TaxonName:
-    genus: str
-    species: str
-    subspecies: str | None = None
-
-    def __str__(self) -> str:
-        return f"{self.genus} {self.species}"
-
-
-@dataclass(frozen=True)
 class WebReference:
     description: str
     site_name: str
@@ -24,6 +14,16 @@ class WebReference:
 class Photo:
     description: str
     name: str
+
+
+@dataclass(frozen=True)
+class TaxonName:
+    genus: str
+    species: str
+    subspecies: str | None = None
+
+    def __str__(self) -> str:
+        return f"{self.genus} {self.species}"
 
 
 class TaxonHistory:
