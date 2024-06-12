@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from enum import Enum, auto
-from typing import Iterator
+from typing import Iterator, Self
 
 
 @dataclass(frozen=True)
@@ -16,14 +16,33 @@ class Photo:
     name: str
 
 
-@dataclass(frozen=True)
 class TaxonName:
-    genus: str
-    species: str
-    subspecies: str | None = None
+    def __init__(self, genus: str, species: str):
+        self._genus = genus
+        self._species = species
+
+    @property
+    def genus(self) -> str:
+        return self._genus
+
+    @property
+    def species(self):
+        return self._species
 
     def __str__(self) -> str:
         return f"{self.genus} {self.species}"
+
+    def __repr__(self):
+        return f"<TaxonName {self.genus} {self.species}>"
+
+    def __eq__(self, other):
+        if not isinstance(other, TaxonName):
+            return False
+        if other.genus != self.genus:
+            return False
+        if other.species != self.species:
+            return False
+        return True
 
 
 class TaxonHistory:
