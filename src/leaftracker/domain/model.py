@@ -8,7 +8,6 @@ class TaxonName:
     genus: str
     species: str
     subspecies: str | None = None
-    current: bool = True
 
     def __str__(self) -> str:
         return f"{self.genus} {self.species}"
