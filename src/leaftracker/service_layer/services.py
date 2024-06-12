@@ -1,4 +1,4 @@
-from leaftracker.domain.model import Source, SourceType, Batch, BatchType, Species, TaxonName, TaxonHistory
+from leaftracker.domain.model import Source, SourceType, Batch, BatchType, Species
 from leaftracker.service_layer.unit_of_work import UnitOfWork
 
 
