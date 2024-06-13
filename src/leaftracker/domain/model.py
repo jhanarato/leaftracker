@@ -49,13 +49,7 @@ class TaxonName:
     def __eq__(self, other):
         if not isinstance(other, TaxonName):
             return False
-        if other.genus != self.genus:
-            return False
-        if other.species != self.species:
-            return False
-        if other.subspecies != self.subspecies:
-            return False
-        return True
+        return self._parts == other._parts
 
 
 class TaxonHistory:
