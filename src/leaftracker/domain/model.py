@@ -42,7 +42,10 @@ class TaxonName:
         return None
 
     def __str__(self) -> str:
-        return f"{self.genus} {self.species}"
+        if self._subspecies:
+            return f"{self.genus} {self.species} {self.subspecies}"
+        else:
+            return f"{self.genus} {self.species}"
 
     def __repr__(self):
         return f"<TaxonName {self.genus} {self.species}>"

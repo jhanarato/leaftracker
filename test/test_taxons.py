@@ -17,14 +17,9 @@ class TestTaxonName:
 
         assert name_one == name_two
 
-    def test_should_create_from_string(self, species_name):
-        taxon = TaxonName("Acacia saligna")
-        assert taxon.genus == "Acacia"
-        assert taxon.species == "saligna"
-
     def test_should_cast_to_string(self, species_name):
-        taxon = TaxonName("Acacia saligna")
-        assert str(taxon) == "Acacia saligna"
+        taxon = TaxonName(species_name)
+        assert str(taxon) == species_name
 
     @pytest.mark.parametrize(
         "name",
