@@ -1,3 +1,5 @@
+import pytest
+
 from leaftracker.domain.model import TaxonHistory, TaxonName
 
 
@@ -16,6 +18,16 @@ class TestTaxonName:
     def test_should_cast_to_string(self):
         taxon = TaxonName("Acacia saligna")
         assert str(taxon) == "Acacia saligna"
+
+    @pytest.mark.parametrize(
+        "original,capitalised",
+        [
+            ("Acacia saligna", "Acacia saligna")
+        ]
+    )
+    def test_should_capitalise(self, original, capitalised):
+        taxon = TaxonName(original)
+        assert str(taxon) == capitalised
 
 
 class TestTaxonHistory:
