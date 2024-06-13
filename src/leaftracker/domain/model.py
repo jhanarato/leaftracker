@@ -55,8 +55,7 @@ class TaxonHistory:
         self._names = []
 
     def new_name(self, name: str):
-        genus, species = name.split()
-        taxon_name = TaxonName(genus, species)
+        taxon_name = TaxonName.from_string(name)
         self._names.append(taxon_name)
 
     def current(self) -> TaxonName:
