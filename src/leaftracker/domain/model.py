@@ -18,31 +18,27 @@ class Photo:
 
 class TaxonName:
     def __init__(self, name: str):
-        parts = name.split()
-        self._genus = parts[0]
-        self._species = parts[1]
+        self._parts = name.split()
 
-        if len(parts) == 3:
-            self._subspecies = parts[2]
-        else:
-            self._subspecies = None
+    def has_subspecies(self) -> bool:
+        return len(self._parts) == 3
 
     @property
     def genus(self) -> str:
-        return self._genus.capitalize()
+        return self._parts[0].capitalize()
 
     @property
     def species(self) -> str:
-        return self._species.lower()
+        return self._parts[1].lower()
 
     @property
     def subspecies(self) -> str | None:
-        if self._subspecies:
-            return self._subspecies.lower()
+        if self.has_subspecies():
+            return self._parts[2].lower()
         return None
 
     def __str__(self) -> str:
-        if self._subspecies:
+        if self.has_subspecies():
             return f"{self.genus} {self.species} {self.subspecies}"
         else:
             return f"{self.genus} {self.species}"
