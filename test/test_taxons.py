@@ -20,15 +20,14 @@ class TestTaxonName:
         assert str(taxon) == "Acacia saligna"
 
     @pytest.mark.parametrize(
-        "original,capitalised",
+        "name",
         [
-            ("Acacia saligna", "Acacia saligna"),
-            ("acacia saligna", "Acacia saligna"),
+            "Acacia saligna", "acacia saligna",
         ]
     )
-    def test_should_capitalise_genus_but_not_species(self, original, capitalised):
-        taxon = TaxonName(original)
-        assert str(taxon) == capitalised
+    def test_should_capitalise_genus_but_not_species(self, name):
+        taxon = TaxonName(name)
+        assert str(taxon) == "Acacia saligna"
 
 
 class TestTaxonHistory:
