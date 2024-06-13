@@ -13,6 +13,10 @@ class TestTaxonName:
         assert taxon.genus == "Acacia"
         assert taxon.species == "saligna"
 
+    def test_should_cast_to_string(self):
+        taxon = TaxonName("Acacia saligna")
+        assert str(taxon) == "Acacia saligna"
+
 
 class TestTaxonHistory:
     def test_should_have_current_name(self):
