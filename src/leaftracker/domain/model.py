@@ -17,14 +17,10 @@ class Photo:
 
 
 class TaxonName:
-    def __init__(self, genus: str, species: str):
+    def __init__(self, name: str):
+        genus, species = name.split()
         self._genus = genus
         self._species = species
-
-    @classmethod
-    def from_string(cls, name: str):
-        genus, species = name.split()
-        return cls(genus, species)
 
     @property
     def genus(self) -> str:
@@ -55,7 +51,7 @@ class TaxonHistory:
         self._names = []
 
     def new_name(self, name: str):
-        taxon_name = TaxonName.from_string(name)
+        taxon_name = TaxonName(name)
         self._names.append(taxon_name)
 
     def current(self) -> TaxonName:
