@@ -21,6 +21,11 @@ class TaxonName:
         self._genus = genus
         self._species = species
 
+    @classmethod
+    def from_string(cls, name: str):
+        genus, species = name.split()
+        return cls(genus, species)
+
     @property
     def genus(self) -> str:
         return self._genus

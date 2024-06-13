@@ -8,6 +8,11 @@ class TestTaxonName:
 
         assert name_one == name_two
 
+    def test_should_create_from_string(self):
+        taxon = TaxonName.from_string("Acacia saligna")
+        assert taxon.genus == "Acacia"
+        assert taxon.species == "saligna"
+
 
 class TestTaxonHistory:
     def test_should_have_current_name(self):
