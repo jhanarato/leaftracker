@@ -24,7 +24,7 @@ class TaxonName:
 
     @property
     def genus(self) -> str:
-        return self._genus
+        return self._genus.capitalize()
 
     @property
     def species(self):
