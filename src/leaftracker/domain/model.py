@@ -16,9 +16,15 @@ class Photo:
     name: str
 
 
+class MalformedTaxonName(Exception):
+    pass
+
+
 class TaxonName:
     def __init__(self, name: str):
         self._parts = name.split()
+        if len(self._parts) not in (2, 3):
+            raise MalformedTaxonName(f"Bad taxon: {name}")
 
     def has_subspecies(self) -> bool:
         return len(self._parts) == 3

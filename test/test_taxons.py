@@ -1,6 +1,6 @@
 import pytest
 
-from leaftracker.domain.model import TaxonHistory, TaxonName
+from leaftracker.domain.model import TaxonHistory, TaxonName, MalformedTaxonName
 
 
 class TestTaxonName:
@@ -62,6 +62,13 @@ class TestTaxonName:
     def test_should_lowercase_subspecies(self, species_name):
         taxon = TaxonName(species_name)
         assert str(taxon) == "Hakea petiolaris trichophylla"
+
+    @pytest.mark.parametrize(
+        "species_name", ["Hakea", "Hakea petiolaris trichophylla trichophylla"]
+    )
+    def test_should_flag_malformed_names(self, species_name):
+        with pytest.raises(MalformedTaxonName, match=f"Bad taxon: {species_name}"):
+            taxon = TaxonName(species_name)
 
 
 class TestTaxonHistory:
