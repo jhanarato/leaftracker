@@ -39,6 +39,30 @@ class TestTaxonName:
         taxon = TaxonName(species_name)
         assert str(taxon) == "Acacia saligna"
 
+    @pytest.mark.parametrize(
+        "species_name",
+        [
+            "Acacia Saligna", "acacia saligna",
+            "Acacia SALIGNA", "Acacia SaLiGnA",
+        ]
+    )
+    def test_should_lowercase_species(self, species_name):
+        taxon = TaxonName(species_name)
+        assert str(taxon) == "Acacia saligna"
+
+    @pytest.mark.parametrize(
+        "species_name",
+        [
+            "Hakea petiolaris trichophylla",
+            "Hakea petiolaris Trichophylla",
+            "Hakea petiolaris TRICHOPHYLLA",
+            "Hakea petiolaris TrIcHoPhYlLa",
+        ]
+    )
+    def test_should_lowercase_subspecies(self, species_name):
+        taxon = TaxonName(species_name)
+        assert str(taxon) == "Hakea petiolaris trichophylla"
+
 
 class TestTaxonHistory:
     def test_should_have_current_name(self):
