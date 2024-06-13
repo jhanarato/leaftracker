@@ -32,7 +32,7 @@ class TestTaxonName:
         "species_name",
         [
             "Acacia saligna", "acacia saligna",
-            "Acacia Saligna", "acacia Saligna",
+            "ACACIA saligna", "AcACiA saligna",
         ]
     )
     def test_should_capitalise_genus(self, species_name):
