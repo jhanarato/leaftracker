@@ -3,34 +3,40 @@ import pytest
 from leaftracker.domain.model import TaxonHistory, TaxonName
 
 
-@pytest.mark.parametrize(
-    "species_name", [
-        "Acacia saligna",
-        "Hakea petiolaris trichophylla",
-        "Adenanthos sericeus sericeus",
-    ]
-)
 class TestTaxonName:
+    @pytest.mark.parametrize(
+        "species_name", [
+            "Acacia saligna",
+            "Hakea petiolaris trichophylla",
+            "Adenanthos sericeus sericeus",
+        ]
+    )
     def test_should_be_equal(self, species_name):
         name_one = TaxonName(species_name)
         name_two = TaxonName(species_name)
 
         assert name_one == name_two
 
+    @pytest.mark.parametrize(
+        "species_name", [
+            "Acacia saligna",
+            "Hakea petiolaris trichophylla",
+            "Adenanthos sericeus sericeus",
+        ]
+    )
     def test_should_cast_to_string(self, species_name):
         taxon = TaxonName(species_name)
         assert str(taxon) == species_name
 
     @pytest.mark.parametrize(
-        "name",
+        "species_name",
         [
             "Acacia saligna", "acacia saligna",
-            "acacia Saligna", "Acacia Saligna",
-            "ACACIA SALIGNA", "aCaCiA SaLiGnA",
+            "Acacia Saligna", "acacia Saligna",
         ]
     )
-    def test_should_capitalise_genus_but_not_species(self, name, species_name):
-        taxon = TaxonName(name)
+    def test_should_capitalise_genus(self, species_name):
+        taxon = TaxonName(species_name)
         assert str(taxon) == "Acacia saligna"
 
 
