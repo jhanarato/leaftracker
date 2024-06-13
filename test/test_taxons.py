@@ -23,6 +23,7 @@ class TestTaxonName:
         "name",
         [
             "Acacia saligna", "acacia saligna",
+            "acacia Saligna", "Acacia Saligna",
         ]
     )
     def test_should_capitalise_genus_but_not_species(self, name):

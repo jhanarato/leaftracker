@@ -28,7 +28,7 @@ class TaxonName:
 
     @property
     def species(self):
-        return self._species
+        return self._species.lower()
 
     def __str__(self) -> str:
         return f"{self.genus} {self.species}"
