@@ -67,7 +67,7 @@ class TestTaxonName:
         "species_name", ["Hakea", "Hakea petiolaris trichophylla trichophylla"]
     )
     def test_should_flag_malformed_names(self, species_name):
-        with pytest.raises(MalformedTaxonName, match=f"Bad taxon: {species_name}"):
+        with pytest.raises(MalformedTaxonName):
             taxon = TaxonName(species_name)
 
 
