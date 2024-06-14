@@ -74,39 +74,39 @@ class TestTaxonName:
 class TestTaxonHistory:
     def test_should_set_current_name(self):
         taxon = TaxonHistory()
-        taxon.set_current_name("Baumea juncea")
+        taxon.new_current_name("Baumea juncea")
         assert taxon.current() == TaxonName("Baumea juncea")
 
     def test_should_change_current_name(self):
         taxon = TaxonHistory()
-        taxon.set_current_name("Baumea juncea")
-        taxon.set_current_name("Machaerina juncea")
+        taxon.new_current_name("Baumea juncea")
+        taxon.new_current_name("Machaerina juncea")
         assert taxon.current() == TaxonName("Machaerina juncea")
 
     def test_should_list_other_names(self):
         taxon = TaxonHistory()
-        taxon.set_current_name("Genus speciesone")
-        taxon.set_current_name("Genus speciestwo")
-        taxon.set_current_name("Genus speciesthree")
+        taxon.new_current_name("Genus speciesone")
+        taxon.new_current_name("Genus speciestwo")
+        taxon.new_current_name("Genus speciesthree")
 
-        assert taxon.not_current() == [
+        assert taxon.previous() == [
             TaxonName("Genus speciesone"),
             TaxonName("Genus speciestwo"),
         ]
 
     def test_should_add_not_current_name(self):
         taxon = TaxonHistory()
-        taxon.add_not_current_name("Baumea juncea")
-        assert taxon.not_current() == [TaxonName("Baumea juncea")]
+        taxon.add_previous_name("Baumea juncea")
+        assert taxon.previous() == [TaxonName("Baumea juncea")]
 
     def test_should_iterate_in_order(self):
         taxon = TaxonHistory()
-        taxon.set_current_name("Baumea juncea")
-        taxon.set_current_name("Machaerina juncea")
+        taxon.new_current_name("Baumea juncea")
+        taxon.new_current_name("Machaerina juncea")
         assert list(taxon) == [TaxonName("Baumea juncea"), TaxonName("Machaerina juncea")]
 
     def test_should_iterate_with_missing_current_name(self):
         taxon = TaxonHistory()
-        taxon.add_not_current_name("Baumea juncea")
-        taxon.add_not_current_name("Machaerina juncea")
+        taxon.add_previous_name("Baumea juncea")
+        taxon.add_previous_name("Machaerina juncea")
         assert list(taxon) == [TaxonName("Baumea juncea"), TaxonName("Machaerina juncea")]

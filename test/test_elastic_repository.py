@@ -19,8 +19,8 @@ def repository() -> SpeciesRepository:
 def test_should_add_taxon_history_to_document():
     species = Species(reference="species-0001")
 
-    species.taxon_history.set_current_name("Baumea juncea")
-    species.taxon_history.set_current_name("Machaerina juncea")
+    species.taxon_history.new_current_name("Baumea juncea")
+    species.taxon_history.new_current_name("Machaerina juncea")
 
     document = species_to_document(species)
 
@@ -48,8 +48,8 @@ def test_should_add_taxon_history_to_domain_object():
 
     expected = Species(reference="species-0001")
 
-    expected.taxon_history.set_current_name("Baumea juncea")
-    expected.taxon_history.set_current_name("Machaerina juncea")
+    expected.taxon_history.new_current_name("Baumea juncea")
+    expected.taxon_history.new_current_name("Machaerina juncea")
 
     result = document_to_species(document)
 
