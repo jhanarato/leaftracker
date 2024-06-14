@@ -68,8 +68,8 @@ class TaxonHistory:
     def current(self) -> TaxonName | None:
         return self._current
 
-    def previous(self) -> list[TaxonName]:
-        return self._previous
+    def previous(self) -> Iterator[TaxonName]:
+        yield from self._previous
 
     def new_current_name(self, name: str):
         if self._current is not None:
