@@ -93,3 +93,8 @@ class TestTaxonHistory:
             TaxonName("Genus speciesone"),
             TaxonName("Genus speciestwo"),
         ]
+
+    def test_should_add_not_current_name(self):
+        taxon = TaxonHistory()
+        taxon.add_not_current_name("Baumea juncea")
+        assert taxon.not_current() == [TaxonName("Baumea juncea")]

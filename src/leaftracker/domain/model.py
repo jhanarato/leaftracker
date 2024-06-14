@@ -77,6 +77,9 @@ class TaxonHistory:
 
         self._current = TaxonName(name)
 
+    def add_not_current_name(self, name: str):
+        self._not_current.append(TaxonName(name))
+
     def __iter__(self) -> Iterator[TaxonName]:
         yield from self._not_current
         yield self._current
