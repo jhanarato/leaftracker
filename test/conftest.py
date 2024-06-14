@@ -13,14 +13,14 @@ INDEX_TEST_PREFIX = "test_"
 @pytest.fixture
 def saligna() -> Species:
     species = Species()
-    species.taxon_history.new_name("Acacia saligna")
+    species.taxon_history.set_current_name("Acacia saligna")
     return species
 
 
 @pytest.fixture
 def dentifera() -> Species:
     species = Species()
-    species.taxon_history.new_name("Acacia dentifera")
+    species.taxon_history.set_current_name("Acacia dentifera")
     return species
 
 

@@ -23,7 +23,7 @@ def document_to_species(document: Document) -> Species:
     names = document.source["scientific_names"]
 
     for name in names:
-        species.taxon_history.new_name(f"{name["genus"]} {name["species"]}")
+        species.taxon_history.set_current_name(f"{name["genus"]} {name["species"]}")
 
     return species
 

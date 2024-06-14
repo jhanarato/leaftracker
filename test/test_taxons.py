@@ -72,22 +72,22 @@ class TestTaxonName:
 
 
 class TestTaxonHistory:
-    def test_should_have_current_name(self):
+    def test_should_set_current_name(self):
         taxon = TaxonHistory()
-        taxon.new_name("Baumea juncea")
+        taxon.set_current_name("Baumea juncea")
         assert taxon.current() == TaxonName("Baumea juncea")
 
     def test_should_change_current_name(self):
         taxon = TaxonHistory()
-        taxon.new_name("Baumea juncea")
-        taxon.new_name("Machaerina juncea")
+        taxon.set_current_name("Baumea juncea")
+        taxon.set_current_name("Machaerina juncea")
         assert taxon.current() == TaxonName("Machaerina juncea")
 
     def test_should_list_other_names(self):
         taxon = TaxonHistory()
-        taxon.new_name("Genus speciesone")
-        taxon.new_name("Genus speciestwo")
-        taxon.new_name("Genus speciesthree")
+        taxon.set_current_name("Genus speciesone")
+        taxon.set_current_name("Genus speciestwo")
+        taxon.set_current_name("Genus speciesthree")
 
         assert taxon.not_current() == [
             TaxonName("Genus speciesone"),

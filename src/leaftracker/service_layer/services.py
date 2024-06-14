@@ -52,7 +52,7 @@ def add_pickup(source_name: str, uow: UnitOfWork) -> str:
 
 def add_species(name: str, uow: UnitOfWork) -> str:
     species = Species()
-    species.taxon_history.new_name(name)
+    species.taxon_history.set_current_name(name)
 
     with uow:
         uow.species().add(species)
@@ -64,5 +64,5 @@ def add_species(name: str, uow: UnitOfWork) -> str:
 def rename_species(reference: str, name: str, uow: UnitOfWork) -> None:
     with uow:
         species = uow.species().get(reference)
-        species.taxon_history.new_name(name)
+        species.taxon_history.set_current_name(name)
         uow.commit()
