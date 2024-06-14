@@ -98,3 +98,9 @@ class TestTaxonHistory:
         taxon = TaxonHistory()
         taxon.add_not_current_name("Baumea juncea")
         assert taxon.not_current() == [TaxonName("Baumea juncea")]
+
+    def test_should_iterate_in_order(self):
+        taxon = TaxonHistory()
+        taxon.set_current_name("Baumea juncea")
+        taxon.set_current_name("Machaerina juncea")
+        assert list(taxon) == [TaxonName("Baumea juncea"), TaxonName("Machaerina juncea")]
