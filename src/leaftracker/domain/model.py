@@ -82,7 +82,9 @@ class TaxonHistory:
 
     def __iter__(self) -> Iterator[TaxonName]:
         yield from self._not_current
-        yield self._current
+
+        if self._current:
+            yield self._current
 
 
 class Species:
