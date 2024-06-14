@@ -25,7 +25,7 @@ class TaxonName:
         self._parts = name.split()
         if len(self._parts) not in (2, 3):
             raise MalformedTaxonName(
-                f"Taxon {name} has wrong number of ranks. Must have two, or three including subspecies."
+                f"Taxon must have two or three ranks. Genus, species and optionally subspecies."
             )
 
     def has_subspecies(self) -> bool:
