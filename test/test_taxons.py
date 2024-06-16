@@ -92,7 +92,7 @@ class TestTaxonHistory:
         ]
 
     def test_should_add_previous_name(self):
-        taxon = TaxonHistory()
+        taxon = TaxonHistory("Machaerina juncea")
         taxon.add_previous_name("Baumea juncea")
         assert list(taxon.previous()) == [TaxonName("Baumea juncea")]
 
