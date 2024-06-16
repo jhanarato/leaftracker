@@ -51,8 +51,7 @@ def add_pickup(source_name: str, uow: UnitOfWork) -> str:
 
 
 def add_species(name: str, uow: UnitOfWork) -> str:
-    species = Species()
-    species.taxon_history.new_current_name(name)
+    species = Species(reference=None, current_name=name)
 
     with uow:
         uow.species().add(species)
