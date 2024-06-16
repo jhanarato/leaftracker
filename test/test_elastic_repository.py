@@ -17,10 +17,9 @@ def repository() -> SpeciesRepository:
 
 
 def test_should_add_taxon_history_to_document():
-    species = Species(reference="species-0001")
+    species = Species(reference="species-0001", current_name="Machaerina juncea")
 
-    species.taxon_history.new_current_name("Baumea juncea")
-    species.taxon_history.new_current_name("Machaerina juncea")
+    species.taxon_history.add_previous_name("Baumea juncea")
 
     document = species_to_document(species)
 
