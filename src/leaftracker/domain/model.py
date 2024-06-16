@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from enum import Enum, auto
-from typing import Iterator, Self
+from typing import Iterator
 
 
 @dataclass(frozen=True)
