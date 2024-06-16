@@ -72,6 +72,10 @@ class TestTaxonName:
 
 
 class TestTaxonHistory:
+    def test_should_initialize_with_current_name(self):
+        taxon = TaxonHistory("Baumea juncea")
+        assert taxon.current() == TaxonName("Baumea juncea")
+
     def test_should_set_current_name(self):
         taxon = TaxonHistory()
         taxon.new_current_name("Baumea juncea")

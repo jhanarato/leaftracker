@@ -61,9 +61,12 @@ class TaxonName:
 
 
 class TaxonHistory:
-    def __init__(self):
+    def __init__(self, current_name: str | None = None):
         self._current = None
         self._previous = []
+
+        if current_name:
+            self.new_current_name(current_name)
 
     def current(self) -> TaxonName | None:
         return self._current
