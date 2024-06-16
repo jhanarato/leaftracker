@@ -12,13 +12,13 @@ INDEX_TEST_PREFIX = "test_"
 
 @pytest.fixture
 def saligna() -> Species:
-    species = Species(current_name="Acacia saligna", reference=None)
+    species = Species("Acacia saligna")
     return species
 
 
 @pytest.fixture
 def dentifera() -> Species:
-    species = Species(current_name="Acacia dentifera", reference=None)
+    species = Species("Acacia dentifera")
     return species
 
 
