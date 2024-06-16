@@ -50,8 +50,8 @@ def add_pickup(source_name: str, uow: UnitOfWork) -> str:
     return _add_batch(source_name, BatchType.PICKUP, uow)
 
 
-def add_species(name: str, uow: UnitOfWork) -> str:
-    species = Species(current_name=name, reference=None)
+def add_species(current_name: str, uow: UnitOfWork) -> str:
+    species = Species(current_name)
 
     with uow:
         uow.species().add(species)
