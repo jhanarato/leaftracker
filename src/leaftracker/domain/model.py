@@ -10,12 +10,6 @@ class WebReference:
     url: str
 
 
-@dataclass(frozen=True)
-class Photo:
-    description: str
-    name: str
-
-
 class MalformedTaxonName(Exception):
     pass
 
@@ -96,7 +90,6 @@ class Species:
         self.taxon_history = TaxonHistory(current_name)
         self.common_names: list[str] = []
         self.web_references: list[WebReference] = []
-        self.photos: list[Photo] = []
 
     def __repr__(self):
         return f"<Species {self.reference}>"
