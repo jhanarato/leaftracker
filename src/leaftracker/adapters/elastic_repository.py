@@ -18,12 +18,15 @@ SPECIES_MAPPINGS = {
 
 
 def document_to_species(document: Document) -> Species:
-    species = Species()
-
     names = document.source["scientific_names"]
 
-    for name in names:
-        species.taxon_history.new_current_name(f"{name["genus"]} {name["species"]}")
+    current_name = names[-1]
+    previous_names = names[:-1]
+
+    species = Species(document.document_id, f"{current_name["genus"]} {current_name["species"]}")
+
+    for previous_name in previous_names:
+        species.taxon_history.add_previous_name(f"{previous_name["genus"]} {previous_name["species"]}")
 
     return species
 

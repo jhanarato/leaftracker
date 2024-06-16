@@ -46,17 +46,10 @@ def test_should_add_taxon_history_to_domain_object():
         }
     )
 
-    expected = Species(reference="species-0001")
-
-    expected.taxon_history.new_current_name("Baumea juncea")
-    expected.taxon_history.new_current_name("Machaerina juncea")
-
     result = document_to_species(document)
 
-    assert list(result.taxon_history) == [
-        TaxonName("Baumea juncea"),
-        TaxonName("Machaerina juncea"),
-    ]
+    assert result.taxon_history.current() == TaxonName("Machaerina juncea")
+    assert list(result.taxon_history.previous()) == [TaxonName("Baumea juncea")]
 
 
 class TestSpeciesRepository:
