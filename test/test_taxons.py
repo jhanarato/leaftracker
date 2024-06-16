@@ -76,14 +76,8 @@ class TestTaxonHistory:
         taxon = TaxonHistory("Baumea juncea")
         assert taxon.current() == TaxonName("Baumea juncea")
 
-    def test_should_set_current_name(self):
-        taxon = TaxonHistory()
-        taxon.new_current_name("Baumea juncea")
-        assert taxon.current() == TaxonName("Baumea juncea")
-
     def test_should_change_current_name(self):
-        taxon = TaxonHistory()
-        taxon.new_current_name("Baumea juncea")
+        taxon = TaxonHistory("Baumea juncea")
         taxon.new_current_name("Machaerina juncea")
         assert taxon.current() == TaxonName("Machaerina juncea")
 
