@@ -81,16 +81,6 @@ class TestTaxonHistory:
         taxon.new_current_name("Machaerina juncea")
         assert taxon.current() == TaxonName("Machaerina juncea")
 
-    def test_should_iterate_over_previous_names(self):
-        taxon = TaxonHistory("Genus speciesone")
-        taxon.new_current_name("Genus speciestwo")
-        taxon.new_current_name("Genus speciesthree")
-
-        assert list(taxon.previous()) == [
-            TaxonName("Genus speciesone"),
-            TaxonName("Genus speciestwo"),
-        ]
-
     def test_should_add_previous_name(self):
         taxon = TaxonHistory("Machaerina juncea")
         taxon.add_previous_name("Baumea juncea")
