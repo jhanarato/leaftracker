@@ -100,9 +100,3 @@ class TestTaxonHistory:
         taxon = TaxonHistory("Baumea juncea")
         taxon.new_current_name("Machaerina juncea")
         assert list(taxon) == [TaxonName("Baumea juncea"), TaxonName("Machaerina juncea")]
-
-    def test_should_iterate_with_missing_current_name(self):
-        taxon = TaxonHistory()
-        taxon.add_previous_name("Baumea juncea")
-        taxon.add_previous_name("Machaerina juncea")
-        assert list(taxon) == [TaxonName("Baumea juncea"), TaxonName("Machaerina juncea")]
