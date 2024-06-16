@@ -93,7 +93,7 @@ class TaxonHistory:
 class Species:
     def __init__(self, reference: str | None = None, current_name: str | None = None):
         self.reference = reference
-        self.taxon_history = TaxonHistory()
+        self.taxon_history = TaxonHistory(current_name)
         self.common_names: list[str] = []
         self.web_references: list[WebReference] = []
         self.photos: list[Photo] = []
