@@ -23,10 +23,7 @@ def document_to_species(document: Document) -> Species:
     current_name = names[-1]
     previous_names = names[:-1]
 
-    species = Species(
-        reference=document.document_id,
-        current_name=f"{current_name["genus"]} {current_name["species"]}"
-    )
+    species = Species(current_name=f"{current_name["genus"]} {current_name["species"]}", reference=document.document_id)
 
     for previous_name in previous_names:
         species.taxon_history.add_previous_name(

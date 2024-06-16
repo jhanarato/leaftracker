@@ -51,7 +51,7 @@ def add_pickup(source_name: str, uow: UnitOfWork) -> str:
 
 
 def add_species(name: str, uow: UnitOfWork) -> str:
-    species = Species(reference=None, current_name=name)
+    species = Species(current_name=name, reference=None)
 
     with uow:
         uow.species().add(species)
