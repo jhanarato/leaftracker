@@ -1,10 +1,10 @@
 import pytest
 
-from conftest import FakeBatchRepository, FakeUnitOfWork
+from conftest import FakeBatchRepository, FakeUnitOfWork, FakeSpeciesRepository
 from leaftracker.adapters.repository import BatchRepository
 from leaftracker.domain.model import Batch, Source, SourceType, BatchType, Stock, StockSize, TaxonName
 from leaftracker.service_layer import services
-from leaftracker.service_layer.services import InvalidSource, add_species, rename_species
+from leaftracker.service_layer.services import InvalidSource, add_species, rename_species, ServiceError
 from leaftracker.service_layer.unit_of_work import UnitOfWork
 
 
@@ -108,3 +108,17 @@ def test_rename_species():
     rename_species("species-0001", "Machaerina juncea", uow)
     species = uow.species().get("species-0001")
     assert species.taxon_history.current() == TaxonName("Machaerina juncea")
+
+
+def test_adding_species_raises_error_if_no_reference_has_been_assigned():
+    def none_reference():
+        yield None
+
+    uow = FakeUnitOfWork()
+    repository = FakeSpeciesRepository()
+    repository.references = none_reference()
+    uow.set_species(repository)
+
+    with pytest.raises(ServiceError):
+        _ = add_species("Baumea juncea", uow)
+

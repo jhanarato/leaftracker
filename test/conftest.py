@@ -37,7 +37,7 @@ class FakeSpeciesRepository:
     def __init__(self):
         self._added = set()
         self._committed = dict()
-        self._references = references("species")
+        self.references = references("species")
 
     def add(self, species: Species):
         self._added.add(species)
@@ -47,7 +47,7 @@ class FakeSpeciesRepository:
 
     def commit(self):
         for species in self._added:
-            species.reference = next(self._references)
+            species.reference = next(self.references)
             self._committed[species.reference] = species
 
     def rollback(self):
@@ -110,3 +110,6 @@ class FakeUnitOfWork:
 
     def species(self) -> SpeciesRepository:
         return self._species
+
+    def set_species(self, repository: FakeSpeciesRepository):
+        self._species = repository
