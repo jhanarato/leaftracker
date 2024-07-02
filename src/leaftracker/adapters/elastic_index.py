@@ -40,9 +40,6 @@ class Index:
     def name(self) -> str:
         return self._name
 
-    def delete(self) -> None:
-        self.lifecycle.delete()
-
     def exists(self) -> bool:
         return self.lifecycle.exists()
 
