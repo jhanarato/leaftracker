@@ -21,6 +21,9 @@ class Lifecycle:
 
         self._client.indices.create(index=self._name, mappings=self._mappings)
 
+    def delete(self) -> None:
+        self._client.options(ignore_status=404).indices.delete(index=self._name)
+
     def exists(self) -> bool:
         return self._client.indices.exists(index=self._name).body
 
@@ -41,7 +44,7 @@ class Index:
         self.lifecycle.create()
 
     def delete(self) -> None:
-        self._client.options(ignore_status=404).indices.delete(index=self._name)
+        self.lifecycle.delete()
 
     def exists(self) -> bool:
         return self.lifecycle.exists()
