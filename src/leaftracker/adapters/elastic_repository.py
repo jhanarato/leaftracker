@@ -51,7 +51,7 @@ def species_to_document(species: Species) -> Document:
 class SpeciesRepository:
     def __init__(self, index_name: str = SPECIES_INDEX):
         self.index = Index(index_name, SPECIES_MAPPINGS)
-        self.index.create()
+        self.index.lifecycle.create()
 
         self._added: list[Species] = []
 

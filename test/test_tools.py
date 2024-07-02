@@ -12,7 +12,7 @@ def test_delete_test_indexes():
     index_names = ["test_index_a", "test_index_b", "test_index_c"]
 
     for name in index_names:
-        Index(name, mappings).create()
+        Index(name, mappings).lifecycle.create()
 
     delete_test_indexes()
     for name in index_names:
