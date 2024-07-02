@@ -16,4 +16,4 @@ def test_delete_test_indexes():
 
     delete_test_indexes()
     for name in index_names:
-        assert not Index(name, mappings).exists()
+        assert not Index(name, mappings).lifecycle.exists()

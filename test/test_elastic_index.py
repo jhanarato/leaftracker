@@ -57,9 +57,9 @@ class TestLifecycle:
         lifecycle.create()
         assert lifecycle.exists()
         lifecycle.delete()
-        assert not index.exists()
+        assert not lifecycle.exists()
         lifecycle.delete()
-        assert not index.exists()
+        assert not lifecycle.exists()
 
     def test_should_skip_creation_when_exists(self, index, document):
         index.add_document(document)

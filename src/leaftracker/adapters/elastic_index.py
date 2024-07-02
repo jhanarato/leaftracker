@@ -40,9 +40,6 @@ class Index:
     def name(self) -> str:
         return self._name
 
-    def exists(self) -> bool:
-        return self.lifecycle.exists()
-
     def refresh(self) -> None:
         self._client.indices.refresh(index=self._name)
 
