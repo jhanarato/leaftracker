@@ -13,10 +13,3 @@ def list_test_aliases():
     aliases = es.indices.get_alias(index="test_*")
     for alias in aliases:
         print(alias)
-
-
-def delete_test_indexes():
-    es = Elasticsearch(hosts="http://localhost:9200")
-    aliases = es.indices.get_alias(index="test_*")
-    for alias in aliases:
-        es.options(ignore_status=404).indices.delete(index=alias)

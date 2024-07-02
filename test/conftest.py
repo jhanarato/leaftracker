@@ -2,10 +2,10 @@ from itertools import count
 from typing import Self, Iterator
 
 import pytest
+from elasticsearch import Elasticsearch
 
 from leaftracker.adapters.repository import BatchRepository, SourceRepository, SpeciesRepository
-from leaftracker.domain.model import Species, TaxonName, Batch, Source, TaxonHistory
-from tools import delete_test_indexes
+from leaftracker.domain.model import Species, Batch, Source
 
 INDEX_TEST_PREFIX = "test_"
 
@@ -20,6 +20,13 @@ def saligna() -> Species:
 def dentifera() -> Species:
     species = Species("Acacia dentifera")
     return species
+
+
+def delete_test_indexes():
+    client = Elasticsearch(hosts="http://localhost:9200")
+    aliases = client.indices.get_alias(index="test_*")
+    for alias in aliases:
+        client.options(ignore_status=404).indices.delete(index=alias)
 
 
 @pytest.fixture(autouse=True, scope='session')

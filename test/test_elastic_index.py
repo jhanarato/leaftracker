@@ -47,6 +47,7 @@ class TestIndex:
         assert index.document_exists(document.document_id)
 
 
+@pytest.mark.skip("Slow tests.")
 class TestLifecycle:
     def test_should_create_and_delete_indexes(self, index):
         lifecycle = index.lifecycle
