@@ -70,5 +70,9 @@ def add_species(current_name: str, uow: UnitOfWork) -> str:
 def rename_species(reference: str, name: str, uow: UnitOfWork) -> None:
     with uow:
         species = uow.species().get(reference)
+
+        if species is None:
+            raise ServiceError(f"No species for reference {reference}.")
+
         species.taxon_history.new_current_name(name)
         uow.commit()
