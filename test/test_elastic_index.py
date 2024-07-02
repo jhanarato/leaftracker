@@ -24,18 +24,6 @@ def document() -> Document:
 
 
 class TestIndex:
-    def test_should_create_and_delete_indexes(self, index):
-        index.delete()
-        assert not index.exists()
-        index.create()
-        assert index.exists()
-        index.create()
-        assert index.exists()
-        index.delete()
-        assert not index.exists()
-        index.delete()
-        assert not index.exists()
-
     def test_should_not_overwrite(self, index, document):
         index.add_document(document)
         index.refresh()
@@ -64,3 +52,18 @@ class TestIndex:
         index.add_document(document)
         index.refresh()
         assert index.document_exists(document.document_id)
+
+
+class TestLifecycle:
+    def test_should_create_and_delete_indexes(self, index):
+        lifecycle = index.lifecycle
+        lifecycle.delete()
+        assert not lifecycle.exists()
+        lifecycle.create()
+        assert lifecycle.exists()
+        lifecycle.create()
+        assert lifecycle.exists()
+        lifecycle.delete()
+        assert not index.exists()
+        lifecycle.delete()
+        assert not index.exists()
