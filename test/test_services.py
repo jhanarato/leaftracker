@@ -110,7 +110,8 @@ def test_rename_species():
     assert species.taxon_history.current() == TaxonName("Machaerina juncea")
 
 
-def test_adding_species_raises_error_if_no_reference_has_been_assigned():
+@pytest.fixture
+def uow_with_missing_references():
     def none_reference():
         yield None
 
@@ -119,6 +120,10 @@ def test_adding_species_raises_error_if_no_reference_has_been_assigned():
     repository.references = none_reference()
     uow.set_species(repository)
 
+    return uow
+
+
+def test_adding_species_raises_error_if_no_reference(uow_with_missing_references):
     with pytest.raises(ServiceError):
-        _ = add_species("Baumea juncea", uow)
+        _ = add_species("Baumea juncea", uow_with_missing_references)
 
