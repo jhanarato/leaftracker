@@ -29,7 +29,6 @@ class TestIndex:
         index.refresh()
         assert index.document_count() == 1
         index.delete_all_documents()
-        index.refresh()
         assert index.document_count() == 0
 
     def test_should_allow_delete_documents_when_empty(self, index):
