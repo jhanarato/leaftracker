@@ -56,8 +56,8 @@ class TaxonName:
 
 class TaxonHistory:
     def __init__(self, current_name: str | None):
-        self._current = None
-        self._previous = []
+        self._current: TaxonName | None = None
+        self._previous: list[TaxonName] = []
 
         if current_name:
             self.new_current_name(current_name)
