@@ -27,6 +27,10 @@ class Lifecycle:
     def exists(self) -> bool:
         return self._client.indices.exists(index=self._name).body
 
+    def refresh(self) -> None:
+        self._client.indices.refresh(index=self._name)
+
+
 
 class Index:
     def __init__(self, name: str, mappings: dict):
@@ -41,7 +45,7 @@ class Index:
         return self._name
 
     def refresh(self) -> None:
-        self._client.indices.refresh(index=self._name)
+        self.lifecycle.refresh()
 
     def document_count(self) -> int:
         return self._client.count(index=self._name)["count"]
