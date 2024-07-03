@@ -31,7 +31,6 @@ class Lifecycle:
         self._client.indices.refresh(index=self._name)
 
 
-
 class Index:
     def __init__(self, name: str, mappings: dict):
         self._client = Elasticsearch(hosts="http://localhost:9200")
@@ -57,7 +56,6 @@ class Index:
                 "query": {"match_all": {}}
             }
         )
-        self.refresh()
 
     def document_exists(self, document_id: str) -> bool:
         return self._client.exists(index=self.name, id=document_id).body

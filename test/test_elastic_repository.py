@@ -13,6 +13,7 @@ from leaftracker.domain.model import Species, TaxonName
 def repository() -> SpeciesRepository:
     repo = SpeciesRepository(INDEX_TEST_PREFIX + SPECIES_INDEX)
     repo.index.delete_all_documents()
+    repo.index.refresh()
     return repo
 
 

@@ -19,6 +19,7 @@ def test_should_add_index_prefix():
 def uow() -> ElasticUnitOfWork:
     uow = ElasticUnitOfWork(INDEX_TEST_PREFIX)
     uow.species().index.delete_all_documents()
+    uow.species().index.refresh()
     return uow
 
 
