@@ -55,23 +55,18 @@ class TaxonName:
 
 
 class TaxonHistory:
-    def __init__(self, current_name: str | None):
-        self._current: TaxonName | None = None
+    def __init__(self, current_name: str):
+        self._current: TaxonName = TaxonName(current_name)
         self._previous: list[TaxonName] = []
 
-        if current_name:
-            self.new_current_name(current_name)
-
-    def current(self) -> TaxonName | None:
+    def current(self) -> TaxonName:
         return self._current
 
     def previous(self) -> Iterator[TaxonName]:
         yield from self._previous
 
     def new_current_name(self, name: str):
-        if self._current is not None:
-            self._previous.append(self._current)
-
+        self._previous.append(self._current)
         self._current = TaxonName(name)
 
     def add_previous_name(self, name: str):
