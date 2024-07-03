@@ -1,6 +1,6 @@
 from elasticsearch import NotFoundError
 
-from leaftracker.adapters.elastic_index import Document, Index
+from leaftracker.adapters.elastic_index import Document, Index, Lifecycle
 from leaftracker.domain.model import Species
 
 SPECIES_INDEX = "species"
@@ -50,10 +50,10 @@ def species_to_document(species: Species) -> Document:
 
 class SpeciesRepository:
     def __init__(self, index_name: str = SPECIES_INDEX):
-        self.index = Index(index_name, SPECIES_MAPPINGS)
-        self.index.lifecycle.create()
-
         self._added: list[Species] = []
+        self.index = Index(index_name, SPECIES_MAPPINGS)
+        self.lifecycle = Lifecycle(index_name, SPECIES_MAPPINGS)
+        self.lifecycle.create()
 
     def add(self, species: Species):
         self._added.append(species)
@@ -74,7 +74,7 @@ class SpeciesRepository:
             document = species_to_document(species)
             species.reference = self.index.add_document(document)
 
-        self.index.lifecycle.refresh()
+        self.lifecycle.refresh()
         self._added.clear()
 
     def rollback(self):
