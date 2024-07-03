@@ -104,10 +104,10 @@ def test_rename_species():
     reference = add_species("Baumea juncea", uow)
     assert reference == "species-0001"
     species = uow.species().get("species-0001")
-    assert species.taxon_history.current() == TaxonName("Baumea juncea")
+    assert species.taxon_history.current() == TaxonName("Baumea juncea")  # type: ignore
     rename_species("species-0001", "Machaerina juncea", uow)
     species = uow.species().get("species-0001")
-    assert species.taxon_history.current() == TaxonName("Machaerina juncea")
+    assert species.taxon_history.current() == TaxonName("Machaerina juncea")  # type: ignore
 
 
 def test_reference_not_assigned_when_adding_species():
