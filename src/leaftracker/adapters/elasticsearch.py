@@ -2,10 +2,12 @@ from dataclasses import dataclass
 
 from elasticsearch import Elasticsearch
 
+HOSTS = "http://localhost:9200"
+
 
 class Lifecycle:
     def __init__(self, name: str, mappings: dict):
-        self._client = Elasticsearch(hosts="http://localhost:9200")
+        self._client = Elasticsearch(hosts=HOSTS)
         self._name = name
         self._mappings = mappings
 
@@ -33,7 +35,7 @@ class Document:
 
 class DocumentStore:
     def __init__(self, name: str):
-        self._client = Elasticsearch(hosts="http://localhost:9200")
+        self._client = Elasticsearch(hosts=HOSTS)
         self._name = name
 
     @property
