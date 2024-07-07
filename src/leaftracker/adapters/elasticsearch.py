@@ -31,7 +31,7 @@ class Document:
     source: dict
 
 
-class Index:
+class DocumentStore:
     def __init__(self, name: str):
         self._client = Elasticsearch(hosts="http://localhost:9200")
         self._name = name

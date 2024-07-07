@@ -1,6 +1,6 @@
 import pytest
 
-from leaftracker.adapters.elasticsearch import Index, Document, Lifecycle
+from leaftracker.adapters.elasticsearch import DocumentStore, Document, Lifecycle
 
 INDEX_NAME = "test_prefix"
 MAPPINGS = {"properties": {"content": {"type": "text"}}}
@@ -12,8 +12,8 @@ def lifecycle() -> Lifecycle:
 
 
 @pytest.fixture
-def index() -> Index:
-    return Index(INDEX_NAME)
+def index() -> DocumentStore:
+    return DocumentStore(INDEX_NAME)
 
 
 @pytest.fixture
