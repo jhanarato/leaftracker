@@ -32,7 +32,7 @@ class Lifecycle:
 
 
 class Index:
-    def __init__(self, name: str, mappings: dict):
+    def __init__(self, name: str):
         self._client = Elasticsearch(hosts="http://localhost:9200")
         self._name = name
 

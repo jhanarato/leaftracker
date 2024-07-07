@@ -14,12 +14,7 @@ def lifecycle() -> Lifecycle:
 @pytest.fixture
 def index() -> Index:
     return Index(
-        name=INDEX_NAME,
-        mappings={
-            "properties": {
-                "content": {"type": "text"}
-            }
-        }
+        name=INDEX_NAME
     )
 
 
