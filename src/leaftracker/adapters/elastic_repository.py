@@ -74,7 +74,6 @@ class SpeciesRepository:
             document = species_to_document(species)
             species.reference = self.index.add_document(document)
 
-        self.lifecycle.refresh()
         self._added.clear()
 
     def rollback(self):
