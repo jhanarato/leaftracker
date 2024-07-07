@@ -12,7 +12,7 @@ def lifecycle() -> Lifecycle:
 
 
 @pytest.fixture
-def index() -> DocumentStore:
+def store() -> DocumentStore:
     return DocumentStore(INDEX_NAME)
 
 
@@ -24,35 +24,35 @@ def document() -> Document:
     )
 
 
-class TestIndex:
-    def test_should_delete_documents(self, lifecycle, index, document):
-        index.add(document)
+class TestStore:
+    def test_should_delete_documents(self, lifecycle, store, document):
+        store.add(document)
         lifecycle.refresh()
-        assert index.count() == 1
-        index.delete_all()
+        assert store.count() == 1
+        store.delete_all()
         lifecycle.refresh()
-        assert index.count() == 0
+        assert store.count() == 0
 
-    def test_should_allow_delete_documents_when_empty(self, lifecycle, index):
-        index.delete_all()
+    def test_should_allow_delete_documents_when_empty(self, lifecycle, store):
+        store.delete_all()
         lifecycle.refresh()
-        assert index.count() == 0
-        index.delete_all()
+        assert store.count() == 0
+        store.delete_all()
         lifecycle.refresh()
-        assert index.count() == 0
+        assert store.count() == 0
 
-    def test_should_indicate_missing_document(self, index):
-        assert not index.exists("not-a-doc")
+    def test_should_indicate_missing_document(self, store):
+        assert not store.exists("not-a-doc")
 
-    def test_should_confirm_document_exists(self, lifecycle, index, document):
-        index.add(document)
+    def test_should_confirm_document_exists(self, lifecycle, store, document):
+        store.add(document)
         lifecycle.refresh()
-        assert index.exists(document.document_id)
+        assert store.exists(document.document_id)
 
 
 @pytest.mark.skip("Slow tests.")
 class TestLifecycle:
-    def test_should_create_and_delete_indexes(self, lifecycle, index):
+    def test_should_create_and_delete_indexes(self, lifecycle, store):
         lifecycle.delete()
         assert not lifecycle.exists()
         lifecycle.create()
@@ -64,9 +64,9 @@ class TestLifecycle:
         lifecycle.delete()
         assert not lifecycle.exists()
 
-    def test_should_skip_creation_when_exists(self, lifecycle, index, document):
-        index.add(document)
+    def test_should_skip_creation_when_exists(self, lifecycle, store, document):
+        store.add(document)
         lifecycle.refresh()
-        assert index.count() == 1
+        assert store.count() == 1
         lifecycle.create()
-        assert index.count() == 1
+        assert store.count() == 1
