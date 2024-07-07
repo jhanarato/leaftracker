@@ -36,9 +36,6 @@ class Index:
         self._client = Elasticsearch(hosts="http://localhost:9200")
         self._name = name
 
-        self._mappings = mappings
-        self.lifecycle = Lifecycle(name, mappings)
-
     @property
     def name(self) -> str:
         return self._name
