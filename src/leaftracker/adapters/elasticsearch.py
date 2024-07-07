@@ -43,9 +43,6 @@ class Index:
     def name(self) -> str:
         return self._name
 
-    def refresh(self) -> None:
-        self.lifecycle.refresh()
-
     def document_count(self) -> int:
         return self._client.count(index=self._name)["count"]
 
