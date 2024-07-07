@@ -50,8 +50,13 @@ def species_to_document(species: Species) -> Document:
 
 class SpeciesRepository:
     def __init__(self, index_name: str = SPECIES_INDEX):
-        self._added: list[Species] = []
+        self._index_name = index_name
         self.store = DocumentStore(index_name)
+        self._added: list[Species] = []
+
+    @property
+    def index_name(self) -> str:
+        return self._index_name
 
     def add(self, species: Species):
         self._added.append(species)
