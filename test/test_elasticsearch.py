@@ -42,12 +42,12 @@ class TestIndex:
         assert index.count() == 0
 
     def test_should_indicate_missing_document(self, index):
-        assert not index.document_exists("not-a-doc")
+        assert not index.exists("not-a-doc")
 
     def test_should_confirm_document_exists(self, lifecycle, index, document):
         index.add_document(document)
         lifecycle.refresh()
-        assert index.document_exists(document.document_id)
+        assert index.exists(document.document_id)
 
 
 @pytest.mark.skip("Slow tests.")
