@@ -54,7 +54,7 @@ class DocumentStore:
     def exists(self, document_id: str) -> bool:
         return self._client.exists(index=self.name, id=document_id).body
 
-    def add_document(self, document: Document) -> str:
+    def add(self, document: Document) -> str:
         response = self._client.index(
             index=self.name,
             id=document.document_id,

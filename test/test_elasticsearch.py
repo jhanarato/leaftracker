@@ -26,7 +26,7 @@ def document() -> Document:
 
 class TestIndex:
     def test_should_delete_documents(self, lifecycle, index, document):
-        index.add_document(document)
+        index.add(document)
         lifecycle.refresh()
         assert index.count() == 1
         index.delete_all()
@@ -45,7 +45,7 @@ class TestIndex:
         assert not index.exists("not-a-doc")
 
     def test_should_confirm_document_exists(self, lifecycle, index, document):
-        index.add_document(document)
+        index.add(document)
         lifecycle.refresh()
         assert index.exists(document.document_id)
 
@@ -65,7 +65,7 @@ class TestLifecycle:
         assert not lifecycle.exists()
 
     def test_should_skip_creation_when_exists(self, lifecycle, index, document):
-        index.add_document(document)
+        index.add(document)
         lifecycle.refresh()
         assert index.count() == 1
         lifecycle.create()

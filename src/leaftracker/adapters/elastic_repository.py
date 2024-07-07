@@ -70,7 +70,7 @@ class SpeciesRepository:
     def commit(self):
         for species in self.added():
             document = species_to_document(species)
-            species.reference = self.index.add_document(document)
+            species.reference = self.index.add(document)
 
         self._added.clear()
 
