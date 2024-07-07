@@ -34,36 +34,36 @@ class Document:
 
 
 class DocumentStore:
-    def __init__(self, name: str):
+    def __init__(self, index: str):
         self._client = Elasticsearch(hosts=HOSTS)
-        self._name = name
+        self._index = index
 
     @property
-    def name(self) -> str:
-        return self._name
+    def index(self) -> str:
+        return self._index
 
     def count(self) -> int:
-        return self._client.count(index=self._name)["count"]
+        return self._client.count(index=self._index)["count"]
 
     def delete_all(self) -> None:
         self._client.delete_by_query(
-            index=self._name,
+            index=self._index,
             body={"query": {"match_all": {}}}
         )
 
     def exists(self, document_id: str) -> bool:
-        return self._client.exists(index=self.name, id=document_id).body
+        return self._client.exists(index=self.index, id=document_id).body
 
     def add(self, document: Document) -> str:
         response = self._client.index(
-            index=self.name,
+            index=self.index,
             id=document.document_id,
             document=document.source
         )
         return response["_id"]
 
     def get(self, document_id) -> Document:
-        response = self._client.get(index=self.name, id=document_id)
+        response = self._client.get(index=self.index, id=document_id)
         return Document(
             document_id=response["_id"],
             source=response["_source"],
