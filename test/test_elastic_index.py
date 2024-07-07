@@ -13,9 +13,7 @@ def lifecycle() -> Lifecycle:
 
 @pytest.fixture
 def index() -> Index:
-    return Index(
-        name=INDEX_NAME
-    )
+    return Index(INDEX_NAME)
 
 
 @pytest.fixture
