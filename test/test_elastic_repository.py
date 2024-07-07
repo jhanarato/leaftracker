@@ -10,18 +10,14 @@ from leaftracker.domain.model import Species, TaxonName
 
 
 @pytest.fixture
-def species_lifecycle() -> Lifecycle:
-    return Lifecycle(INDEX_TEST_PREFIX + SPECIES_INDEX, SPECIES_MAPPINGS)
-
-
-@pytest.fixture
-def species_repository(species_lifecycle) -> SpeciesRepository:
-    lifecycle = Lifecycle(INDEX_TEST_PREFIX + SPECIES_INDEX, SPECIES_MAPPINGS)
+def species_repository() -> SpeciesRepository:
+    index_name = INDEX_TEST_PREFIX + SPECIES_INDEX
+    lifecycle = Lifecycle(index_name, SPECIES_MAPPINGS)
     lifecycle.create()
-    repo = SpeciesRepository(INDEX_TEST_PREFIX + SPECIES_INDEX)
-    repo.index.delete_all_documents()
-    species_lifecycle.refresh()
-    return repo
+    repository = SpeciesRepository(index_name)
+    repository.index.delete_all_documents()
+    lifecycle.refresh()
+    return repository
 
 
 def test_should_add_taxon_history_to_document():
