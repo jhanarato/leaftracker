@@ -64,19 +64,19 @@ class DocumentStore(Protocol):
 
 class SpeciesRepository:
     def __init__(self, store: DocumentStore):
-        self.store = store
+        self._store = store
         self._added: list[Species] = []
 
     @property
     def index_name(self) -> str:
-        return self.store.name
+        return self._store.name
 
     def add(self, species: Species):
         self._added.append(species)
 
     def get(self, reference: str) -> Species | None:
         try:
-            document = self.store.get(reference)
+            document = self._store.get(reference)
         except NotFoundError:
             return None
 
@@ -88,7 +88,7 @@ class SpeciesRepository:
     def commit(self):
         for species in self.added():
             document = species_to_document(species)
-            species.reference = self.store.add(document)
+            species.reference = self._store.add(document)
 
         self._added.clear()
 
