@@ -44,7 +44,7 @@ def test_should_add_two_species(uow, saligna, dentifera):
         uow.species().add(dentifera)
         uow.commit()
 
-    assert uow.species().index.document_count() == 2
+    assert uow.species().index.count() == 2
 
 
 def test_should_clear_queue_on_rollback(uow, saligna):

@@ -40,7 +40,7 @@ class DocumentStore:
     def name(self) -> str:
         return self._name
 
-    def document_count(self) -> int:
+    def count(self) -> int:
         return self._client.count(index=self._name)["count"]
 
     def delete_all_documents(self) -> None:

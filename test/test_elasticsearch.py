@@ -28,18 +28,18 @@ class TestIndex:
     def test_should_delete_documents(self, lifecycle, index, document):
         index.add_document(document)
         lifecycle.refresh()
-        assert index.document_count() == 1
+        assert index.count() == 1
         index.delete_all_documents()
         lifecycle.refresh()
-        assert index.document_count() == 0
+        assert index.count() == 0
 
     def test_should_allow_delete_documents_when_empty(self, lifecycle, index):
         index.delete_all_documents()
         lifecycle.refresh()
-        assert index.document_count() == 0
+        assert index.count() == 0
         index.delete_all_documents()
         lifecycle.refresh()
-        assert index.document_count() == 0
+        assert index.count() == 0
 
     def test_should_indicate_missing_document(self, index):
         assert not index.document_exists("not-a-doc")
@@ -67,6 +67,6 @@ class TestLifecycle:
     def test_should_skip_creation_when_exists(self, lifecycle, index, document):
         index.add_document(document)
         lifecycle.refresh()
-        assert index.document_count() == 1
+        assert index.count() == 1
         lifecycle.create()
-        assert index.document_count() == 1
+        assert index.count() == 1
