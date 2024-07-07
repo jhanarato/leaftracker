@@ -1,6 +1,6 @@
 from typing import Self
 
-from leaftracker.adapters.elastic_index import Lifecycle
+from leaftracker.adapters.elasticsearch import Lifecycle
 from leaftracker.adapters.elastic_repository import SpeciesRepository, SPECIES_INDEX, SPECIES_MAPPINGS
 from leaftracker.adapters.repository import BatchRepository, SourceRepository
 

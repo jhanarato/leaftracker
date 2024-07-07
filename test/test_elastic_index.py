@@ -1,6 +1,6 @@
 import pytest
 
-from leaftracker.adapters.elastic_index import Index, Document, Lifecycle
+from leaftracker.adapters.elasticsearch import Index, Document, Lifecycle
 
 INDEX_NAME = "test_prefix"
 MAPPINGS = {"properties": {"content": {"type": "text"}}}

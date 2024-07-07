@@ -1,7 +1,7 @@
 import pytest
 
 from conftest import INDEX_TEST_PREFIX
-from leaftracker.adapters.elastic_index import Document, Lifecycle
+from leaftracker.adapters.elasticsearch import Document, Lifecycle
 from leaftracker.adapters.elastic_repository import (
     SpeciesRepository, SPECIES_INDEX,
     species_to_document, document_to_species, SPECIES_MAPPINGS
