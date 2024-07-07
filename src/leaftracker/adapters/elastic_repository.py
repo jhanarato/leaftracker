@@ -5,19 +5,6 @@ from elasticsearch import NotFoundError
 from leaftracker.adapters.elasticsearch import Document
 from leaftracker.domain.model import Species
 
-SPECIES_INDEX = "species"
-
-SPECIES_MAPPINGS = {
-    "properties": {
-        "scientific_names": {
-            "properties": {
-                "genus": {"type": "text"},
-                "species": {"type": "text"},
-            }
-        }
-    }
-}
-
 
 def document_to_species(document: Document) -> Species:
     names = document.source["scientific_names"]

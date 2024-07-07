@@ -1,8 +1,23 @@
 from typing import Self
 
 from leaftracker.adapters.elasticsearch import Lifecycle, DocumentStore
-from leaftracker.adapters.elastic_repository import SpeciesRepository, SPECIES_INDEX, SPECIES_MAPPINGS
+from leaftracker.adapters.elastic_repository import SpeciesRepository
 from leaftracker.adapters.repository import BatchRepository, SourceRepository
+
+
+SPECIES_INDEX = "species"
+
+
+SPECIES_MAPPINGS = {
+    "properties": {
+        "scientific_names": {
+            "properties": {
+                "genus": {"type": "text"},
+                "species": {"type": "text"},
+            }
+        }
+    }
+}
 
 
 class ElasticUnitOfWork:
