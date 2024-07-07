@@ -18,7 +18,7 @@ def test_should_add_index_prefix():
 @pytest.fixture
 def uow() -> ElasticUnitOfWork:
     uow = ElasticUnitOfWork(INDEX_TEST_PREFIX)
-    uow.species().index.delete_all_documents()
+    uow.species().index.delete_all()
     uow.commit()
     return uow
 

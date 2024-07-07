@@ -15,7 +15,7 @@ def species_repository() -> SpeciesRepository:
     lifecycle = Lifecycle(index_name, SPECIES_MAPPINGS)
     lifecycle.create()
     repository = SpeciesRepository(index_name)
-    repository.index.delete_all_documents()
+    repository.index.delete_all()
     lifecycle.refresh()
     return repository
 

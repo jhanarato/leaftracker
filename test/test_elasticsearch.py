@@ -29,15 +29,15 @@ class TestIndex:
         index.add_document(document)
         lifecycle.refresh()
         assert index.count() == 1
-        index.delete_all_documents()
+        index.delete_all()
         lifecycle.refresh()
         assert index.count() == 0
 
     def test_should_allow_delete_documents_when_empty(self, lifecycle, index):
-        index.delete_all_documents()
+        index.delete_all()
         lifecycle.refresh()
         assert index.count() == 0
-        index.delete_all_documents()
+        index.delete_all()
         lifecycle.refresh()
         assert index.count() == 0
 
