@@ -2,6 +2,7 @@ import pytest
 
 from conftest import INDEX_TEST_PREFIX
 from leaftracker.adapters.elastic_repository import SPECIES_INDEX
+from leaftracker.adapters.elasticsearch import DocumentStore
 from leaftracker.service_layer.elastic_uow import ElasticUnitOfWork
 
 
@@ -18,7 +19,8 @@ def test_should_add_index_prefix():
 @pytest.fixture
 def uow() -> ElasticUnitOfWork:
     uow = ElasticUnitOfWork(INDEX_TEST_PREFIX)
-    uow.species().store.delete_all()
+    store = DocumentStore(INDEX_TEST_PREFIX + SPECIES_INDEX)
+    store.delete_all()
     uow.commit()
     return uow
 
@@ -44,7 +46,8 @@ def test_should_add_two_species(uow, saligna, dentifera):
         uow.species().add(dentifera)
         uow.commit()
 
-    assert uow.species().store.count() == 2
+    store = DocumentStore(INDEX_TEST_PREFIX + SPECIES_INDEX)
+    assert store.count() == 2
 
 
 def test_should_clear_queue_on_rollback(uow, saligna):
