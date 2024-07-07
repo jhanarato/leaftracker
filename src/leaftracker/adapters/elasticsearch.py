@@ -3,12 +3,6 @@ from dataclasses import dataclass
 from elasticsearch import Elasticsearch
 
 
-@dataclass
-class Document:
-    document_id: str | None
-    source: dict
-
-
 class Lifecycle:
     def __init__(self, name: str, mappings: dict):
         self._client = Elasticsearch(hosts="http://localhost:9200")
@@ -29,6 +23,12 @@ class Lifecycle:
 
     def refresh(self) -> None:
         self._client.indices.refresh(index=self._name)
+
+
+@dataclass
+class Document:
+    document_id: str | None
+    source: dict
 
 
 class Index:
