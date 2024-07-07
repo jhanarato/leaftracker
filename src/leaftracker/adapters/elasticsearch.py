@@ -62,7 +62,7 @@ class DocumentStore:
         )
         return response["_id"]
 
-    def get_document(self, document_id) -> Document:
+    def get(self, document_id) -> Document:
         response = self._client.get(index=self.name, id=document_id)
         return Document(
             document_id=response["_id"],

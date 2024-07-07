@@ -58,7 +58,7 @@ class SpeciesRepository:
 
     def get(self, reference: str) -> Species | None:
         try:
-            document = self.index.get_document(reference)
+            document = self.index.get(reference)
         except NotFoundError:
             return None
 
