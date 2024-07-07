@@ -9,6 +9,7 @@ class ElasticUnitOfWork:
     def __init__(self, index_prefix: str = ""):
         self._species = SpeciesRepository(index_prefix + SPECIES_INDEX)
         self._lifecycle = Lifecycle(index_prefix + SPECIES_INDEX, SPECIES_MAPPINGS)
+        self._lifecycle.create()
 
     def __enter__(self) -> Self:
         return self

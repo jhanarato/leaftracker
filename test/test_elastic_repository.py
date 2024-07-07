@@ -16,6 +16,8 @@ def species_lifecycle() -> Lifecycle:
 
 @pytest.fixture
 def species_repository(species_lifecycle) -> SpeciesRepository:
+    lifecycle = Lifecycle(INDEX_TEST_PREFIX + SPECIES_INDEX, SPECIES_MAPPINGS)
+    lifecycle.create()
     repo = SpeciesRepository(INDEX_TEST_PREFIX + SPECIES_INDEX)
     repo.index.delete_all_documents()
     species_lifecycle.refresh()
