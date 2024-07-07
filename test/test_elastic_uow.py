@@ -7,18 +7,18 @@ from leaftracker.service_layer.elastic_uow import ElasticUnitOfWork
 
 def test_should_normally_use_production_index():
     uow = ElasticUnitOfWork()
-    assert uow.species().index.name == SPECIES_INDEX
+    assert uow.species().store.name == SPECIES_INDEX
 
 
 def test_should_add_index_prefix():
     uow = ElasticUnitOfWork(INDEX_TEST_PREFIX)
-    assert uow.species().index.name == INDEX_TEST_PREFIX + SPECIES_INDEX
+    assert uow.species().store.name == INDEX_TEST_PREFIX + SPECIES_INDEX
 
 
 @pytest.fixture
 def uow() -> ElasticUnitOfWork:
     uow = ElasticUnitOfWork(INDEX_TEST_PREFIX)
-    uow.species().index.delete_all()
+    uow.species().store.delete_all()
     uow.commit()
     return uow
 
@@ -44,7 +44,7 @@ def test_should_add_two_species(uow, saligna, dentifera):
         uow.species().add(dentifera)
         uow.commit()
 
-    assert uow.species().index.count() == 2
+    assert uow.species().store.count() == 2
 
 
 def test_should_clear_queue_on_rollback(uow, saligna):

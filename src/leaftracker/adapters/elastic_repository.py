@@ -51,14 +51,14 @@ def species_to_document(species: Species) -> Document:
 class SpeciesRepository:
     def __init__(self, index_name: str = SPECIES_INDEX):
         self._added: list[Species] = []
-        self.index = DocumentStore(index_name)
+        self.store = DocumentStore(index_name)
 
     def add(self, species: Species):
         self._added.append(species)
 
     def get(self, reference: str) -> Species | None:
         try:
-            document = self.index.get(reference)
+            document = self.store.get(reference)
         except NotFoundError:
             return None
 
@@ -70,7 +70,7 @@ class SpeciesRepository:
     def commit(self):
         for species in self.added():
             document = species_to_document(species)
-            species.reference = self.index.add(document)
+            species.reference = self.store.add(document)
 
         self._added.clear()
 
