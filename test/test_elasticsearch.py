@@ -2,7 +2,7 @@ import pytest
 
 from leaftracker.adapters.elasticsearch import DocumentStore, Document, Lifecycle
 
-INDEX_NAME = "test_prefix"
+INDEX_NAME = "test_index"
 MAPPINGS = {"properties": {"content": {"type": "text"}}}
 
 
@@ -24,7 +24,28 @@ def document() -> Document:
     )
 
 
-class TestStore:
+class TestLifecycle:
+    def test_should_create_and_delete_indexes(self, lifecycle, store):
+        lifecycle.delete()
+        assert not lifecycle.exists()
+        lifecycle.create()
+        assert lifecycle.exists()
+        lifecycle.create()
+        assert lifecycle.exists()
+        lifecycle.delete()
+        assert not lifecycle.exists()
+        lifecycle.delete()
+        assert not lifecycle.exists()
+
+    def test_should_skip_creation_when_exists(self, lifecycle, store, document):
+        store.add(document)
+        lifecycle.refresh()
+        assert store.count() == 1
+        lifecycle.create()
+        assert store.count() == 1
+
+
+class TestDocumentStore:
     def test_should_delete_documents(self, lifecycle, store, document):
         store.add(document)
         lifecycle.refresh()
@@ -48,24 +69,3 @@ class TestStore:
         store.add(document)
         lifecycle.refresh()
         assert store.exists(document.document_id)
-
-
-class TestLifecycle:
-    def test_should_create_and_delete_indexes(self, lifecycle, store):
-        lifecycle.delete()
-        assert not lifecycle.exists()
-        lifecycle.create()
-        assert lifecycle.exists()
-        lifecycle.create()
-        assert lifecycle.exists()
-        lifecycle.delete()
-        assert not lifecycle.exists()
-        lifecycle.delete()
-        assert not lifecycle.exists()
-
-    def test_should_skip_creation_when_exists(self, lifecycle, store, document):
-        store.add(document)
-        lifecycle.refresh()
-        assert store.count() == 1
-        lifecycle.create()
-        assert store.count() == 1
