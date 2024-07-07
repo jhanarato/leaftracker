@@ -12,7 +12,7 @@ def test_should_normally_use_production_index():
 
 def test_should_add_index_prefix():
     uow = ElasticUnitOfWork(INDEX_TEST_PREFIX)
-    assert uow.species()._index_name == INDEX_TEST_PREFIX + SPECIES_INDEX
+    assert uow.species().index_name == INDEX_TEST_PREFIX + SPECIES_INDEX
 
 
 @pytest.fixture

@@ -1,15 +1,16 @@
 from typing import Self
 
-from leaftracker.adapters.elasticsearch import Lifecycle
+from leaftracker.adapters.elasticsearch import Lifecycle, DocumentStore
 from leaftracker.adapters.elastic_repository import SpeciesRepository, SPECIES_INDEX, SPECIES_MAPPINGS
 from leaftracker.adapters.repository import BatchRepository, SourceRepository
 
 
 class ElasticUnitOfWork:
     def __init__(self, index_prefix: str = ""):
-        self._species = SpeciesRepository(index_prefix + SPECIES_INDEX)
         self._lifecycle = Lifecycle(index_prefix + SPECIES_INDEX, SPECIES_MAPPINGS)
         self._lifecycle.create()
+        store = DocumentStore(index_prefix + SPECIES_INDEX)
+        self._species = SpeciesRepository(store)
 
     def __enter__(self) -> Self:
         return self
