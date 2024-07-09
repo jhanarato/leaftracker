@@ -2,7 +2,9 @@ import pytest
 
 from conftest import FakeUnitOfWork, FakeSpeciesRepository
 from fakes import FakeLifecycle, FakeDocumentStore
+from leaftracker.adapters.elastic_repository import SpeciesRepository
 from leaftracker.adapters.elasticsearch import Document
+from leaftracker.service_layer.elastic_uow import ElasticUnitOfWork
 
 
 class TestFakeUnitOfWork:
@@ -98,3 +100,11 @@ class TestFakeDocumentStore:
         reference = store.add(document)
         retrieved = store.get(reference)
         assert retrieved.document_id == "a-unique-id"
+
+
+class TestAssembleFakes:
+    def test_species_repository_created(self):
+        lifecycle = FakeLifecycle(exists=False)
+        store = FakeDocumentStore("species")
+        repository = SpeciesRepository(store)
+        uow = ElasticUnitOfWork(lifecycle, repository)
