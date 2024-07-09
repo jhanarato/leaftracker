@@ -36,7 +36,8 @@ class FakeDocumentStore:
         return self._index
 
     def add(self, document: Document) -> str:
-        document.document_id = next(self._references)
+        if document.document_id is None:
+            document.document_id = next(self._references)
         self._store[document.document_id] = document
         return document.document_id
 
