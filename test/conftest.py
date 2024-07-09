@@ -1,9 +1,9 @@
-from itertools import count
-from typing import Self, Iterator
+from typing import Self
 
 import pytest
 from elasticsearch import Elasticsearch
 
+from fakes import references
 from leaftracker.adapters.repository import BatchRepository, SourceRepository, SpeciesRepository
 from leaftracker.domain.model import Species, Batch, Source
 
@@ -33,11 +33,6 @@ def delete_test_indexes():
 def test_indexes():
     yield
     delete_test_indexes()
-
-
-def references(prefix: str) -> Iterator[str]:
-    for i in count(start=1):
-        yield f"{prefix}-{i:04}"
 
 
 class FakeSpeciesRepository:
