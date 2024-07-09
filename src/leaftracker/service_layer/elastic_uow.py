@@ -1,6 +1,6 @@
-from typing import Self
+from typing import Self, Protocol
 
-from leaftracker.adapters.elasticsearch import Lifecycle, DocumentStore
+from leaftracker.adapters.elasticsearch import DocumentStore
 from leaftracker.adapters.elastic_repository import SpeciesRepository
 from leaftracker.adapters.repository import BatchRepository, SourceRepository
 
@@ -20,9 +20,17 @@ SPECIES_MAPPINGS = {
 }
 
 
+class Lifecycle(Protocol):
+    def create(self) -> None:
+        ...
+
+    def refresh(self) -> None:
+        ...
+
+
 class ElasticUnitOfWork:
-    def __init__(self, index_prefix: str = ""):
-        self._lifecycle = Lifecycle(index_prefix + SPECIES_INDEX, SPECIES_MAPPINGS)
+    def __init__(self, lifecycle: Lifecycle, index_prefix: str = ""):
+        self._lifecycle = lifecycle
         self._lifecycle.create()
         store = DocumentStore(index_prefix + SPECIES_INDEX)
         self._species = SpeciesRepository(store)

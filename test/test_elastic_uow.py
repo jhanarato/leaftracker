@@ -1,24 +1,16 @@
 import pytest
 
 from conftest import INDEX_TEST_PREFIX
-from leaftracker.adapters.elasticsearch import DocumentStore
-from leaftracker.service_layer.elastic_uow import ElasticUnitOfWork, SPECIES_INDEX
-
-
-def test_should_normally_use_production_index():
-    uow = ElasticUnitOfWork()
-    assert uow.species().index() == SPECIES_INDEX
-
-
-def test_should_add_index_prefix():
-    uow = ElasticUnitOfWork(INDEX_TEST_PREFIX)
-    assert uow.species().index() == INDEX_TEST_PREFIX + SPECIES_INDEX
+from leaftracker.adapters.elasticsearch import DocumentStore, Lifecycle
+from leaftracker.service_layer.elastic_uow import ElasticUnitOfWork, SPECIES_INDEX, SPECIES_MAPPINGS
 
 
 @pytest.fixture
 def uow() -> ElasticUnitOfWork:
-    uow = ElasticUnitOfWork(INDEX_TEST_PREFIX)
-    store = DocumentStore(INDEX_TEST_PREFIX + SPECIES_INDEX)
+    index_name = INDEX_TEST_PREFIX + SPECIES_INDEX
+    lifecycle = Lifecycle(index_name, SPECIES_MAPPINGS)
+    uow = ElasticUnitOfWork(lifecycle, INDEX_TEST_PREFIX)
+    store = DocumentStore(index_name)
     store.delete_all()
     uow.commit()
     return uow
