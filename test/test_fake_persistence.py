@@ -8,7 +8,7 @@ from leaftracker.service_layer.elastic_uow import ElasticUnitOfWork
 
 
 @pytest.fixture
-def uow():
+def fake_uow():
     lifecycle = FakeLifecycle(exists=False)
     store = FakeDocumentStore("species")
     repository = SpeciesRepository(store)
@@ -16,36 +16,36 @@ def uow():
 
 
 class TestFakeUnitOfWork:
-    def test_should_rollback_if_not_committed(self, uow, saligna):
-        with uow:
-            uow.species().add(saligna)
+    def test_should_rollback_if_not_committed(self, fake_uow, saligna):
+        with fake_uow:
+            fake_uow.species().add(saligna)
 
         assert saligna.reference is None
 
-    def test_should_assign_reference_on_commit(self, uow, saligna):
-        with uow:
-            uow.species().add(saligna)
-            uow.commit()
+    def test_should_assign_reference_on_commit(self, fake_uow, saligna):
+        with fake_uow:
+            fake_uow.species().add(saligna)
+            fake_uow.commit()
 
         assert saligna.reference == "species-0001"
 
-    def test_should_retrieve_species_after_commit(self, uow, saligna):
-        with uow:
-            uow.species().add(saligna)
-            uow.commit()
+    def test_should_retrieve_species_after_commit(self, fake_uow, saligna):
+        with fake_uow:
+            fake_uow.species().add(saligna)
+            fake_uow.commit()
 
-        retrieved = uow.species().get(saligna.reference)
+        retrieved = fake_uow.species().get(saligna.reference)
         assert retrieved.reference == "species-0001"  # type: ignore
 
-    def test_should_discard_uncommitted_species_on_rollback(self, uow, saligna, dentifera):
-        with uow:
-            uow.species().add(saligna)
+    def test_should_discard_uncommitted_species_on_rollback(self, fake_uow, saligna, dentifera):
+        with fake_uow:
+            fake_uow.species().add(saligna)
 
-        with uow:
-            uow.species().add(dentifera)
-            uow.commit()
+        with fake_uow:
+            fake_uow.species().add(dentifera)
+            fake_uow.commit()
 
-        retrieved = uow.species().get("species-0001")
+        retrieved = fake_uow.species().get("species-0001")
         assert retrieved.taxon_history.current().species == "dentifera"  # type: ignore
 
 
