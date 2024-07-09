@@ -1,7 +1,7 @@
 import pytest
 
 from conftest import FakeUnitOfWork, FakeSpeciesRepository
-from fakes import references
+from fakes import FakeLifecycle, FakeDocumentStore
 from leaftracker.adapters.elasticsearch import Document
 
 
@@ -52,23 +52,6 @@ class TestFakeSpeciesRepository:
         assert FakeSpeciesRepository().get("missing") is None
 
 
-class FakeLifecycle:
-    def __init__(self, exists: bool):
-        self._exists = exists
-
-    def create(self) -> None:
-        self._exists = True
-
-    def delete(self) -> None:
-        self._exists = False
-
-    def exists(self) -> bool:
-        return self._exists
-
-    def refresh(self) -> None:
-        pass
-
-
 class TestFakeLifecycle:
     def test_create_when_does_not_exist(self):
         lc = FakeLifecycle(exists=False)
@@ -89,24 +72,6 @@ class TestFakeLifecycle:
         lc = FakeLifecycle(exists=True)
         lc.delete()
         assert not lc.exists()
-
-
-class FakeDocumentStore:
-    def __init__(self, index: str):
-        self._index = index
-        self._references = references(self._index)
-        self._store: dict[str, Document] = dict()
-
-    def index(self) -> str:
-        return self._index
-
-    def add(self, document: Document) -> str:
-        document.document_id = next(self._references)
-        self._store[document.document_id] = document
-        return document.document_id
-
-    def get(self, document_id) -> Document:
-        return self._store[document_id]
 
 
 @pytest.fixture
