@@ -22,9 +22,7 @@ class TestFakeUnitOfWork:
 
         assert saligna.reference is None
 
-    def test_should_assign_reference_on_commit(self, saligna):
-        uow = FakeUnitOfWork()
-
+    def test_should_assign_reference_on_commit(self, uow, saligna):
         with uow:
             uow.species().add(saligna)
             uow.commit()
