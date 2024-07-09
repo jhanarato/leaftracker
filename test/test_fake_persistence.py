@@ -52,13 +52,36 @@ class FakeLifecycle:
     def __init__(self, exists: bool):
         self._exists = exists
 
+    def create(self) -> None:
+        self._exists = True
+
+    def delete(self) -> None:
+        self._exists = False
+
     def exists(self) -> bool:
         return self._exists
 
+    def refresh(self) -> None:
+        pass
+
 
 class TestFakeLifecycle:
-    def test_should_have_existence_state(self):
+    def test_create_when_does_not_exist(self):
         lc = FakeLifecycle(exists=False)
+        lc.create()
+        assert lc.exists()
+
+    def test_create_when_exists(self):
+        lc = FakeLifecycle(exists=True)
+        lc.create()
+        assert lc.exists()
+
+    def test_delete_when_does_not_exist(self):
+        lc = FakeLifecycle(exists=False)
+        lc.delete()
         assert not lc.exists()
 
-
+    def test_delete_when_exists(self):
+        lc = FakeLifecycle(exists=True)
+        lc.delete()
+        assert not lc.exists()
