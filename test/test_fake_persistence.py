@@ -29,7 +29,7 @@ class TestFakeUnitOfWork:
 
         assert saligna.reference == "species-0001"
 
-    def test_should_retrieve_species_after_commit(self, saligna):
+    def test_should_retrieve_species_after_commit(self, uow, saligna):
         uow = FakeUnitOfWork()
 
         with uow:
