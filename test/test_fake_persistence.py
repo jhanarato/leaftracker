@@ -1,6 +1,6 @@
 import pytest
 
-from conftest import FakeUnitOfWork, FakeSpeciesRepository
+from conftest import FakeSpeciesRepository
 from fakes import FakeLifecycle, FakeDocumentStore
 from leaftracker.adapters.elastic_repository import SpeciesRepository
 from leaftracker.adapters.elasticsearch import Document
