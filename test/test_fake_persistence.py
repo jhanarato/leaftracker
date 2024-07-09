@@ -1,4 +1,5 @@
 from conftest import FakeUnitOfWork, FakeSpeciesRepository
+from leaftracker.adapters.elasticsearch import Document
 
 
 class TestFakeUnitOfWork:
@@ -85,3 +86,23 @@ class TestFakeLifecycle:
         lc = FakeLifecycle(exists=True)
         lc.delete()
         assert not lc.exists()
+
+
+class FakeDocumentStore:
+    def __init__(self, index: str):
+        self._index = index
+
+    def index(self) -> str:
+        return self._index
+
+    def add(self, document: Document) -> str:
+        pass
+
+    def get(self, document_id) -> Document:
+        pass
+
+
+class TestFakeDocumentStore:
+    def test_create_with_index_name(self):
+        ds = FakeDocumentStore("index-name")
+        assert ds.index() == "index-name"
