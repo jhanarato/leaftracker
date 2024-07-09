@@ -11,7 +11,7 @@ class Lifecycle:
         self._name = name
         self._mappings = mappings
 
-    def create(self):
+    def create(self) -> None:
         if self.exists():
             return
 
