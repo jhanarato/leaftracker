@@ -38,7 +38,6 @@ def species_to_document(species: Species) -> Document:
 
 
 class DocumentStore(Protocol):
-    @property
     def index(self) -> str:
         ...
 
@@ -54,9 +53,8 @@ class SpeciesRepository:
         self._store = store
         self._added: list[Species] = []
 
-    @property
     def index(self) -> str:
-        return self._store.index
+        return self._store.index()
 
     def add(self, species: Species):
         self._added.append(species)

@@ -7,12 +7,12 @@ from leaftracker.service_layer.elastic_uow import ElasticUnitOfWork, SPECIES_IND
 
 def test_should_normally_use_production_index():
     uow = ElasticUnitOfWork()
-    assert uow.species().index == SPECIES_INDEX
+    assert uow.species().index() == SPECIES_INDEX
 
 
 def test_should_add_index_prefix():
     uow = ElasticUnitOfWork(INDEX_TEST_PREFIX)
-    assert uow.species().index == INDEX_TEST_PREFIX + SPECIES_INDEX
+    assert uow.species().index() == INDEX_TEST_PREFIX + SPECIES_INDEX
 
 
 @pytest.fixture

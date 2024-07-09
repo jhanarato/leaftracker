@@ -38,7 +38,6 @@ class DocumentStore:
         self._client = Elasticsearch(hosts=HOSTS)
         self._index = index
 
-    @property
     def index(self) -> str:
         return self._index
 
@@ -52,18 +51,18 @@ class DocumentStore:
         )
 
     def exists(self, document_id: str) -> bool:
-        return self._client.exists(index=self.index, id=document_id).body
+        return self._client.exists(index=self.index(), id=document_id).body
 
     def add(self, document: Document) -> str:
         response = self._client.index(
-            index=self.index,
+            index=self.index(),
             id=document.document_id,
             document=document.source
         )
         return response["_id"]
 
     def get(self, document_id) -> Document:
-        response = self._client.get(index=self.index, id=document_id)
+        response = self._client.get(index=self.index(), id=document_id)
         return Document(
             document_id=response["_id"],
             source=response["_source"],
