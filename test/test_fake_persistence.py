@@ -1,4 +1,7 @@
+import pytest
+
 from conftest import FakeUnitOfWork, FakeSpeciesRepository
+from fakes import references
 from leaftracker.adapters.elasticsearch import Document
 
 
@@ -91,18 +94,42 @@ class TestFakeLifecycle:
 class FakeDocumentStore:
     def __init__(self, index: str):
         self._index = index
+        self._references = references(self._index)
+        self._store: dict[str, Document] = dict()
 
     def index(self) -> str:
         return self._index
 
     def add(self, document: Document) -> str:
-        pass
+        document.document_id = next(self._references)
+        self._store[document.document_id] = document
+        return document.document_id
 
     def get(self, document_id) -> Document:
-        pass
+        return self._store[document_id]
+
+
+@pytest.fixture
+def document() -> Document:
+    return Document(
+        document_id="some-doc",
+        source={"content": "some content"}
+    )
 
 
 class TestFakeDocumentStore:
     def test_create_with_index_name(self):
-        ds = FakeDocumentStore("index-name")
-        assert ds.index() == "index-name"
+        store = FakeDocumentStore("index-name")
+        assert store.index() == "index-name"
+
+    def test_add_creates_reference(self, document):
+        store = FakeDocumentStore("species")
+        reference = store.add(document)
+        assert reference == "species-0001"
+
+    def test_document_assigned_id_when_missing(self):
+        document = Document(None, {"content": "some content"})
+        store = FakeDocumentStore("species")
+        reference = store.add(document)
+        retrieved = store.get(reference)
+        assert retrieved.document_id == "species-0001"
