@@ -30,8 +30,6 @@ class TestFakeUnitOfWork:
         assert saligna.reference == "species-0001"
 
     def test_should_retrieve_species_after_commit(self, uow, saligna):
-        uow = FakeUnitOfWork()
-
         with uow:
             uow.species().add(saligna)
             uow.commit()
@@ -39,9 +37,7 @@ class TestFakeUnitOfWork:
         retrieved = uow.species().get(saligna.reference)
         assert retrieved.reference == "species-0001"  # type: ignore
 
-    def test_should_discard_uncommitted_species_on_rollback(self, saligna, dentifera):
-        uow = FakeUnitOfWork()
-
+    def test_should_discard_uncommitted_species_on_rollback(self, uow, saligna, dentifera):
         with uow:
             uow.species().add(saligna)
 
