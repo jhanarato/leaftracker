@@ -46,3 +46,19 @@ class TestFakeUnitOfWork:
 class TestFakeSpeciesRepository:
     def test_should_return_none_when_missing(self):
         assert FakeSpeciesRepository().get("missing") is None
+
+
+class FakeLifecycle:
+    def __init__(self, exists: bool):
+        self._exists = exists
+
+    def exists(self) -> bool:
+        return self._exists
+
+
+class TestFakeLifecycle:
+    def test_should_have_existence_state(self):
+        lc = FakeLifecycle(exists=False)
+        assert not lc.exists()
+
+
