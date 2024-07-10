@@ -24,19 +24,6 @@ def dentifera() -> Species:
     return species
 
 
-def delete_test_indexes():
-    client = Elasticsearch(hosts="http://localhost:9200")
-    aliases = client.indices.get_alias(index="test_*")
-    for alias in aliases:
-        client.options(ignore_status=404).indices.delete(index=alias)
-
-
-@pytest.fixture(autouse=True, scope='session')
-def test_indexes():
-    yield
-    delete_test_indexes()
-
-
 class FakeSpeciesRepository:
     def __init__(self):
         self._added = set()
