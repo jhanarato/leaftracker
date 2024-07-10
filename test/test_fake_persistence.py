@@ -1,5 +1,4 @@
-from conftest import FakeSpeciesRepository
-from fakes import FakeLifecycle, FakeDocumentStore
+from fakes import FakeLifecycle, FakeDocumentStore, FakeSpeciesRepository
 from leaftracker.adapters.elasticsearch import Document
 
 

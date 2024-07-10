@@ -1,6 +1,6 @@
 import pytest
 
-from conftest import FakeBatchRepository, FakeUnitOfWork, FakeSpeciesRepository
+from fakes import FakeBatchRepository, FakeSpeciesRepository, FakeUnitOfWork
 from leaftracker.adapters.repository import BatchRepository
 from leaftracker.domain.model import Batch, Source, SourceType, BatchType, Stock, StockSize, TaxonName
 from leaftracker.service_layer import services

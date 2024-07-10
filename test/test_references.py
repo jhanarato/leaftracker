@@ -1,4 +1,4 @@
-from conftest import references
+from fakes import references
 
 
 def test_should_use_prefix():
