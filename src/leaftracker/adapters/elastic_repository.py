@@ -48,7 +48,7 @@ class DocumentStore(Protocol):
         ...
 
 
-class SpeciesRepository:
+class ElasticSpeciesRepository:
     def __init__(self, store: DocumentStore):
         self._store = store
         self._added: list[Species] = []

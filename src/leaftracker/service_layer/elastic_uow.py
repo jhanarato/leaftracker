@@ -1,6 +1,6 @@
 from typing import Self, Protocol
 
-from leaftracker.adapters.elastic_repository import SpeciesRepository
+from leaftracker.adapters.elastic_repository import ElasticSpeciesRepository
 from leaftracker.adapters.elasticsearch import Document
 from leaftracker.adapters.repository import BatchRepository, SourceRepository
 
@@ -29,7 +29,7 @@ class Lifecycle(Protocol):
 
 
 class ElasticUnitOfWork:
-    def __init__(self, lifecycle: Lifecycle, repository: SpeciesRepository):
+    def __init__(self, lifecycle: Lifecycle, repository: ElasticSpeciesRepository):
         self._repository = repository
         self._lifecycle = lifecycle
         self._lifecycle.create()
@@ -53,5 +53,5 @@ class ElasticUnitOfWork:
     def sources(self) -> SourceRepository:  # type: ignore
         pass
 
-    def species(self) -> SpeciesRepository:
+    def species(self) -> ElasticSpeciesRepository:
         return self._repository

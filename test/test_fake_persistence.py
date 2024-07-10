@@ -2,7 +2,7 @@ import pytest
 
 from conftest import FakeSpeciesRepository
 from fakes import FakeLifecycle, FakeDocumentStore
-from leaftracker.adapters.elastic_repository import SpeciesRepository
+from leaftracker.adapters.elastic_repository import ElasticSpeciesRepository
 from leaftracker.adapters.elasticsearch import Document
 from leaftracker.service_layer.elastic_uow import ElasticUnitOfWork
 
@@ -11,7 +11,7 @@ from leaftracker.service_layer.elastic_uow import ElasticUnitOfWork
 def fake_uow():
     lifecycle = FakeLifecycle(exists=False)
     store = FakeDocumentStore("species")
-    repository = SpeciesRepository(store)
+    repository = ElasticSpeciesRepository(store)
     return ElasticUnitOfWork(lifecycle, repository)
 
 

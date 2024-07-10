@@ -1,7 +1,7 @@
 import pytest
 
 from conftest import INDEX_TEST_PREFIX
-from leaftracker.adapters.elastic_repository import SpeciesRepository
+from leaftracker.adapters.elastic_repository import ElasticSpeciesRepository
 from leaftracker.adapters.elasticsearch import DocumentStore, Lifecycle
 from leaftracker.service_layer.elastic_uow import ElasticUnitOfWork, SPECIES_INDEX, SPECIES_MAPPINGS
 
@@ -11,7 +11,7 @@ def uow() -> ElasticUnitOfWork:
     index_name = INDEX_TEST_PREFIX + SPECIES_INDEX
     lifecycle = Lifecycle(index_name, SPECIES_MAPPINGS)
     store = DocumentStore(index_name)
-    repository = SpeciesRepository(store)
+    repository = ElasticSpeciesRepository(store)
     uow = ElasticUnitOfWork(lifecycle, repository)
     store.delete_all()
     uow.commit()

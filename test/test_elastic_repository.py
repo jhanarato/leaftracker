@@ -3,21 +3,21 @@ import pytest
 from conftest import INDEX_TEST_PREFIX
 from leaftracker.adapters.elasticsearch import Document, Lifecycle, DocumentStore
 from leaftracker.adapters.elastic_repository import (
-    SpeciesRepository, species_to_document, document_to_species
+    ElasticSpeciesRepository, species_to_document, document_to_species
 )
 from leaftracker.service_layer.elastic_uow import SPECIES_INDEX, SPECIES_MAPPINGS
 from leaftracker.domain.model import Species, TaxonName
 
 
 @pytest.fixture
-def species_repository() -> SpeciesRepository:
+def species_repository() -> ElasticSpeciesRepository:
     index_name = INDEX_TEST_PREFIX + SPECIES_INDEX
 
     lifecycle = Lifecycle(index_name, SPECIES_MAPPINGS)
     lifecycle.create()
 
     store = DocumentStore(index_name)
-    repository = SpeciesRepository(store)
+    repository = ElasticSpeciesRepository(store)
     store.delete_all()
     lifecycle.refresh()
     return repository
