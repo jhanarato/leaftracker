@@ -3,9 +3,11 @@ from typing import Self
 import pytest
 from elasticsearch import Elasticsearch
 
-from fakes import references
+from fakes import references, FakeLifecycle, FakeDocumentStore
+from leaftracker.adapters.elastic_repository import ElasticSpeciesRepository
 from leaftracker.adapters.repository import BatchRepository, SourceRepository, SpeciesRepository
 from leaftracker.domain.model import Species, Batch, Source
+from leaftracker.service_layer.elastic_uow import ElasticUnitOfWork
 
 INDEX_TEST_PREFIX = "test_"
 
@@ -115,3 +117,11 @@ class FakeUnitOfWork:
 
     def set_species(self, repository: FakeSpeciesRepository):
         self._species = repository
+
+
+@pytest.fixture
+def fake_uow():
+    lifecycle = FakeLifecycle(exists=False)
+    store = FakeDocumentStore("species")
+    repository = ElasticSpeciesRepository(store)
+    return ElasticUnitOfWork(lifecycle, repository)
