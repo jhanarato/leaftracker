@@ -1,5 +1,5 @@
 import pytest
-from elasticsearch import Elasticsearch
+from elasticsearch import Elasticsearch, ConflictError
 
 from leaftracker.adapters.elasticsearch import DocumentStore, Document, Lifecycle
 
@@ -83,3 +83,14 @@ class TestDocumentStore:
         store.add(document)
         lifecycle.refresh()
         assert store.exists(document.document_id)
+
+
+class TestConsistency:
+    def test_count_requires_refresh_to_be_consistent(self, lifecycle, store, document):
+        lifecycle.delete()
+        lifecycle.create()
+        assert store.count() == 0
+        store.add(document)
+        assert store.count() == 0
+        lifecycle.refresh()
+        assert store.count() == 1
