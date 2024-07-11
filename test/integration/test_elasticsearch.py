@@ -101,7 +101,7 @@ class TestConsistency:
         retrieved = store.get(document_id)
         assert document == retrieved
 
-    def test_must_refresh_index_before_delete_all(self, lifecycle, store, document):
+    def test_must_refresh_index_before_delete_all_is_consistent(self, lifecycle, store, document):
         document_id = store.add(document)
         store.delete_all()
         assert store.exists(document_id)
