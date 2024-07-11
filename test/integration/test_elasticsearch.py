@@ -90,16 +90,16 @@ class TestDocumentStore:
 
 
 class TestConsistency:
+    def test_get_is_immediately_consistent(self, lifecycle, store, document):
+        document_id = store.add(document)
+        retrieved = store.get(document_id)
+        assert document == retrieved
+
     def test_count_requires_refresh_to_be_consistent(self, lifecycle, store, document):
         store.add(document)
         assert store.count() == 0
         lifecycle.refresh()
         assert store.count() == 1
-
-    def test_get_is_immediately_consistent(self, lifecycle, store, document):
-        document_id = store.add(document)
-        retrieved = store.get(document_id)
-        assert document == retrieved
 
     def test_must_refresh_index_before_delete_all_is_consistent(self, lifecycle, store, document):
         document_id = store.add(document)
