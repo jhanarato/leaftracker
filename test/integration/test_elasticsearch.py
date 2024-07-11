@@ -1,5 +1,5 @@
 import pytest
-from elasticsearch import Elasticsearch, ConflictError
+from elasticsearch import Elasticsearch
 
 from leaftracker.adapters.elasticsearch import DocumentStore, Document, Lifecycle
 
@@ -22,7 +22,11 @@ def test_indexes():
 
 @pytest.fixture
 def lifecycle() -> Lifecycle:
-    return Lifecycle(INDEX_NAME, MAPPINGS)
+    lc = Lifecycle(INDEX_NAME, MAPPINGS)
+    lc.delete()
+    lc.create()
+    yield lc
+    lc.delete()
 
 
 @pytest.fixture
@@ -87,11 +91,8 @@ class TestDocumentStore:
 
 class TestConsistency:
     def test_count_requires_refresh_to_be_consistent(self, lifecycle, store, document):
-        lifecycle.delete()
-        lifecycle.create()
         assert store.count() == 0
         store.add(document)
         assert store.count() == 0
         lifecycle.refresh()
         assert store.count() == 1
-        lifecycle.delete()
