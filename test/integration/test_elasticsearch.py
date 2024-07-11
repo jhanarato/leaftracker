@@ -94,3 +94,4 @@ class TestConsistency:
         assert store.count() == 0
         lifecycle.refresh()
         assert store.count() == 1
+        lifecycle.delete()
