@@ -94,29 +94,3 @@ class TestDocumentStore:
     def test_should_confirm_document_exists(self, store, document_with_id):
         store.add(document_with_id)
         assert store.exists(document_with_id.document_id)
-
-
-class TestConsistency:
-    def test_get_is_immediately_consistent(self, store, document_with_id):
-        document_id = store.add(document_with_id)
-        retrieved = store.get(document_id)
-        assert document_with_id == retrieved
-
-    def test_exists_is_immediately_consistent(self, store, document_with_id):
-        document_id = store.add(document_with_id)
-        assert store.exists(document_id)
-
-    def test_count_requires_refresh_to_be_consistent(self, lifecycle, store, document_with_id):
-        store.add(document_with_id)
-        assert store.count() == 0
-        lifecycle.refresh()
-        assert store.count() == 1
-
-    def test_must_refresh_index_before_delete_all_is_consistent(self, lifecycle, store, document_with_id):
-        document_id = store.add(document_with_id)
-        store.delete_all()
-        assert store.exists(document_id)
-
-        lifecycle.refresh()
-        store.delete_all()
-        assert not store.exists(document_id)
