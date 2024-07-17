@@ -18,7 +18,6 @@ def species_repository() -> ElasticSpeciesRepository:
 
     store = DocumentStore(index_name)
     repository = ElasticSpeciesRepository(store)
-    lifecycle.refresh()
     return repository
 
 
