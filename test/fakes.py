@@ -24,9 +24,6 @@ class FakeLifecycle:
     def exists(self) -> bool:
         return self._exists
 
-    def refresh(self) -> None:
-        pass
-
 
 class FakeDocumentStore:
     def __init__(self, index: str):
