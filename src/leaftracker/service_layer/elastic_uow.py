@@ -19,11 +19,6 @@ SPECIES_MAPPINGS = {
 }
 
 
-class Lifecycle(Protocol):
-    def create(self) -> None:
-        ...
-
-
 class ElasticUnitOfWork:
     def __init__(self, repository: ElasticSpeciesRepository):
         self._repository = repository
