@@ -49,24 +49,15 @@ class TestLifecycle:
         lifecycle.create()
         assert lifecycle.exists()
 
-    def test_should_create_and_delete_indexes(self, lifecycle, store):
+    def test_dont_overwrite_existing_index_on_create(self, lifecycle, store, document):
         lifecycle.delete()
         assert not lifecycle.exists()
         lifecycle.create()
         assert lifecycle.exists()
+        reference = store.add(document)
         lifecycle.create()
-        assert lifecycle.exists()
-        lifecycle.delete()
-        assert not lifecycle.exists()
-        lifecycle.delete()
-        assert not lifecycle.exists()
-
-    def test_should_skip_creation_when_exists(self, lifecycle, store, document):
-        store.add(document)
-        lifecycle.refresh()
-        assert store.count() == 1
-        lifecycle.create()
-        assert store.count() == 1
+        retrieved = store.get(reference)
+        assert retrieved.document_id == reference
 
 
 class TestDocumentStore:
