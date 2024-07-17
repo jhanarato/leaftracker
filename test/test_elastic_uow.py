@@ -39,8 +39,9 @@ def test_should_add_two_species(uow, saligna, dentifera):
         uow.species().add(dentifera)
         uow.commit()
 
-    store = DocumentStore(INDEX_TEST_PREFIX + SPECIES_INDEX)
-    assert store.count() == 2
+    assert saligna.reference is not None
+    assert dentifera.reference is not None
+    assert saligna.reference != dentifera.reference
 
 
 def test_should_clear_queue_on_rollback(uow, saligna):
