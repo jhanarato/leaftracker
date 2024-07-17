@@ -9,7 +9,6 @@ from leaftracker.service_layer.elastic_uow import ElasticUnitOfWork, SPECIES_IND
 @pytest.fixture
 def uow() -> ElasticUnitOfWork:
     index_name = INDEX_TEST_PREFIX + SPECIES_INDEX
-    lifecycle = Lifecycle(index_name, SPECIES_MAPPINGS)
     store = DocumentStore(index_name)
     repository = ElasticSpeciesRepository(store)
     uow = ElasticUnitOfWork(repository)

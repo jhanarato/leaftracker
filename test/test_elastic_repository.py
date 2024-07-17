@@ -11,12 +11,7 @@ from leaftracker.domain.model import Species, TaxonName
 
 @pytest.fixture
 def species_repository() -> ElasticSpeciesRepository:
-    index_name = INDEX_TEST_PREFIX + SPECIES_INDEX
-
-    lifecycle = Lifecycle(index_name, SPECIES_MAPPINGS)
-    lifecycle.create()
-
-    store = DocumentStore(index_name)
+    store = DocumentStore(INDEX_TEST_PREFIX + SPECIES_INDEX)
     repository = ElasticSpeciesRepository(store)
     return repository
 
