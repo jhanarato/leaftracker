@@ -41,9 +41,6 @@ class DocumentStore:
     def index(self) -> str:
         return self._index
 
-    def count(self) -> int:
-        return self._client.count(index=self._index)["count"]
-
     def delete_all(self) -> None:
         self._client.delete_by_query(
             index=self._index,
