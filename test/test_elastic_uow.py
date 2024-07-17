@@ -13,7 +13,6 @@ def uow() -> ElasticUnitOfWork:
     store = DocumentStore(index_name)
     repository = ElasticSpeciesRepository(store)
     uow = ElasticUnitOfWork(lifecycle, repository)
-    store.delete_all()
     uow.commit()
     return uow
 
