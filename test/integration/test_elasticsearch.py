@@ -91,7 +91,7 @@ class TestDocumentStore:
     def test_doesnt_exist(self, store):
         assert not store.exists("not-a-doc")
 
-    def test_should_confirm_document_exists(self, lifecycle, store, document_with_id):
+    def test_should_confirm_document_exists(self, store, document_with_id):
         store.add(document_with_id)
         assert store.exists(document_with_id.document_id)
 
