@@ -93,7 +93,6 @@ class TestDocumentStore:
 
     def test_should_confirm_document_exists(self, lifecycle, store, document_with_id):
         store.add(document_with_id)
-        lifecycle.refresh()
         assert store.exists(document_with_id.document_id)
 
 
