@@ -1,5 +1,5 @@
 import pytest
-from elasticsearch import Elasticsearch
+from elasticsearch import Elasticsearch, NotFoundError
 
 from leaftracker.adapters.elasticsearch import DocumentStore, Document, Lifecycle
 
@@ -83,6 +83,10 @@ class TestDocumentStore:
         store.add(document_with_id)
         retrieved = store.get(document_with_id.document_id)
         assert retrieved == document_with_id
+
+    def test_get_missing_document(self, store):
+        with pytest.raises(NotFoundError):
+            store.get("no-such-doc")
 
     def test_doesnt_exist(self, store):
         assert not store.exists("not-a-doc")
