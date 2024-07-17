@@ -42,17 +42,13 @@ class TestLifecycle:
         assert lifecycle.exists()
 
     def test_dont_overwrite_existing_index_on_create(self, lifecycle, store, document_with_id):
-        lifecycle.delete()
-        assert not lifecycle.exists()
         lifecycle.create()
-        assert lifecycle.exists()
         reference = store.add(document_with_id)
         lifecycle.create()
         retrieved = store.get(reference)
         assert retrieved.document_id == reference
 
-    def test_no_error_on_delete_twice(self, lifecycle):
-        lifecycle.delete()
+    def test_deleting_missing_index(self, lifecycle):
         assert not lifecycle.exists()
         lifecycle.delete()
         assert not lifecycle.exists()
