@@ -22,7 +22,6 @@ def dentifera() -> Species:
 
 @pytest.fixture
 def fake_uow():
-    lifecycle = FakeLifecycle(exists=False)
     store = FakeDocumentStore("species")
     repository = ElasticSpeciesRepository(store)
     return ElasticUnitOfWork(repository)
