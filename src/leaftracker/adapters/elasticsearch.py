@@ -41,12 +41,6 @@ class DocumentStore:
     def index(self) -> str:
         return self._index
 
-    def delete_all(self) -> None:
-        self._client.delete_by_query(
-            index=self._index,
-            body={"query": {"match_all": {}}}
-        )
-
     def exists(self, document_id: str) -> bool:
         return self._client.exists(index=self.index(), id=document_id).body
 
