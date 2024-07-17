@@ -35,7 +35,7 @@ def store() -> DocumentStore:
 
 
 @pytest.fixture
-def document() -> Document:
+def document_with_id() -> Document:
     return Document(
         document_id="some-doc",
         source={"content": "some content"}
@@ -49,12 +49,12 @@ class TestLifecycle:
         lifecycle.create()
         assert lifecycle.exists()
 
-    def test_dont_overwrite_existing_index_on_create(self, lifecycle, store, document):
+    def test_dont_overwrite_existing_index_on_create(self, lifecycle, store, document_with_id):
         lifecycle.delete()
         assert not lifecycle.exists()
         lifecycle.create()
         assert lifecycle.exists()
-        reference = store.add(document)
+        reference = store.add(document_with_id)
         lifecycle.create()
         retrieved = store.get(reference)
         assert retrieved.document_id == reference
@@ -79,33 +79,38 @@ class TestDocumentStore:
         document_id = store.add(document_without_id)
         assert store.exists(document_id)
 
+    def test_get_existing_document(self, store, document_with_id):
+        store.add(document_with_id)
+        retrieved = store.get(document_with_id.document_id)
+        assert retrieved == document_with_id
+
     def test_doesnt_exist(self, store):
         assert not store.exists("not-a-doc")
 
-    def test_should_confirm_document_exists(self, lifecycle, store, document):
-        store.add(document)
+    def test_should_confirm_document_exists(self, lifecycle, store, document_with_id):
+        store.add(document_with_id)
         lifecycle.refresh()
-        assert store.exists(document.document_id)
+        assert store.exists(document_with_id.document_id)
 
 
 class TestConsistency:
-    def test_get_is_immediately_consistent(self, store, document):
-        document_id = store.add(document)
+    def test_get_is_immediately_consistent(self, store, document_with_id):
+        document_id = store.add(document_with_id)
         retrieved = store.get(document_id)
-        assert document == retrieved
+        assert document_with_id == retrieved
 
-    def test_exists_is_immediately_consistent(self, store, document):
-        document_id = store.add(document)
+    def test_exists_is_immediately_consistent(self, store, document_with_id):
+        document_id = store.add(document_with_id)
         assert store.exists(document_id)
 
-    def test_count_requires_refresh_to_be_consistent(self, lifecycle, store, document):
-        store.add(document)
+    def test_count_requires_refresh_to_be_consistent(self, lifecycle, store, document_with_id):
+        store.add(document_with_id)
         assert store.count() == 0
         lifecycle.refresh()
         assert store.count() == 1
 
-    def test_must_refresh_index_before_delete_all_is_consistent(self, lifecycle, store, document):
-        document_id = store.add(document)
+    def test_must_refresh_index_before_delete_all_is_consistent(self, lifecycle, store, document_with_id):
+        document_id = store.add(document_with_id)
         store.delete_all()
         assert store.exists(document_id)
 
