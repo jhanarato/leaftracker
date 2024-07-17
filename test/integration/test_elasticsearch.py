@@ -59,6 +59,12 @@ class TestLifecycle:
         retrieved = store.get(reference)
         assert retrieved.document_id == reference
 
+    def test_no_error_on_delete_twice(self, lifecycle):
+        lifecycle.delete()
+        assert not lifecycle.exists()
+        lifecycle.delete()
+        assert not lifecycle.exists()
+        
 
 class TestDocumentStore:
     def test_should_delete_documents(self, lifecycle, store, document):
