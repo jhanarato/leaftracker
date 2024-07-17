@@ -35,6 +35,14 @@ def store() -> DocumentStore:
 
 
 @pytest.fixture
+def document_without_id():
+    return Document(
+        document_id=None,
+        source={"content": "some content"}
+    )
+
+
+@pytest.fixture
 def document_with_id() -> Document:
     return Document(
         document_id="some-doc",
@@ -64,14 +72,6 @@ class TestLifecycle:
         assert not lifecycle.exists()
         lifecycle.delete()
         assert not lifecycle.exists()
-
-
-@pytest.fixture
-def document_without_id():
-    return Document(
-        document_id=None,
-        source={"content": "some content"}
-    )
 
 
 class TestDocumentStore:
