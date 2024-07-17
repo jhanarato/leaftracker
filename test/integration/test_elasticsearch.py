@@ -43,6 +43,12 @@ def document() -> Document:
 
 
 class TestLifecycle:
+    def test_create_when_missing(self, lifecycle):
+        lifecycle.delete()
+        assert not lifecycle.exists()
+        lifecycle.create()
+        assert lifecycle.exists()
+
     def test_should_create_and_delete_indexes(self, lifecycle, store):
         lifecycle.delete()
         assert not lifecycle.exists()
