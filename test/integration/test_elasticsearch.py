@@ -21,7 +21,7 @@ def test_indexes():
 
 
 @pytest.fixture
-def lifecycle() -> Lifecycle:
+def lifecycle():
     lc = Lifecycle(INDEX_NAME, MAPPINGS)
     lc.delete()
     lc.create()
@@ -30,7 +30,7 @@ def lifecycle() -> Lifecycle:
 
 
 @pytest.fixture
-def store() -> DocumentStore:
+def store():
     return DocumentStore(INDEX_NAME)
 
 
@@ -88,9 +88,9 @@ class TestDocumentStore:
         with pytest.raises(NotFoundError):
             store.get("no-such-doc")
 
-    def test_doesnt_exist(self, store):
+    def test_document_doesnt_exist(self, store):
         assert not store.exists("not-a-doc")
 
-    def test_should_confirm_document_exists(self, store, document_with_id):
+    def test_document_does_exist(self, store, document_with_id):
         store.add(document_with_id)
         assert store.exists(document_with_id.document_id)
