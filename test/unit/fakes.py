@@ -29,7 +29,7 @@ class FakeDocumentStore:
     def __init__(self, index: str):
         self._index = index
         self._references = references(self._index)
-        self._store: dict[str, Document] = dict()
+        self._documents: dict[str, Document] = dict()
 
     def index(self) -> str:
         return self._index
@@ -37,11 +37,11 @@ class FakeDocumentStore:
     def add(self, document: Document) -> str:
         if document.document_id is None:
             document.document_id = next(self._references)
-        self._store[document.document_id] = document
+        self._documents[document.document_id] = document
         return document.document_id
 
     def get(self, document_id) -> Document:
-        return self._store[document_id]
+        return self._documents[document_id]
 
 
 class FakeBatchRepository:
