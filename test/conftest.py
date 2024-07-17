@@ -25,4 +25,4 @@ def fake_uow():
     lifecycle = FakeLifecycle(exists=False)
     store = FakeDocumentStore("species")
     repository = ElasticSpeciesRepository(store)
-    return ElasticUnitOfWork(lifecycle, repository)
+    return ElasticUnitOfWork(repository)

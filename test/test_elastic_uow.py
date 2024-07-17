@@ -12,7 +12,7 @@ def uow() -> ElasticUnitOfWork:
     lifecycle = Lifecycle(index_name, SPECIES_MAPPINGS)
     store = DocumentStore(index_name)
     repository = ElasticSpeciesRepository(store)
-    uow = ElasticUnitOfWork(lifecycle, repository)
+    uow = ElasticUnitOfWork(repository)
     uow.commit()
     return uow
 

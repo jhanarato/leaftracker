@@ -25,10 +25,8 @@ class Lifecycle(Protocol):
 
 
 class ElasticUnitOfWork:
-    def __init__(self, lifecycle: Lifecycle, repository: ElasticSpeciesRepository):
+    def __init__(self, repository: ElasticSpeciesRepository):
         self._repository = repository
-        self._lifecycle = lifecycle
-        self._lifecycle.create()
 
     def __enter__(self) -> Self:
         return self
