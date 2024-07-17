@@ -1,6 +1,6 @@
 import pytest
 
-from fakes import FakeLifecycle, FakeDocumentStore
+from fakes import FakeDocumentStore
 from leaftracker.adapters.elastic_repository import ElasticSpeciesRepository
 from leaftracker.domain.model import Species
 from leaftracker.service_layer.elastic_uow import ElasticUnitOfWork
