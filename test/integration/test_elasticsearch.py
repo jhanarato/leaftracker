@@ -10,7 +10,6 @@ MAPPINGS = {"properties": {"content": {"type": "text"}}}
 @pytest.fixture
 def lifecycle():
     lc = Lifecycle(INDEX_NAME, MAPPINGS)
-    lc.create()
     yield lc
     lc.delete()
 
@@ -38,7 +37,6 @@ def document_with_id() -> Document:
 
 class TestLifecycle:
     def test_create_when_missing(self, lifecycle):
-        lifecycle.delete()
         assert not lifecycle.exists()
         lifecycle.create()
         assert lifecycle.exists()
