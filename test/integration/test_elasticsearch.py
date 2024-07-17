@@ -1,5 +1,5 @@
 import pytest
-from elasticsearch import Elasticsearch, NotFoundError
+from elasticsearch import NotFoundError
 
 from leaftracker.adapters.elasticsearch import DocumentStore, Document, Lifecycle
 
