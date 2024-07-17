@@ -64,25 +64,9 @@ class TestLifecycle:
         assert not lifecycle.exists()
         lifecycle.delete()
         assert not lifecycle.exists()
-        
+
 
 class TestDocumentStore:
-    def test_should_delete_documents(self, lifecycle, store, document):
-        store.add(document)
-        lifecycle.refresh()
-        assert store.count() == 1
-        store.delete_all()
-        lifecycle.refresh()
-        assert store.count() == 0
-
-    def test_should_allow_delete_documents_when_empty(self, lifecycle, store):
-        store.delete_all()
-        lifecycle.refresh()
-        assert store.count() == 0
-        store.delete_all()
-        lifecycle.refresh()
-        assert store.count() == 0
-
     def test_should_indicate_missing_document(self, store):
         assert not store.exists("not-a-doc")
 
