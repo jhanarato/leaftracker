@@ -23,9 +23,6 @@ class Lifecycle:
     def exists(self) -> bool:
         return self._client.indices.exists(index=self._name).body
 
-    def refresh(self) -> None:
-        self._client.indices.refresh(index=self._name)
-
 
 @dataclass
 class Document:
