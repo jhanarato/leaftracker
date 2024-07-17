@@ -7,30 +7,16 @@ INDEX_NAME = "test_index"
 MAPPINGS = {"properties": {"content": {"type": "text"}}}
 
 
-def delete_test_indexes():
-    client = Elasticsearch(hosts="http://localhost:9200")
-    aliases = client.indices.get_alias(index="test_*")
-    for alias in aliases:
-        client.options(ignore_status=404).indices.delete(index=alias)
-
-
-@pytest.fixture(autouse=True, scope='session')
-def test_indexes():
-    yield
-    delete_test_indexes()
-
-
 @pytest.fixture
 def lifecycle():
     lc = Lifecycle(INDEX_NAME, MAPPINGS)
-    lc.delete()
     lc.create()
     yield lc
     lc.delete()
 
 
 @pytest.fixture
-def store():
+def store(lifecycle):
     return DocumentStore(INDEX_NAME)
 
 
