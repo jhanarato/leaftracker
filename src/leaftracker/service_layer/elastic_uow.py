@@ -2,8 +2,7 @@ from typing import Self, Protocol
 
 from leaftracker.adapters.elastic_repository import ElasticSpeciesRepository
 from leaftracker.adapters.elasticsearch import Document
-from leaftracker.adapters.repository import BatchRepository, SourceRepository
-
+from leaftracker.adapters.repository import BatchRepository, SourceRepository, SpeciesRepository
 
 SPECIES_INDEX = "species"
 
@@ -49,5 +48,5 @@ class ElasticUnitOfWork:
     def sources(self) -> SourceRepository:  # type: ignore
         pass
 
-    def species(self) -> ElasticSpeciesRepository:
+    def species(self) -> SpeciesRepository:
         return self._repository
