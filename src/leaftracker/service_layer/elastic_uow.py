@@ -24,9 +24,6 @@ class Lifecycle(Protocol):
     def create(self) -> None:
         ...
 
-    def refresh(self) -> None:
-        ...
-
 
 class ElasticUnitOfWork:
     def __init__(self, lifecycle: Lifecycle, repository: ElasticSpeciesRepository):
@@ -42,7 +39,6 @@ class ElasticUnitOfWork:
 
     def commit(self) -> None:
         self._repository.commit()
-        self._lifecycle.refresh()
 
     def rollback(self) -> None:
         self._repository.rollback()
