@@ -66,8 +66,20 @@ class TestLifecycle:
         assert not lifecycle.exists()
 
 
+@pytest.fixture
+def document_without_id():
+    return Document(
+        document_id=None,
+        source={"content": "some content"}
+    )
+
+
 class TestDocumentStore:
-    def test_should_indicate_missing_document(self, store):
+    def test_add_new_document(self, store, document_without_id):
+        document_id = store.add(document_without_id)
+        assert store.exists(document_id)
+
+    def test_doesnt_exist(self, store):
         assert not store.exists("not-a-doc")
 
     def test_should_confirm_document_exists(self, lifecycle, store, document):
