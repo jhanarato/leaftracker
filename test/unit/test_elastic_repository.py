@@ -1,29 +1,30 @@
 import pytest
 
-from conftest import INDEX_TEST_PREFIX
 from leaftracker.adapters.elastic_repository import (
     ElasticSpeciesRepository, species_to_document, document_to_species
 )
-from leaftracker.adapters.elasticsearch import Document, DocumentStore
+from leaftracker.adapters.elasticsearch import Document
 from leaftracker.domain.model import Species, TaxonName
-from leaftracker.service_layer.elastic_uow import SPECIES_INDEX
+from unit.fakes import FakeDocumentStore
 
 
 @pytest.fixture
 def species_repository() -> ElasticSpeciesRepository:
-    store = DocumentStore(INDEX_TEST_PREFIX + SPECIES_INDEX)
+    store = FakeDocumentStore("fake-index")
     repository = ElasticSpeciesRepository(store)
     return repository
 
 
-def test_should_add_taxon_history_to_document():
+@pytest.fixture
+def species_aggregate() -> Species:
     species = Species(current_name="Machaerina juncea", reference="species-0001")
-
     species.taxon_history.add_previous_name("Baumea juncea")
+    return species
 
-    document = species_to_document(species)
 
-    assert document == Document(
+@pytest.fixture
+def species_document() -> Document:
+    return Document(
         document_id="species-0001",
         source={
             "scientific_names": [
@@ -34,26 +35,20 @@ def test_should_add_taxon_history_to_document():
     )
 
 
-def test_should_add_taxon_history_to_domain_object():
-    document = Document(
-        document_id="species-0001",
-        source={
-            "scientific_names": [
-                {"genus": "Baumea", "species": "juncea"},
-                {"genus": "Machaerina", "species": "juncea"},
-            ]
-        }
-    )
+def test_aggregate_to_document(species_aggregate, species_document):
+    assert species_to_document(species_aggregate) == species_document
 
-    result = document_to_species(document)
 
-    assert result.taxon_history.current() == TaxonName("Machaerina juncea")
-    assert list(result.taxon_history.previous()) == [TaxonName("Baumea juncea")]
+def test_document_to_aggregate(species_document):
+    species = document_to_species(species_document)
+
+    assert species.taxon_history.current() == TaxonName("Machaerina juncea")
+    assert list(species.taxon_history.previous()) == [TaxonName("Baumea juncea")]
 
 
 class TestSpeciesRepository:
-    def test_get_missing_document(self, species_repository):
-        assert species_repository.get("Nothing") is None
+    def test_get_missing_species(self, species_repository):
+        assert species_repository.get("no-such-species") is None
 
     def test_should_rollback(self, species_repository, saligna):
         species_repository.add(saligna)
