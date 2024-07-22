@@ -1,7 +1,5 @@
 from typing import Protocol
 
-from elasticsearch import NotFoundError
-
 from leaftracker.adapters.elasticsearch import Document
 from leaftracker.domain.model import Species
 
@@ -44,7 +42,7 @@ class DocumentStore(Protocol):
     def add(self, document: Document) -> str:
         ...
 
-    def get(self, document_id) -> Document:
+    def get(self, document_id) -> Document | None:
         ...
 
 
