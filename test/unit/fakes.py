@@ -41,7 +41,7 @@ class FakeDocumentStore:
         return document.document_id
 
     def get(self, document_id) -> Document:
-        return self._documents[document_id]
+        return self._documents.get(document_id)
 
 
 class FakeBatchRepository:
