@@ -47,10 +47,10 @@ def test_document_to_aggregate(species_document):
 
 
 class TestSpeciesRepository:
-    def test_get_missing_species(self, species_repository):
+    def test_get_missing(self, species_repository):
         assert species_repository.get("no-such-species") is None
 
-    def test_should_rollback(self, species_repository, saligna):
+    def test_rollback(self, species_repository, saligna):
         species_repository.add(saligna)
         species_repository.rollback()
         assert not species_repository.added()
