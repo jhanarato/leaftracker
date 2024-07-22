@@ -49,13 +49,13 @@ class DocumentStore:
     def get(self, document_id) -> Document | None:
         try:
             response = self._client.get(index=self.index(), id=document_id)
-            document = Document(
-                document_id=response["_id"],
-                source=response["_source"],
-            )
-            return document
         except NotFoundError:
             return None
+
+        return Document(
+            document_id=response["_id"],
+            source=response["_source"],
+        )
 
     def exists(self, document_id: str) -> bool:
         return self._client.exists(index=self.index(), id=document_id).body
