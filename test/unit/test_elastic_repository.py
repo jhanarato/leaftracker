@@ -43,8 +43,9 @@ class TestSpeciesRepository:
         repository.commit()
         retrieved_aggregate = repository.get("species-0001")
 
-        assert retrieved_aggregate.taxon_history.current() == TaxonName("Machaerina juncea")  # type: ignore
-        assert list(retrieved_aggregate.taxon_history.previous()) == [TaxonName("Baumea juncea")]  # type: ignore
+        assert retrieved_aggregate
+        assert retrieved_aggregate.taxon_history.current() == TaxonName("Machaerina juncea")
+        assert list(retrieved_aggregate.taxon_history.previous()) == [TaxonName("Baumea juncea")]
 
     def test_get_missing(self):
         store = FakeDocumentStore("fake-index")
