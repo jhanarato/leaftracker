@@ -60,12 +60,10 @@ class ElasticSpeciesRepository:
         self._added.append(species)
 
     def get(self, reference: str) -> Species | None:
-        try:
-            document = self._store.get(reference)
-        except NotFoundError:
-            return None
-
-        return document_to_species(document)
+        document = self._store.get(reference)
+        if document:
+            return document_to_species(document)
+        return None
 
     def added(self) -> list[Species]:
         return self._added

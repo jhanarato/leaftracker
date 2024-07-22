@@ -65,8 +65,7 @@ class TestDocumentStore:
         assert retrieved == document_with_id
 
     def test_get_missing_document(self, store):
-        with pytest.raises(NotFoundError):
-            store.get("no-such-doc")
+        assert store.get("no-such-doc") is None
 
     def test_document_doesnt_exist(self, store):
         assert not store.exists("not-a-doc")
