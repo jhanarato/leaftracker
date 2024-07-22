@@ -4,7 +4,7 @@ from leaftracker.adapters.elastic_repository import ElasticSpeciesRepository
 
 from leaftracker.adapters.elasticsearch import Document
 from leaftracker.domain.model import Species, TaxonName
-from unit.fakes import FakeDocumentStore # type: ignore
+from fakes import FakeDocumentStore
 
 
 @pytest.fixture
