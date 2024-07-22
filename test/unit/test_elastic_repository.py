@@ -47,6 +47,14 @@ def test_document_to_aggregate(species_document):
 
 
 class TestSpeciesRepository:
+    def test_store_species(self, species_aggregate, species_document):
+        store = FakeDocumentStore("fake-index")
+        repository = ElasticSpeciesRepository(store)
+        repository.add(species_aggregate)
+        repository.commit()
+        document = store.get("species-0001")
+        assert document == species_document
+
     def test_get_missing(self, species_repository):
         assert species_repository.get("no-such-species") is None
 
