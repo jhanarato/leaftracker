@@ -52,7 +52,7 @@ def test_should_add_taxon_history_to_domain_object():
 
 
 class TestSpeciesRepository:
-    def test_should_indicate_missing_document(self, species_repository):
+    def test_get_missing_document(self, species_repository):
         assert species_repository.get("Nothing") is None
 
     def test_should_rollback(self, species_repository, saligna):
