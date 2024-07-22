@@ -9,13 +9,6 @@ from unit.fakes import FakeDocumentStore
 
 
 @pytest.fixture
-def species_repository() -> ElasticSpeciesRepository:
-    store = FakeDocumentStore("fake-index")
-    repository = ElasticSpeciesRepository(store)
-    return repository
-
-
-@pytest.fixture
 def species_aggregate() -> Species:
     species = Species(current_name="Machaerina juncea", reference="species-0001")
     species.taxon_history.add_previous_name("Baumea juncea")
@@ -54,10 +47,14 @@ class TestSpeciesRepository:
         assert retrieved_aggregate.taxon_history.current() == TaxonName("Machaerina juncea")
         assert list(retrieved_aggregate.taxon_history.previous()) == [TaxonName("Baumea juncea")]
 
-    def test_get_missing(self, species_repository):
-        assert species_repository.get("no-such-species") is None
+    def test_get_missing(self):
+        store = FakeDocumentStore("fake-index")
+        repository = ElasticSpeciesRepository(store)
+        assert repository.get("no-such-species") is None
 
-    def test_rollback(self, species_repository, saligna):
-        species_repository.add(saligna)
-        species_repository.rollback()
-        assert not species_repository.added()
+    def test_rollback(self, species_aggregate):
+        store = FakeDocumentStore("fake-index")
+        repository = ElasticSpeciesRepository(store)
+        repository.add(species_aggregate)
+        repository.rollback()
+        assert not repository.added()
