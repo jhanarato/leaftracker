@@ -40,7 +40,7 @@ class FakeDocumentStore:
         self._documents[document.document_id] = document
         return document.document_id
 
-    def get(self, document_id) -> Document:
+    def get(self, document_id) -> Document | None:
         return self._documents.get(document_id)
 
 

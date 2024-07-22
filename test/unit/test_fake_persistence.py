@@ -79,11 +79,11 @@ class TestFakeDocumentStore:
         store = FakeDocumentStore("species")
         reference = store.add(document)
         retrieved = store.get(reference)
-        assert retrieved.document_id == "species-0001"
+        assert retrieved.document_id == "species-0001"  # type: ignore
 
     def test_id_preserved_when_adding(self):
         document = Document("a-unique-id", {"content": "some content"})
         store = FakeDocumentStore("species")
         reference = store.add(document)
         retrieved = store.get(reference)
-        assert retrieved.document_id == "a-unique-id"
+        assert retrieved.document_id == "a-unique-id"  # type: ignore

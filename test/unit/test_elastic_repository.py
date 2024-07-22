@@ -1,11 +1,10 @@
 import pytest
 
-from leaftracker.adapters.elastic_repository import (
-    ElasticSpeciesRepository, species_to_document, document_to_species
-)
+from leaftracker.adapters.elastic_repository import ElasticSpeciesRepository
+
 from leaftracker.adapters.elasticsearch import Document
 from leaftracker.domain.model import Species, TaxonName
-from unit.fakes import FakeDocumentStore
+from unit.fakes import FakeDocumentStore # type: ignore
 
 
 @pytest.fixture
@@ -44,8 +43,8 @@ class TestSpeciesRepository:
         repository.commit()
         retrieved_aggregate = repository.get("species-0001")
 
-        assert retrieved_aggregate.taxon_history.current() == TaxonName("Machaerina juncea")
-        assert list(retrieved_aggregate.taxon_history.previous()) == [TaxonName("Baumea juncea")]
+        assert retrieved_aggregate.taxon_history.current() == TaxonName("Machaerina juncea")  # type: ignore
+        assert list(retrieved_aggregate.taxon_history.previous()) == [TaxonName("Baumea juncea")]  # type: ignore
 
     def test_get_missing(self):
         store = FakeDocumentStore("fake-index")
