@@ -35,17 +35,6 @@ def species_document() -> Document:
     )
 
 
-def test_aggregate_to_document(species_aggregate, species_document):
-    assert species_to_document(species_aggregate) == species_document
-
-
-def test_document_to_aggregate(species_document):
-    species = document_to_species(species_document)
-
-    assert species.taxon_history.current() == TaxonName("Machaerina juncea")
-    assert list(species.taxon_history.previous()) == [TaxonName("Baumea juncea")]
-
-
 class TestSpeciesRepository:
     def test_store_species(self, species_aggregate, species_document):
         store = FakeDocumentStore("fake-index")
@@ -54,6 +43,16 @@ class TestSpeciesRepository:
         repository.commit()
         document = store.get("species-0001")
         assert document == species_document
+
+    def test_retrieve_species(self, species_aggregate):
+        store = FakeDocumentStore("fake-index")
+        repository = ElasticSpeciesRepository(store)
+        repository.add(species_aggregate)
+        repository.commit()
+        retrieved_aggregate = repository.get("species-0001")
+
+        assert retrieved_aggregate.taxon_history.current() == TaxonName("Machaerina juncea")
+        assert list(retrieved_aggregate.taxon_history.previous()) == [TaxonName("Baumea juncea")]
 
     def test_get_missing(self, species_repository):
         assert species_repository.get("no-such-species") is None
