@@ -81,5 +81,8 @@ class ElasticSourceRepository:
     def added(self) -> list[Source]:
         return self._added
 
+    def commit(self):
+        pass
+
     def rollback(self):
         self._added.clear()
