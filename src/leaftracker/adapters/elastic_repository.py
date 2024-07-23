@@ -5,20 +5,16 @@ from leaftracker.domain.model import Species
 
 
 def document_to_species(document: Document) -> Species:
-    names = document.source["scientific_names"]
-
-    current_name = names[-1]
-    previous_names = names[:-1]
+    current_name = document.source["current_scientific_name"]
+    previous_names = document.source["previous_scientific_names"]
 
     species = Species(
-        current_name=f"{current_name["genus"]} {current_name["species"]}",
+        current_name=current_name,
         reference=document.document_id
     )
 
     for previous_name in previous_names:
-        species.taxon_history.add_previous_name(
-            f"{previous_name["genus"]} {previous_name["species"]}"
-        )
+        species.taxon_history.add_previous_name(previous_name)
 
     return species
 
@@ -37,7 +33,7 @@ def species_to_document(species: Species) -> Document:
         source={
             "scientific_names": scientific_names,
             "current_scientific_name": current_scientific_name,
-            "other_scientific_names": other_scientific_names,
+            "previous_scientific_names": other_scientific_names,
         }
     )
 

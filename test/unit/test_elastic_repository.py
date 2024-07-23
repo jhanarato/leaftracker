@@ -24,7 +24,7 @@ def species_document() -> Document:
                 {"genus": "Machaerina", "species": "juncea"},
             ],
             "current_scientific_name": "Machaerina juncea",
-            "other_scientific_names": ["Baumea juncea"]
+            "previous_scientific_names": ["Baumea juncea"]
         }
     )
 
