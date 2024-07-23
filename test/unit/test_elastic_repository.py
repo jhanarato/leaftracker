@@ -87,6 +87,11 @@ class TestSourceRepository:
         document = store.get("Trillion Trees")
         assert document == source_document
 
+    def test_get(self, store, source_repository, source_document):
+        store.add(source_document)
+        retrieved = source_repository.get("Trillion Trees")
+        assert retrieved
+
     def test_rollback(self, store, source_repository, source_aggregate):
         source_repository.add(source_aggregate)
         source_repository.rollback()
