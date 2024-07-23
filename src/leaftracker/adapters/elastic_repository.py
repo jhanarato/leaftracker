@@ -29,11 +29,15 @@ def species_to_document(species: Species) -> Document:
         for name in species.taxon_history
     ]
 
+    current_scientific_name = str(species.taxon_history.current())
+    other_scientific_names = [str(name) for name in species.taxon_history.previous()]
+
     return Document(
         document_id=species.reference,
         source={
             "scientific_names": scientific_names,
-            "current_scientific_name": str(species.taxon_history.current()),
+            "current_scientific_name": current_scientific_name,
+            "other_scientific_names": other_scientific_names,
         }
     )
 
