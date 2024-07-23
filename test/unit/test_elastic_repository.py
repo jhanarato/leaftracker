@@ -8,6 +8,11 @@ from fakes import FakeDocumentStore
 
 
 @pytest.fixture
+def stor    e() -> FakeDocumentStore:
+    return FakeDocumentStore("fake-index")
+
+
+@pytest.fixture
 def species_aggregate() -> Species:
     species = Species(current_name="Machaerina juncea", reference="species-0001")
     species.taxon_history.add_previous_name("Baumea juncea")
@@ -26,34 +31,29 @@ def species_document() -> Document:
 
 
 @pytest.fixture
-def store() -> FakeDocumentStore:
-    return FakeDocumentStore("fake-index")
-
-
-@pytest.fixture
-def repository(store) -> ElasticSpeciesRepository:
+def species_repository(store) -> ElasticSpeciesRepository:
     return ElasticSpeciesRepository(store)
 
 
 class TestSpeciesRepository:
-    def test_add(self, store, repository, species_aggregate, species_document):
-        repository.add(species_aggregate)
-        repository.commit()
+    def test_add(self, store, species_repository, species_aggregate, species_document):
+        species_repository.add(species_aggregate)
+        species_repository.commit()
         document = store.get("species-0001")
         assert document == species_document
 
-    def test_get(self, store, repository, species_document):
+    def test_get(self, store, species_repository, species_document):
         store.add(species_document)
-        retrieved = repository.get("species-0001")
+        retrieved = species_repository.get("species-0001")
 
         assert retrieved
         assert retrieved.taxon_history.current() == TaxonName("Machaerina juncea")
         assert list(retrieved.taxon_history.previous()) == [TaxonName("Baumea juncea")]
 
-    def test_get_missing(self, store, repository):
-        assert repository.get("no-such-species") is None
+    def test_get_missing(self, store, species_repository):
+        assert species_repository.get("no-such-species") is None
 
-    def test_rollback(self, store, repository, species_aggregate):
-        repository.add(species_aggregate)
-        repository.rollback()
-        assert not repository.added()
+    def test_rollback(self, store, species_repository, species_aggregate):
+        species_repository.add(species_aggregate)
+        species_repository.rollback()
+        assert not species_repository.added()
