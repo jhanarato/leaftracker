@@ -11,8 +11,8 @@ SPECIES_MAPPINGS = {
     "properties": {
         "scientific_names": {
             "properties": {
-                "genus": {"type": "text"},
-                "species": {"type": "text"},
+                "current_scientific_name": {"type": "text"},
+                "previous_scientific_names": {"type": "text"},
             }
         }
     }
