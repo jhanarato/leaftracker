@@ -44,14 +44,13 @@ class TestSpeciesRepository:
         document = store.get("species-0001")
         assert document == species_document
 
-    def test_get(self, store, repository, species_aggregate):
-        repository.add(species_aggregate)
-        repository.commit()
-        retrieved_aggregate = repository.get("species-0001")
+    def test_get(self, store, repository, species_document):
+        store.add(species_document)
+        retrieved = repository.get("species-0001")
 
-        assert retrieved_aggregate
-        assert retrieved_aggregate.taxon_history.current() == TaxonName("Machaerina juncea")
-        assert list(retrieved_aggregate.taxon_history.previous()) == [TaxonName("Baumea juncea")]
+        assert retrieved
+        assert retrieved.taxon_history.current() == TaxonName("Machaerina juncea")
+        assert list(retrieved.taxon_history.previous()) == [TaxonName("Baumea juncea")]
 
     def test_get_missing(self, store, repository):
         assert repository.get("no-such-species") is None
