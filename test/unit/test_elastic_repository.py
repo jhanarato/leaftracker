@@ -75,7 +75,7 @@ def source_document():
         document_id="Trillion Trees",
         source={
             "current_name": "Trillion Trees",
-            "type": "nursery",
+            "source_type": "nursery",
         }
     )
 

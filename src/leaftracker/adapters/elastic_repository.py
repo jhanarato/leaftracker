@@ -72,11 +72,14 @@ class ElasticSpeciesRepository:
 
 
 def source_to_document(source: Source) -> Document:
+    current_name = source.name
+    source_type = source.source_type.value
+
     return Document(
-        document_id="Trillion Trees",
+        document_id=current_name,
         source={
-            "current_name": "Trillion Trees",
-            "type": "nursery",
+            "current_name": current_name,
+            "source_type": source_type,
         }
     )
 
