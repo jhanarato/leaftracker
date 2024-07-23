@@ -6,9 +6,17 @@ from fakes import FakeDocumentStore
 
 
 @pytest.fixture
-def uow() -> ElasticUnitOfWork:
-    store = FakeDocumentStore("fake-index")
-    repository = ElasticSpeciesRepository(store)
+def store() -> FakeDocumentStore:
+    return FakeDocumentStore("fake-index")
+
+
+@pytest.fixture
+def repository(store) -> ElasticSpeciesRepository:
+    return ElasticSpeciesRepository(store)
+
+
+@pytest.fixture
+def uow(repository) -> ElasticUnitOfWork:
     uow = ElasticUnitOfWork(repository)
     return uow
 
