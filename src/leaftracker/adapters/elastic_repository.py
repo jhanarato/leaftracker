@@ -31,7 +31,10 @@ def species_to_document(species: Species) -> Document:
 
     return Document(
         document_id=species.reference,
-        source={"scientific_names": scientific_names}
+        source={
+            "scientific_names": scientific_names,
+            "current_scientific_name": str(species.taxon_history.current()),
+        }
     )
 
 
