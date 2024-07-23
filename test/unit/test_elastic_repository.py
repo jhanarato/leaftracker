@@ -19,10 +19,6 @@ def species_document() -> Document:
     return Document(
         document_id="species-0001",
         source={
-            "scientific_names": [
-                {"genus": "Baumea", "species": "juncea"},
-                {"genus": "Machaerina", "species": "juncea"},
-            ],
             "current_scientific_name": "Machaerina juncea",
             "previous_scientific_names": ["Baumea juncea"]
         }

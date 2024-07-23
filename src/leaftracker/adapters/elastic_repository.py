@@ -20,18 +20,12 @@ def document_to_species(document: Document) -> Species:
 
 
 def species_to_document(species: Species) -> Document:
-    scientific_names = [
-        {"genus": name.genus, "species": name.species}
-        for name in species.taxon_history
-    ]
-
     current_scientific_name = str(species.taxon_history.current())
     other_scientific_names = [str(name) for name in species.taxon_history.previous()]
 
     return Document(
         document_id=species.reference,
         source={
-            "scientific_names": scientific_names,
             "current_scientific_name": current_scientific_name,
             "previous_scientific_names": other_scientific_names,
         }
