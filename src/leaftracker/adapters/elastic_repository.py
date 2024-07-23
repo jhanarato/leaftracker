@@ -71,8 +71,19 @@ class ElasticSpeciesRepository:
         self._added.clear()
 
 
+def source_to_document(source: Source) -> Document:
+    return Document(
+        document_id="Trillion Trees",
+        source={
+            "current_name": "Trillion Trees",
+            "type": "nursery",
+        }
+    )
+
+
 class ElasticSourceRepository:
     def __init__(self, store: DocumentStore):
+        self._store = store
         self._added: list[Source] = []
 
     def add(self, source: Source):
@@ -82,7 +93,11 @@ class ElasticSourceRepository:
         return self._added
 
     def commit(self):
-        pass
+        for source in self.added():
+            document = source_to_document(source)
+            source.reference = self._store.add(document)
+
+        self._added.clear()
 
     def rollback(self):
         self._added.clear()

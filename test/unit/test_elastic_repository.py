@@ -71,13 +71,22 @@ def source_aggregate() -> Source:
 
 @pytest.fixture
 def source_document():
-    pass
+    return Document(
+        document_id="Trillion Trees",
+        source={
+            "current_name": "Trillion Trees",
+            "type": "nursery",
+        }
+    )
 
 
 class TestSourceRepository:
     def test_add(self, store, source_repository, source_aggregate, source_document):
         source_repository.add(source_aggregate)
         source_repository.commit()
+        document = store.get("Trillion Trees")
+        assert document
+        assert document == source_document
 
     def test_rollback(self, store, source_repository, source_aggregate):
         source_repository.add(source_aggregate)
