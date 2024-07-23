@@ -92,6 +92,9 @@ class TestSourceRepository:
         retrieved = source_repository.get("Trillion Trees")
         assert retrieved
 
+    def test_get_missing(self, store, source_repository):
+        assert source_repository.get("No Such Source") is None
+
     def test_rollback(self, store, source_repository, source_aggregate):
         source_repository.add(source_aggregate)
         source_repository.rollback()
