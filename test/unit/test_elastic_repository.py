@@ -78,3 +78,8 @@ class TestSourceRepository:
     def test_add(self, store, source_repository, source_aggregate, source_document):
         source_repository.add(source_aggregate)
         assert source_aggregate in source_repository.added()
+
+    def test_rollback(self, store, source_repository, source_aggregate):
+        source_repository.add(source_aggregate)
+        source_repository.rollback()
+        assert not source_repository.added()
