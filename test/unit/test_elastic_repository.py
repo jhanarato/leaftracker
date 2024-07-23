@@ -8,7 +8,7 @@ from fakes import FakeDocumentStore
 
 
 @pytest.fixture
-def stor    e() -> FakeDocumentStore:
+def store() -> FakeDocumentStore:
     return FakeDocumentStore("fake-index")
 
 
