@@ -44,9 +44,7 @@ class TestSpeciesRepository:
         document = store.get("species-0001")
         assert document == species_document
 
-    def test_get(self, species_aggregate):
-        store = FakeDocumentStore("fake-index")
-        repository = ElasticSpeciesRepository(store)
+    def test_get(self, store, repository, species_aggregate):
         repository.add(species_aggregate)
         repository.commit()
         retrieved_aggregate = repository.get("species-0001")
