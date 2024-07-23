@@ -1,7 +1,7 @@
 from typing import Protocol
 
 from leaftracker.adapters.elasticsearch import Document
-from leaftracker.domain.model import Species
+from leaftracker.domain.model import Species, Source
 
 
 class DocumentStore(Protocol):
@@ -76,4 +76,7 @@ class ElasticSpeciesRepository:
 
 class ElasticSourceRepository:
     def __init__(self, store: DocumentStore):
+        pass
+
+    def add(self, source: Source):
         pass
