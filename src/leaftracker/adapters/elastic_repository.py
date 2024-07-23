@@ -72,3 +72,8 @@ class ElasticSpeciesRepository:
 
     def rollback(self):
         self._added.clear()
+
+
+class ElasticSourceRepository:
+    def __init__(self, store: DocumentStore):
+        pass
