@@ -53,14 +53,10 @@ class TestSpeciesRepository:
         assert retrieved_aggregate.taxon_history.current() == TaxonName("Machaerina juncea")
         assert list(retrieved_aggregate.taxon_history.previous()) == [TaxonName("Baumea juncea")]
 
-    def test_get_missing(self):
-        store = FakeDocumentStore("fake-index")
-        repository = ElasticSpeciesRepository(store)
+    def test_get_missing(self, store, repository):
         assert repository.get("no-such-species") is None
 
-    def test_rollback(self, species_aggregate):
-        store = FakeDocumentStore("fake-index")
-        repository = ElasticSpeciesRepository(store)
+    def test_rollback(self, store, repository, species_aggregate):
         repository.add(species_aggregate)
         repository.rollback()
         assert not repository.added()
