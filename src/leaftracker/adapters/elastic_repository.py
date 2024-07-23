@@ -48,9 +48,6 @@ class ElasticSpeciesRepository:
         self._store = store
         self._added: list[Species] = []
 
-    def index(self) -> str:
-        return self._store.index()
-
     def add(self, species: Species):
         self._added.append(species)
 
