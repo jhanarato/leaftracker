@@ -4,6 +4,17 @@ from leaftracker.adapters.elasticsearch import Document
 from leaftracker.domain.model import Species
 
 
+class DocumentStore(Protocol):
+    def index(self) -> str:
+        ...
+
+    def add(self, document: Document) -> str:
+        ...
+
+    def get(self, document_id) -> Document | None:
+        ...
+
+
 def document_to_species(document: Document) -> Species:
     current_name = document.source["current_scientific_name"]
     previous_names = document.source["previous_scientific_names"]
@@ -30,17 +41,6 @@ def species_to_document(species: Species) -> Document:
             "previous_scientific_names": other_scientific_names,
         }
     )
-
-
-class DocumentStore(Protocol):
-    def index(self) -> str:
-        ...
-
-    def add(self, document: Document) -> str:
-        ...
-
-    def get(self, document_id) -> Document | None:
-        ...
 
 
 class ElasticSpeciesRepository:
