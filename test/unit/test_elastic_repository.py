@@ -27,16 +27,24 @@ def species_document() -> Document:
     )
 
 
+@pytest.fixture
+def store() -> FakeDocumentStore:
+    return FakeDocumentStore("fake-index")
+
+
+@pytest.fixture
+def repository(store) -> ElasticSpeciesRepository:
+    return ElasticSpeciesRepository(store)
+
+
 class TestSpeciesRepository:
-    def test_store_species(self, species_aggregate, species_document):
-        store = FakeDocumentStore("fake-index")
-        repository = ElasticSpeciesRepository(store)
+    def test_add(self, store, repository, species_aggregate, species_document):
         repository.add(species_aggregate)
         repository.commit()
         document = store.get("species-0001")
         assert document == species_document
 
-    def test_retrieve_species(self, species_aggregate):
+    def test_get(self, species_aggregate):
         store = FakeDocumentStore("fake-index")
         repository = ElasticSpeciesRepository(store)
         repository.add(species_aggregate)
