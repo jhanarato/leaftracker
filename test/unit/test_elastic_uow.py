@@ -47,22 +47,24 @@ def test_should_add_two_species(uow, saligna, dentifera):
     assert saligna.reference != dentifera.reference
 
 
-def test_should_clear_queue_on_rollback(uow, saligna):
+def test_should_clear_queue_on_rollback(uow, repository, saligna):
     with uow:
         uow.species().add(saligna)
 
-    assert not uow.species().added()
+    assert not repository.added()
 
 
-def test_should_rollback_explicitly(uow, saligna):
+def test_should_rollback_explicitly(uow, repository, saligna):
     with uow:
         uow.species().add(saligna)
         uow.rollback()
-        assert not uow.species().added()
+
+    assert not repository.added()
 
 
-def test_should_clear_queue_after_commit(uow, saligna):
+def test_should_clear_queue_after_commit(uow, repository, saligna):
     with uow:
         uow.species().add(saligna)
         uow.commit()
-        assert not uow.species().added()
+
+    assert not repository.added()
