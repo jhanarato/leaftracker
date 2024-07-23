@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from enum import Enum, auto
+from enum import StrEnum
 from typing import Iterator
 
 
@@ -98,9 +98,9 @@ class Species:
         return hash(self.reference)
 
 
-class StockSize(Enum):
-    TUBE = auto()
-    POT = auto()
+class StockSize(StrEnum):
+    TUBE = "tube"
+    POT = "pot"
 
 
 @dataclass(frozen=True)
@@ -110,9 +110,9 @@ class Stock:
     size: StockSize
 
 
-class SourceType(Enum):
-    NURSERY = auto()
-    PROGRAM = auto()
+class SourceType(StrEnum):
+    NURSERY = "nursery"
+    PROGRAM = "program"
 
 
 class Source:
@@ -129,10 +129,10 @@ class Source:
         return hash(self.name)
 
 
-class BatchType(Enum):
-    ORDER = auto()
-    DELIVERY = auto()
-    PICKUP = auto()
+class BatchType(StrEnum):
+    ORDER = "order"
+    DELIVERY = "delivery"
+    PICKUP = "pickup"
 
 
 class Batch:
