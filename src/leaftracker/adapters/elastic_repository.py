@@ -1,7 +1,7 @@
 from typing import Protocol
 
 from leaftracker.adapters.elasticsearch import Document
-from leaftracker.domain.model import Species, Source
+from leaftracker.domain.model import Species, Source, SourceType
 
 
 class DocumentStore(Protocol):
@@ -84,6 +84,13 @@ def source_to_document(source: Source) -> Document:
     )
 
 
+def document_to_source(document: Document) -> Source:
+    current_name = document.source["current_name"]
+    source_type = document.source["source_type"]
+
+    return Source(current_name, SourceType(source_type))
+
+
 class ElasticSourceRepository:
     def __init__(self, store: DocumentStore):
         self._store = store
@@ -91,6 +98,12 @@ class ElasticSourceRepository:
 
     def add(self, source: Source):
         self._added.append(source)
+
+    def get(self, name: str) -> Source | None:
+        document = self._store.get(name)
+        if document:
+            return document_to_source(document)
+        return None
 
     def added(self) -> list[Source]:
         return self._added
