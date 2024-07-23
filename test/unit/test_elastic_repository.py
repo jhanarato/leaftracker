@@ -77,3 +77,4 @@ def source_document():
 class TestSourceRepository:
     def test_add(self, store, source_repository, source_aggregate, source_document):
         source_repository.add(source_aggregate)
+        assert source_aggregate in source_repository.added()

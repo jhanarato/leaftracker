@@ -73,7 +73,10 @@ class ElasticSpeciesRepository:
 
 class ElasticSourceRepository:
     def __init__(self, store: DocumentStore):
-        pass
+        self._added: list[Source] = []
 
     def add(self, source: Source):
-        pass
+        self._added.append(source)
+
+    def added(self) -> list[Source]:
+        return self._added
