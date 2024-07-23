@@ -8,12 +8,8 @@ SPECIES_INDEX = "species"
 
 SPECIES_MAPPINGS = {
     "properties": {
-        "scientific_names": {
-            "properties": {
-                "current_scientific_name": {"type": "text"},
-                "previous_scientific_names": {"type": "text"},
-            }
-        }
+        "current_scientific_name": {"type": "text"},
+        "previous_scientific_names": {"type": "text"},
     }
 }
 
