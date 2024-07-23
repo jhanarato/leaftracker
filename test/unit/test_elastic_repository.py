@@ -57,3 +57,23 @@ class TestSpeciesRepository:
         species_repository.add(species_aggregate)
         species_repository.rollback()
         assert not species_repository.added()
+
+
+@pytest.fixture
+def source_repository():
+    pass
+
+
+@pytest.fixture
+def source_aggregate():
+    pass
+
+
+@pytest.fixture
+def source_document():
+    pass
+
+
+class TestSourceRepository:
+    def test_add(self, source_repository, source_aggregate, source_document):
+        pass
