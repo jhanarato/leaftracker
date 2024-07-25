@@ -117,16 +117,17 @@ class SourceType(StrEnum):
 
 class Source:
     def __init__(self, current_name: str, source_type: SourceType, reference: str | None = None):
+        self.reference = reference
         self.current_name = current_name
         self.source_type = source_type
 
     def __eq__(self, other):
         if not isinstance(other, Source):
             return False
-        return other.current_name == self.current_name
+        return other.reference == self.reference
 
     def __hash__(self):
-        return hash(self.current_name)
+        return hash(self.reference)
 
 
 class BatchType(StrEnum):
