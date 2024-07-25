@@ -116,7 +116,7 @@ class SourceType(StrEnum):
 
 
 class Source:
-    def __init__(self, name: str, source_type: SourceType):
+    def __init__(self, name: str, source_type: SourceType, reference: str | None = None):
         self.name = name
         self.source_type = source_type
 
