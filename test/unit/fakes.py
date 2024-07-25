@@ -84,6 +84,7 @@ class FakeSpeciesRepository:
 class FakeSourceRepository:
     def __init__(self):
         self._sources = set()
+        self._added = []
 
     def add(self, source: SourceOfStock):
         self._sources.add(source)
@@ -92,6 +93,12 @@ class FakeSourceRepository:
         matching = (source for source in self._sources
                     if source.current_name == name)
         return next(matching, None)
+
+    def commit(self):
+        pass
+
+    def rollback(self):
+        self._added.clear()
 
 
 class FakeUnitOfWork:
@@ -108,9 +115,11 @@ class FakeUnitOfWork:
 
     def commit(self) -> None:
         self._species.commit()
+        self._sources.commit()
 
     def rollback(self) -> None:
         self._species.rollback()
+        self._sources.rollback()
 
     def batches(self) -> BatchRepository:
         return self._batches
