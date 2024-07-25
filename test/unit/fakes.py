@@ -85,9 +85,8 @@ class FakeSourceRepository:
     def __init__(self, sources: list[SourceOfStock]):
         self._sources = set(sources)
 
-    def add(self, source: SourceOfStock) -> str:
+    def add(self, source: SourceOfStock):
         self._sources.add(source)
-        return source.current_name
 
     def get(self, name: str) -> SourceOfStock | None:
         matching = (source for source in self._sources
