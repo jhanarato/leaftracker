@@ -76,7 +76,3 @@ def rename_species(reference: str, name: str, uow: UnitOfWork) -> None:
 
         species.taxon_history.new_current_name(name)
         uow.commit()
-
-
-def add_source_of_stock(current_name: str, source_type: str, uow: UnitOfWork) -> str:
-    return ""
