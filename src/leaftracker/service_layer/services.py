@@ -23,6 +23,7 @@ def add_program(name: str, uow: UnitOfWork):
         source = SourceOfStock(name, SourceType.PROGRAM)
         uow.sources().add(source)
         uow.commit()
+        return source.reference
 
 
 def _add_batch(source_name: str, batch_type: BatchType, uow: UnitOfWork) -> str:
