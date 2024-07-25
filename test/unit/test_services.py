@@ -41,9 +41,7 @@ def test_should_catalogue_batch(uow):
     assert new_batch.species() == ["Acacia saligna"]
 
 
-def test_add_order(uow):
-    program = "Habitat Links"
-    services.add_program(program, uow)
+def test_add_order(uow, program):
     ref = services.add_order(program, uow)
 
     assert ref == "batch-0001"
@@ -57,30 +55,24 @@ def test_missing_source(uow):
 
 
 @pytest.fixture
-def nursery(uow) -> SourceOfStock:
+def nursery(uow) -> str:
     nursery = "Natural Area"
-    services.add_nursery(nursery, uow)
-
-    with uow:
-        return uow.sources().get(nursery)
+    return services.add_nursery(nursery, uow)
 
 
 @pytest.fixture
-def program(uow) -> SourceOfStock:
+def program(uow) -> str:
     program = "Habitat Links"
-    services.add_program(program, uow)
-
-    with uow:
-        return uow.sources().get(program)
+    return services.add_program(program, uow)
 
 
 def test_add_delivery(uow, program):
-    ref = services.add_delivery(program.current_name, uow)
+    ref = services.add_delivery(program, uow)
     assert uow.batches().get(ref).batch_type == BatchType.DELIVERY
 
 
 def test_add_pickup(uow, nursery):
-    ref = services.add_pickup(nursery.current_name, uow)
+    ref = services.add_pickup(nursery, uow)
     assert uow.batches().get(ref).batch_type == BatchType.PICKUP
 
 

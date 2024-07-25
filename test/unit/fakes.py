@@ -81,26 +81,6 @@ class FakeSpeciesRepository:
         self._added.clear()
 
 
-class FakeSourceRepository:
-    def __init__(self):
-        self._sources = set()
-        self._added = []
-
-    def add(self, source: SourceOfStock):
-        self._sources.add(source)
-
-    def get(self, name: str) -> SourceOfStock | None:
-        matching = (source for source in self._sources
-                    if source.current_name == name)
-        return next(matching, None)
-
-    def commit(self):
-        pass
-
-    def rollback(self):
-        self._added.clear()
-
-
 class FakeSourceOfStockRepository:
     def __init__(self):
         self._added = set()
@@ -125,7 +105,7 @@ class FakeSourceOfStockRepository:
 class FakeUnitOfWork:
     def __init__(self):
         self._batches = FakeBatchRepository([])
-        self._sources = FakeSourceRepository()
+        self._sources = FakeSourceOfStockRepository()
         self._species = FakeSpeciesRepository()
 
     def __enter__(self) -> Self:
