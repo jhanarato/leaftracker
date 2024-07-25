@@ -3,7 +3,7 @@ from typing import Iterator, Self
 
 from leaftracker.adapters.elasticsearch import Document
 from leaftracker.adapters.repository import BatchRepository, SourceRepository, SpeciesRepository
-from leaftracker.domain.model import Batch, Species, Source
+from leaftracker.domain.model import Batch, Species, SourceOfStock
 
 
 def references(prefix: str) -> Iterator[str]:
@@ -82,14 +82,14 @@ class FakeSpeciesRepository:
 
 
 class FakeSourceRepository:
-    def __init__(self, sources: list[Source]):
+    def __init__(self, sources: list[SourceOfStock]):
         self._sources = set(sources)
 
-    def add(self, source: Source) -> str:
+    def add(self, source: SourceOfStock) -> str:
         self._sources.add(source)
         return source.current_name
 
-    def get(self, name: str) -> Source | None:
+    def get(self, name: str) -> SourceOfStock | None:
         matching = (source for source in self._sources
                     if source.current_name == name)
         return next(matching, None)

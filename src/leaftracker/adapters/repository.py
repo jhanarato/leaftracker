@@ -1,6 +1,6 @@
 from typing import Protocol
 
-from leaftracker.domain.model import Batch, Species, Source
+from leaftracker.domain.model import Batch, Species, SourceOfStock
 
 
 class BatchRepository(Protocol):
@@ -16,6 +16,6 @@ class SpeciesRepository(Protocol):
 
 
 class SourceRepository(Protocol):
-    def add(self, source: Source) -> str: ...
+    def add(self, source: SourceOfStock) -> str: ...
 
-    def get(self, name: str) -> Source | None: ...
+    def get(self, name: str) -> SourceOfStock | None: ...

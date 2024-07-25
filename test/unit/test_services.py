@@ -2,7 +2,7 @@ import pytest
 
 from fakes import FakeBatchRepository, FakeSpeciesRepository, FakeUnitOfWork
 from leaftracker.adapters.repository import BatchRepository
-from leaftracker.domain.model import Batch, Source, SourceType, BatchType, Stock, StockSize, TaxonName
+from leaftracker.domain.model import Batch, SourceOfStock, SourceType, BatchType, Stock, StockSize, TaxonName
 from leaftracker.service_layer import services
 from leaftracker.service_layer.services import InvalidSource, add_species, rename_species, ServiceError
 from leaftracker.service_layer.unit_of_work import UnitOfWork
@@ -11,9 +11,9 @@ from leaftracker.service_layer.unit_of_work import UnitOfWork
 def test_fake_reference():
     repo: BatchRepository = FakeBatchRepository([])
 
-    references = [repo.add(Batch(Source("Habitat Links", SourceType.PROGRAM), BatchType.DELIVERY)),
-                  repo.add(Batch(Source("Habitat Links", SourceType.PROGRAM), BatchType.DELIVERY)),
-                  repo.add(Batch(Source("Natural Area", SourceType.NURSERY), BatchType.DELIVERY))]
+    references = [repo.add(Batch(SourceOfStock("Habitat Links", SourceType.PROGRAM), BatchType.DELIVERY)),
+                  repo.add(Batch(SourceOfStock("Habitat Links", SourceType.PROGRAM), BatchType.DELIVERY)),
+                  repo.add(Batch(SourceOfStock("Natural Area", SourceType.NURSERY), BatchType.DELIVERY))]
 
     assert references == ["batch-0001", "batch-0002", "batch-0003"]
 
@@ -26,7 +26,7 @@ def uow() -> UnitOfWork:
 def test_should_catalogue_batch(uow):
     with uow:
         batch = Batch(
-            source=Source("Trillion Trees", SourceType.NURSERY),
+            source=SourceOfStock("Trillion Trees", SourceType.NURSERY),
             batch_type=BatchType.PICKUP
         )
 
@@ -37,7 +37,7 @@ def test_should_catalogue_batch(uow):
 
         new_batch = uow.batches().get(ref)
 
-    assert new_batch.source == Source("Trillion Trees", SourceType.NURSERY)
+    assert new_batch.source == SourceOfStock("Trillion Trees", SourceType.NURSERY)
     assert new_batch.species() == ["Acacia saligna"]
 
 
@@ -67,7 +67,7 @@ def test_missing_source(uow):
 
 
 @pytest.fixture
-def nursery(uow) -> Source:
+def nursery(uow) -> SourceOfStock:
     nursery = "Natural Area"
     services.add_nursery(nursery, uow)
 
@@ -76,7 +76,7 @@ def nursery(uow) -> Source:
 
 
 @pytest.fixture
-def program(uow) -> Source:
+def program(uow) -> SourceOfStock:
     program = "Habitat Links"
     services.add_program(program, uow)
 

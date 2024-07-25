@@ -1,4 +1,4 @@
-from leaftracker.domain.model import Source, SourceType, Batch, BatchType, Species
+from leaftracker.domain.model import SourceOfStock, SourceType, Batch, BatchType, Species
 from leaftracker.service_layer.unit_of_work import UnitOfWork
 
 
@@ -12,14 +12,14 @@ class InvalidSource(Exception):
 
 def add_nursery(name: str, uow: UnitOfWork):
     with uow:
-        source = Source(name, SourceType.NURSERY)
+        source = SourceOfStock(name, SourceType.NURSERY)
         uow.sources().add(source)
         uow.commit()
 
 
 def add_program(name: str, uow: UnitOfWork):
     with uow:
-        source = Source(name, SourceType.PROGRAM)
+        source = SourceOfStock(name, SourceType.PROGRAM)
         uow.sources().add(source)
         uow.commit()
 

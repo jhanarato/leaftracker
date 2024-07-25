@@ -1,6 +1,6 @@
 import pytest
 
-from leaftracker.domain.model import Batch, Stock, Source, StockSize, BatchType, SourceType
+from leaftracker.domain.model import Batch, Stock, SourceOfStock, StockSize, BatchType, SourceType
 
 BANKSIA = "Banksia littoralis"
 HAKEA = "Hakea varia"
@@ -15,7 +15,7 @@ def species_names():
 @pytest.fixture
 def batch():
     return Batch(
-        source=Source("Trillion Trees", SourceType.NURSERY),
+        source=SourceOfStock("Trillion Trees", SourceType.NURSERY),
         batch_type=BatchType.DELIVERY,
         reference="batch-0001")
 
@@ -55,13 +55,13 @@ def test_should_give_quantity_of_sized_stock(batch):
 def test_should_identify_batch_after_modification():
     same_reference = "batch-0001"
     a_batch = Batch(
-        source=Source("Trillion Trees", SourceType.NURSERY),
+        source=SourceOfStock("Trillion Trees", SourceType.NURSERY),
         batch_type=BatchType.PICKUP,
         reference=same_reference
     )
 
     same_batch_modified = Batch(
-        source=Source("Habitat Links", SourceType.PROGRAM),
+        source=SourceOfStock("Habitat Links", SourceType.PROGRAM),
         batch_type=BatchType.PICKUP,
         reference=same_reference)
 

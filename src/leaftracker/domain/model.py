@@ -115,14 +115,14 @@ class SourceType(StrEnum):
     PROGRAM = "program"
 
 
-class Source:
+class SourceOfStock:
     def __init__(self, current_name: str, source_type: SourceType, reference: str | None = None):
         self.reference = reference
         self.current_name = current_name
         self.source_type = source_type
 
     def __eq__(self, other):
-        if not isinstance(other, Source):
+        if not isinstance(other, SourceOfStock):
             return False
         return other.reference == self.reference
 
@@ -137,7 +137,7 @@ class BatchType(StrEnum):
 
 
 class Batch:
-    def __init__(self, source: Source, batch_type: BatchType, reference: str | None = None):
+    def __init__(self, source: SourceOfStock, batch_type: BatchType, reference: str | None = None):
         self.reference = reference
         self.batch_type = batch_type
         self.source = source

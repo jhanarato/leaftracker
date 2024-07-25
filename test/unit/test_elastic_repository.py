@@ -3,7 +3,7 @@ import pytest
 from leaftracker.adapters.elastic_repository import ElasticSpeciesRepository, ElasticSourceRepository
 
 from leaftracker.adapters.elasticsearch import Document
-from leaftracker.domain.model import Species, TaxonName, Source, SourceType
+from leaftracker.domain.model import Species, TaxonName, SourceOfStock, SourceType
 from fakes import FakeDocumentStore
 
 
@@ -65,8 +65,8 @@ def source_repository(store) -> ElasticSourceRepository:
 
 
 @pytest.fixture
-def source_aggregate() -> Source:
-    return Source("Trillion Trees", SourceType.NURSERY)
+def source_aggregate() -> SourceOfStock:
+    return SourceOfStock("Trillion Trees", SourceType.NURSERY)
 
 
 @pytest.fixture

@@ -1,6 +1,5 @@
-from leaftracker.domain.model import SourceType
+from fakes import FakeUnitOfWork
 from leaftracker.service_layer import services
-from unit.fakes import FakeUnitOfWork
 
 
 def test_new_source_of_stock():
