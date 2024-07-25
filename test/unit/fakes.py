@@ -82,8 +82,8 @@ class FakeSpeciesRepository:
 
 
 class FakeSourceRepository:
-    def __init__(self, sources: list[SourceOfStock]):
-        self._sources = set(sources)
+    def __init__(self):
+        self._sources = set()
 
     def add(self, source: SourceOfStock):
         self._sources.add(source)
@@ -97,7 +97,7 @@ class FakeSourceRepository:
 class FakeUnitOfWork:
     def __init__(self):
         self._batches = FakeBatchRepository([])
-        self._sources = FakeSourceRepository([])
+        self._sources = FakeSourceRepository()
         self._species = FakeSpeciesRepository()
 
     def __enter__(self) -> Self:
