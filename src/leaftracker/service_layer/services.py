@@ -10,11 +10,12 @@ class InvalidSource(Exception):
     pass
 
 
-def add_nursery(name: str, uow: UnitOfWork):
+def add_nursery(name: str, uow: UnitOfWork) -> str:
     with uow:
         source = SourceOfStock(name, SourceType.NURSERY)
         uow.sources().add(source)
         uow.commit()
+        return source.reference
 
 
 def add_program(name: str, uow: UnitOfWork):

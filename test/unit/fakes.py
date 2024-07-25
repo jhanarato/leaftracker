@@ -101,6 +101,27 @@ class FakeSourceRepository:
         self._added.clear()
 
 
+class FakeSourceOfStockRepository:
+    def __init__(self):
+        self._added = set()
+        self._committed = dict()
+        self.references = references("source")
+
+    def add(self, source: SourceOfStock):
+        self._added.add(source)
+
+    def get(self, reference: str) -> SourceOfStock | None:
+        return self._committed.get(reference)
+
+    def commit(self):
+        for source in self._added:
+            source.reference = next(self.references)
+            self._committed[source.reference] = source
+
+    def rollback(self):
+        self._added.clear()
+
+
 class FakeUnitOfWork:
     def __init__(self):
         self._batches = FakeBatchRepository([])

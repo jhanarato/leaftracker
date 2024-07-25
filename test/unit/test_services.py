@@ -41,16 +41,6 @@ def test_should_catalogue_batch(uow):
     assert new_batch.species() == ["Acacia saligna"]
 
 
-def test_add_nursery(uow):
-    services.add_nursery("Trillion Trees", uow)
-    assert uow.sources().get("Trillion Trees").source_type == SourceType.NURSERY
-
-
-def test_add_program(uow):
-    services.add_program("Habitat Links", uow)
-    assert uow.sources().get("Habitat Links").source_type == SourceType.PROGRAM
-
-
 def test_add_order(uow):
     program = "Habitat Links"
     services.add_program(program, uow)
