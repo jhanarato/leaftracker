@@ -4,8 +4,7 @@ from fakes import FakeBatchRepository, FakeSpeciesRepository, FakeUnitOfWork
 from leaftracker.adapters.repository import BatchRepository
 from leaftracker.domain.model import Batch, Source, SourceType, BatchType, Stock, StockSize, TaxonName
 from leaftracker.service_layer import services
-from leaftracker.service_layer.services import InvalidSource, add_species, rename_species, ServiceError, \
-    add_source_of_stock
+from leaftracker.service_layer.services import InvalidSource, add_species, rename_species, ServiceError
 from leaftracker.service_layer.unit_of_work import UnitOfWork
 
 
@@ -129,8 +128,3 @@ def test_rename_non_existent_species():
 
     with pytest.raises(ServiceError):
         rename_species("xyz", "Machaerina juncea", uow)
-
-
-def test_add_new_source_of_stock():
-    uow = FakeUnitOfWork()
-    add_source_of_stock("Habitat Links", "nursery", uow)

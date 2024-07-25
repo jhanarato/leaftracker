@@ -78,5 +78,5 @@ def rename_species(reference: str, name: str, uow: UnitOfWork) -> None:
         uow.commit()
 
 
-def add_source_of_stock(current_name: str, source_type: str, uow: UnitOfWork) -> None:
-    pass
+def add_source_of_stock(current_name: str, source_type: str, uow: UnitOfWork) -> str:
+    return ""
