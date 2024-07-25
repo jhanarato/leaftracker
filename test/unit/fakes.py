@@ -87,11 +87,11 @@ class FakeSourceRepository:
 
     def add(self, source: Source) -> str:
         self._sources.add(source)
-        return source.name
+        return source.current_name
 
     def get(self, name: str) -> Source | None:
         matching = (source for source in self._sources
-                    if source.name == name)
+                    if source.current_name == name)
         return next(matching, None)
 
 

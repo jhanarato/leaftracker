@@ -85,12 +85,12 @@ def program(uow) -> Source:
 
 
 def test_add_delivery(uow, program):
-    ref = services.add_delivery(program.name, uow)
+    ref = services.add_delivery(program.current_name, uow)
     assert uow.batches().get(ref).batch_type == BatchType.DELIVERY
 
 
 def test_add_pickup(uow, nursery):
-    ref = services.add_pickup(nursery.name, uow)
+    ref = services.add_pickup(nursery.current_name, uow)
     assert uow.batches().get(ref).batch_type == BatchType.PICKUP
 
 
