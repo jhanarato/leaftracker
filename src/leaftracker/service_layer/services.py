@@ -10,19 +10,15 @@ class InvalidSource(Exception):
     pass
 
 
-def add_nursery(name: str, uow: UnitOfWork) -> str:
+def add_source_of_stock(name: str, source_type: str, uow: UnitOfWork) -> str:
     with uow:
-        source = SourceOfStock(name, SourceType.NURSERY)
+        source = SourceOfStock(name, SourceType(source_type))
         uow.sources().add(source)
         uow.commit()
-        return source.reference
 
+        if source.reference is None:
+            raise ServiceError("Source of stock was not assigned a reference.")
 
-def add_program(name: str, uow: UnitOfWork) -> str:
-    with uow:
-        source = SourceOfStock(name, SourceType.PROGRAM)
-        uow.sources().add(source)
-        uow.commit()
         return source.reference
 
 

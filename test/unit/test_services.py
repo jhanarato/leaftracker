@@ -56,14 +56,12 @@ def test_missing_source(uow):
 
 @pytest.fixture
 def nursery(uow) -> str:
-    nursery = "Natural Area"
-    return services.add_nursery(nursery, uow)
+    return services.add_source_of_stock("Natural Area", "nursery", uow)
 
 
 @pytest.fixture
 def program(uow) -> str:
-    program = "Habitat Links"
-    return services.add_program(program, uow)
+    return services.add_source_of_stock("Habitat Links", "program", uow)
 
 
 def test_add_delivery(uow, program):
