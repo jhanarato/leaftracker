@@ -42,7 +42,7 @@ def test_should_catalogue_batch(uow):
 
 
 def test_add_order(uow, program):
-    ref = services.add_order(program, uow)
+    ref = services.add_batch(program, "order", uow)
 
     assert ref == "batch-0001"
 
@@ -51,7 +51,7 @@ def test_add_order(uow, program):
 
 def test_missing_source(uow):
     with pytest.raises(InvalidSource, match="No such source: Rodeo Nursery"):
-        services.add_order("Rodeo Nursery", uow)
+        services.add_batch("Rodeo Nursery", "nursery", uow)
 
 
 @pytest.fixture

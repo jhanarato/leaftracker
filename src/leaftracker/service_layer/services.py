@@ -23,7 +23,7 @@ def add_source_of_stock(name: str, source_type: str, uow: UnitOfWork) -> str:
     return source.reference
 
 
-def _add_batch(source_name: str, batch_type: str, uow: UnitOfWork) -> str:
+def add_batch(source_name: str, batch_type: str, uow: UnitOfWork) -> str:
     with uow:
         source = uow.sources().get(source_name)
 
@@ -41,16 +41,12 @@ def _add_batch(source_name: str, batch_type: str, uow: UnitOfWork) -> str:
     return reference
 
 
-def add_order(source_name: str, uow: UnitOfWork) -> str:
-    return _add_batch(source_name, "order", uow)
-
-
 def add_delivery(source_name: str, uow: UnitOfWork) -> str:
-    return _add_batch(source_name, "delivery", uow)
+    return add_batch(source_name, "delivery", uow)
 
 
 def add_pickup(source_name: str, uow: UnitOfWork) -> str:
-    return _add_batch(source_name, "pickup", uow)
+    return add_batch(source_name, "pickup", uow)
 
 
 def add_species(current_name: str, uow: UnitOfWork) -> str:
