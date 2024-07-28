@@ -23,19 +23,20 @@ def add_source_of_stock(name: str, source_type: str, uow: UnitOfWork) -> str:
     return source.reference
 
 
-def add_batch(source_name: str, batch_type: str, uow: UnitOfWork) -> str:
+def add_batch(source_reference: str, batch_type: str, uow: UnitOfWork) -> str:
     with uow:
-        source = uow.sources().get(source_name)
+        source = uow.sources().get(source_reference)
 
         if not source:
-            raise InvalidSource(f"No such source: {source_name}")
+            raise InvalidSource(f"No such source: {source_reference}")
 
         reference = uow.batches().add(
             Batch(
-                source=source,
+                source_reference=source_reference,
                 batch_type=BatchType(batch_type),
             )
         )
+
         uow.commit()
 
     return reference

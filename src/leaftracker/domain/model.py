@@ -137,10 +137,11 @@ class BatchType(Enum):
 
 
 class Batch:
-    def __init__(self, source: SourceOfStock, batch_type: BatchType, reference: str | None = None):
+    def __init__(self, source_reference: str, batch_type: BatchType, reference: str | None = None):
         self.reference = reference
         self.batch_type = batch_type
-        self.source = source
+        self.source_reference = source_reference
+
         self._stock: list[Stock] = []
 
     def add(self, stock: Stock):

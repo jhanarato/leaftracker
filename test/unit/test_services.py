@@ -26,7 +26,7 @@ def uow() -> UnitOfWork:
 def test_should_catalogue_batch(uow):
     with uow:
         batch = Batch(
-            source=SourceOfStock("Trillion Trees", SourceType.NURSERY),
+            source_reference="source-0001",
             batch_type=BatchType.PICKUP
         )
 
@@ -37,7 +37,7 @@ def test_should_catalogue_batch(uow):
 
         new_batch = uow.batches().get(ref)
 
-    assert new_batch.source == SourceOfStock("Trillion Trees", SourceType.NURSERY)
+    assert new_batch.source_reference == "source-0001"
     assert new_batch.species() == ["Acacia saligna"]
 
 
