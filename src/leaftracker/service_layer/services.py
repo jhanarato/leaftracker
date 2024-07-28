@@ -60,7 +60,7 @@ def add_species(current_name: str, uow: UnitOfWork) -> str:
         uow.commit()
 
     if species.reference is None:
-        raise ServiceError("Committed species was not assigned a reference.")
+        raise ServiceError("Species was not assigned a reference.")
 
     return species.reference
 
