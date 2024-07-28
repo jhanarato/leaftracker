@@ -18,7 +18,7 @@ def add_nursery(name: str, uow: UnitOfWork) -> str:
         return source.reference
 
 
-def add_program(name: str, uow: UnitOfWork):
+def add_program(name: str, uow: UnitOfWork) -> str:
     with uow:
         source = SourceOfStock(name, SourceType.PROGRAM)
         uow.sources().add(source)
