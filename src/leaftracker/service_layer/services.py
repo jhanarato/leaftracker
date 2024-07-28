@@ -41,14 +41,6 @@ def add_batch(source_name: str, batch_type: str, uow: UnitOfWork) -> str:
     return reference
 
 
-def add_delivery(source_name: str, uow: UnitOfWork) -> str:
-    return add_batch(source_name, "delivery", uow)
-
-
-def add_pickup(source_name: str, uow: UnitOfWork) -> str:
-    return add_batch(source_name, "pickup", uow)
-
-
 def add_species(current_name: str, uow: UnitOfWork) -> str:
     species = Species(current_name)
 

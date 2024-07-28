@@ -64,16 +64,6 @@ def program(uow) -> str:
     return services.add_source_of_stock("Habitat Links", "program", uow)
 
 
-def test_add_delivery(uow, program):
-    ref = services.add_delivery(program, uow)
-    assert uow.batches().get(ref).batch_type == BatchType.DELIVERY
-
-
-def test_add_pickup(uow, nursery):
-    ref = services.add_pickup(nursery, uow)
-    assert uow.batches().get(ref).batch_type == BatchType.PICKUP
-
-
 def test_add_species(uow):
     reference = add_species("Acacia saligna", uow)
     assert reference == "species-0001"
