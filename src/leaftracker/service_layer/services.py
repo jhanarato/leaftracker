@@ -30,13 +30,8 @@ def add_batch(source_reference: str, batch_type: str, uow: UnitOfWork) -> str:
         if not source:
             raise InvalidSource(f"No such source: {source_reference}")
 
-        reference = uow.batches().add(
-            Batch(
-                source_reference=source_reference,
-                batch_type=BatchType(batch_type),
-            )
-        )
-
+        batch = Batch(source_reference=source_reference, batch_type=BatchType(batch_type))
+        reference = uow.batches().add(batch)
         uow.commit()
 
     return reference
