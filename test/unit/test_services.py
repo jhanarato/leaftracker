@@ -1,21 +1,10 @@
 import pytest
 
-from fakes import FakeBatchRepository, FakeSpeciesRepository, FakeUnitOfWork
-from leaftracker.adapters.repository import BatchRepository
-from leaftracker.domain.model import Batch, SourceOfStock, SourceType, BatchType, Stock, StockSize, TaxonName
+from fakes import FakeSpeciesRepository, FakeUnitOfWork
+from leaftracker.domain.model import Batch, BatchType, Stock, StockSize, TaxonName
 from leaftracker.service_layer import services
 from leaftracker.service_layer.services import InvalidSource, add_species, rename_species, ServiceError
 from leaftracker.service_layer.unit_of_work import UnitOfWork
-
-
-def test_fake_reference():
-    repo: BatchRepository = FakeBatchRepository([])
-
-    references = [repo.add(Batch(SourceOfStock("Habitat Links", SourceType.PROGRAM), BatchType.DELIVERY)),
-                  repo.add(Batch(SourceOfStock("Habitat Links", SourceType.PROGRAM), BatchType.DELIVERY)),
-                  repo.add(Batch(SourceOfStock("Natural Area", SourceType.NURSERY), BatchType.DELIVERY))]
-
-    assert references == ["batch-0001", "batch-0002", "batch-0003"]
 
 
 @pytest.fixture
