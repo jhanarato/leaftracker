@@ -30,27 +30,16 @@ def test_should_catalogue_batch(uow):
     assert new_batch.species() == ["Acacia saligna"]
 
 
-def test_add_order(uow, program):
-    ref = services.add_batch(program, "order", uow)
-
-    assert ref == "batch-0001"
-
-    assert uow.batches().get(ref).batch_type == BatchType.ORDER
+def test_add_order(uow):
+    source_reference = services.add_source_of_stock("Habitat Links", "program", uow)
+    batch_reference = services.add_batch(source_reference, "order", uow)
+    assert batch_reference == "batch-0001"
+    assert uow.batches().get(batch_reference).batch_type == BatchType.ORDER
 
 
 def test_missing_source(uow):
     with pytest.raises(InvalidSource, match="No such source: Rodeo Nursery"):
         services.add_batch("Rodeo Nursery", "nursery", uow)
-
-
-@pytest.fixture
-def nursery(uow) -> str:
-    return services.add_source_of_stock("Natural Area", "nursery", uow)
-
-
-@pytest.fixture
-def program(uow) -> str:
-    return services.add_source_of_stock("Habitat Links", "program", uow)
 
 
 def test_add_species(uow):
