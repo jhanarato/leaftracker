@@ -11,15 +11,16 @@ class InvalidSource(Exception):
 
 
 def add_source_of_stock(name: str, source_type: str, uow: UnitOfWork) -> str:
+    source = SourceOfStock(name, SourceType(source_type))
+
     with uow:
-        source = SourceOfStock(name, SourceType(source_type))
         uow.sources().add(source)
         uow.commit()
 
-        if source.reference is None:
-            raise ServiceError("Source of stock was not assigned a reference.")
+    if source.reference is None:
+        raise ServiceError("Source of stock was not assigned a reference.")
 
-        return source.reference
+    return source.reference
 
 
 def _add_batch(source_name: str, batch_type: BatchType, uow: UnitOfWork) -> str:
