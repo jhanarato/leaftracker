@@ -24,8 +24,6 @@ def add_source_of_stock(name: str, source_type: str, uow: UnitOfWork) -> str:
 
 
 def _add_batch(source_name: str, batch_type: str, uow: UnitOfWork) -> str:
-    batch_type = BatchType(batch_type)
-
     with uow:
         source = uow.sources().get(source_name)
 
@@ -35,7 +33,7 @@ def _add_batch(source_name: str, batch_type: str, uow: UnitOfWork) -> str:
         reference = uow.batches().add(
             Batch(
                 source=source,
-                batch_type=batch_type
+                batch_type=BatchType(batch_type),
             )
         )
         uow.commit()
