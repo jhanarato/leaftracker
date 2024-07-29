@@ -31,6 +31,7 @@ def test_add_stock():
 
     with uow:
         batch = uow.batches().get(batch_ref)
+        assert batch is not None
         assert batch.quantity(species_ref) == 20
 
 
