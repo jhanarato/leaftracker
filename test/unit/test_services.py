@@ -3,7 +3,7 @@ import pytest
 from fakes import FakeSpeciesRepository, FakeUnitOfWork
 from leaftracker.domain.model import Batch, BatchType, Stock, StockSize, TaxonName, SourceType
 from leaftracker.service_layer import services
-from leaftracker.service_layer.services import InvalidSource, add_species, rename_species, ServiceError
+from leaftracker.service_layer.services import InvalidSource, add_species, ServiceError
 from leaftracker.service_layer.unit_of_work import UnitOfWork
 
 
@@ -61,7 +61,7 @@ def test_rename_species():
     assert reference == "species-0001"
     species = uow.species().get("species-0001")
     assert species.taxon_history.current() == TaxonName("Baumea juncea")  # type: ignore
-    rename_species("species-0001", "Machaerina juncea", uow)
+    services.rename_species("species-0001", "Machaerina juncea", uow)
     species = uow.species().get("species-0001")
     assert species.taxon_history.current() == TaxonName("Machaerina juncea")  # type: ignore
 
@@ -83,4 +83,4 @@ def test_rename_non_existent_species():
     uow = FakeUnitOfWork()
 
     with pytest.raises(ServiceError):
-        rename_species("xyz", "Machaerina juncea", uow)
+        services.rename_species("xyz", "Machaerina juncea", uow)
