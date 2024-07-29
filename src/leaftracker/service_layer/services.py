@@ -41,6 +41,10 @@ def add_stock(batch_reference: str, species_reference: str,
               quantity: int, stock_size: str, uow: UnitOfWork) -> None:
     with uow:
         batch = uow.batches().get(batch_reference)
+
+        if batch is None:
+            raise NotFoundError(f"No batch with reference {batch_reference}")
+
         stock = Stock(species_reference, quantity, StockSize(stock_size))
         batch.add(stock)
         uow.commit()

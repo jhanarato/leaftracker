@@ -35,6 +35,13 @@ def test_add_stock():
         assert batch.quantity(species_ref) == 20
 
 
+def test_add_stock_to_missing_batch():
+    uow = FakeUnitOfWork()
+    species_ref = services.add_species("Acacia saligna", uow)
+    with pytest.raises(NotFoundError, match="No batch with reference batch-xxxx"):
+        services.add_stock("batch-xxxx", species_ref, 20, "tube", uow)
+
+
 def test_add_order(uow):
     source_reference = services.add_source_of_stock("Habitat Links", "program", uow)
     batch_reference = services.add_batch(source_reference, "order", uow)
