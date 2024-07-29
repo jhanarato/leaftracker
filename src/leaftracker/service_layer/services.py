@@ -1,4 +1,4 @@
-from leaftracker.domain.model import SourceOfStock, SourceType, Batch, BatchType, Species
+from leaftracker.domain.model import SourceOfStock, SourceType, Batch, BatchType, Species, Stock, StockSize
 from leaftracker.service_layer.unit_of_work import UnitOfWork
 
 
@@ -35,6 +35,15 @@ def add_batch(source_reference: str, batch_type: str, uow: UnitOfWork) -> str:
         uow.commit()
 
     return reference
+
+
+def add_stock(batch_reference: str, species_reference: str,
+              quantity: int, stock_size: str, uow: UnitOfWork) -> None:
+    with uow:
+        batch = uow.batches().get(batch_reference)
+        stock = Stock(species_reference, quantity, StockSize(stock_size))
+        batch.add(stock)
+        uow.commit()
 
 
 def add_species(current_name: str, uow: UnitOfWork) -> str:

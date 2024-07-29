@@ -38,6 +38,20 @@ def test_should_catalogue_batch(uow):
     assert new_batch.species() == ["Acacia saligna"]
 
 
+def test_add_stock():
+    uow = FakeUnitOfWork()
+
+    source_ref = services.add_source_of_stock("Trillion Trees", "nursery", uow)
+    species_ref = services.add_species("Acacia saligna", uow)
+    batch_ref = services.add_batch(source_ref, "order", uow)
+
+    services.add_stock(batch_ref, species_ref, 20, "tube", uow)
+
+    with uow:
+        batch = uow.batches().get(batch_ref)
+        assert batch.quantity(species_ref) == 20
+
+
 def test_add_order(uow):
     source_reference = services.add_source_of_stock("Habitat Links", "program", uow)
     batch_reference = services.add_batch(source_reference, "order", uow)
