@@ -42,6 +42,15 @@ def test_add_stock_to_missing_batch():
         services.add_stock("batch-xxxx", species_ref, 20, "tube", uow)
 
 
+def test_add_stock_with_missing_species():
+    uow = FakeUnitOfWork()
+    source_ref = services.add_source_of_stock("Trillion Trees", "nursery", uow)
+    batch_ref = services.add_batch(source_ref, "order", uow)
+
+    with pytest.raises(NotFoundError, match="No species with reference species-xxxx"):
+        services.add_stock(batch_ref, "species-xxxx", 20, "tube", uow)
+
+
 def test_add_order(uow):
     source_reference = services.add_source_of_stock("Habitat Links", "program", uow)
     batch_reference = services.add_batch(source_reference, "order", uow)
