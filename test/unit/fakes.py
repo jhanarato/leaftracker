@@ -45,9 +45,9 @@ class FakeDocumentStore:
 
 
 class FakeBatchRepository:
-    def __init__(self, batches: list[Batch]):
+    def __init__(self):
         self._references = references("batch")
-        self._batches = set(batches)
+        self._batches = set()
 
     def add(self, batch: Batch) -> str:
         batch.reference = next(self._references)
@@ -104,7 +104,7 @@ class FakeSourceOfStockRepository:
 
 class FakeUnitOfWork:
     def __init__(self):
-        self._batches = FakeBatchRepository([])
+        self._batches = FakeBatchRepository()
         self._sources = FakeSourceOfStockRepository()
         self._species = FakeSpeciesRepository()
 
