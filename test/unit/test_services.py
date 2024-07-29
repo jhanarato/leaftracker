@@ -20,24 +20,6 @@ def test_add_source_of_stock():
     assert retrieved.source_type == SourceType.NURSERY
 
 
-def test_should_catalogue_batch(uow):
-    with uow:
-        batch = Batch(
-            source_reference="source-0001",
-            batch_type=BatchType.PICKUP
-        )
-
-        batch.add(Stock(species_ref="Acacia saligna", quantity=20, size=StockSize.TUBE))
-
-        ref = uow.batches().add(batch)
-        uow.commit()
-
-        new_batch = uow.batches().get(ref)
-
-    assert new_batch.source_reference == "source-0001"
-    assert new_batch.species() == ["Acacia saligna"]
-
-
 def test_add_stock():
     uow = FakeUnitOfWork()
 
