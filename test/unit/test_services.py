@@ -1,7 +1,7 @@
 import pytest
 
 from fakes import FakeSpeciesRepository, FakeUnitOfWork
-from leaftracker.domain.model import Batch, BatchType, Stock, StockSize, TaxonName, SourceType
+from leaftracker.domain.model import BatchType, TaxonName, SourceType
 from leaftracker.service_layer import services
 from leaftracker.service_layer.services import NotFoundError, ServiceError
 from leaftracker.service_layer.unit_of_work import UnitOfWork
