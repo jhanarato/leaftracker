@@ -3,7 +3,7 @@ import pytest
 from fakes import FakeSpeciesRepository, FakeUnitOfWork
 from leaftracker.domain.model import Batch, BatchType, Stock, StockSize, TaxonName, SourceType
 from leaftracker.service_layer import services
-from leaftracker.service_layer.services import InvalidSource, add_species, ServiceError
+from leaftracker.service_layer.services import InvalidSource, ServiceError
 from leaftracker.service_layer.unit_of_work import UnitOfWork
 
 
@@ -51,13 +51,13 @@ def test_missing_source(uow):
 
 
 def test_add_species(uow):
-    reference = add_species("Acacia saligna", uow)
+    reference = services.add_species("Acacia saligna", uow)
     assert reference == "species-0001"
 
 
 def test_rename_species():
     uow = FakeUnitOfWork()
-    reference = add_species("Baumea juncea", uow)
+    reference = services.add_species("Baumea juncea", uow)
     assert reference == "species-0001"
     species = uow.species().get("species-0001")
     assert species.taxon_history.current() == TaxonName("Baumea juncea")  # type: ignore
@@ -76,7 +76,7 @@ def test_reference_not_assigned_when_adding_species():
     uow.set_species(repository)
 
     with pytest.raises(ServiceError):
-        _ = add_species("Baumea juncea", uow)
+        _ = services.add_species("Baumea juncea", uow)
 
 
 def test_rename_non_existent_species():
