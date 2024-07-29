@@ -1,7 +1,7 @@
 import pytest
 
 from fakes import FakeSpeciesRepository, FakeUnitOfWork
-from leaftracker.domain.model import Batch, BatchType, Stock, StockSize, TaxonName
+from leaftracker.domain.model import Batch, BatchType, Stock, StockSize, TaxonName, SourceType
 from leaftracker.service_layer import services
 from leaftracker.service_layer.services import InvalidSource, add_species, rename_species, ServiceError
 from leaftracker.service_layer.unit_of_work import UnitOfWork
@@ -10,6 +10,14 @@ from leaftracker.service_layer.unit_of_work import UnitOfWork
 @pytest.fixture
 def uow() -> UnitOfWork:
     return FakeUnitOfWork()
+
+
+def test_add_source_of_stock():
+    uow = FakeUnitOfWork()
+    reference = services.add_source_of_stock("Trillion Trees", "nursery", uow)
+    retrieved = uow.sources().get(reference)
+    assert retrieved is not None
+    assert retrieved.source_type == SourceType.NURSERY
 
 
 def test_should_catalogue_batch(uow):
