@@ -1,6 +1,6 @@
 import pytest
 
-from leaftracker.adapters.elastic_repository import ElasticSpeciesRepository, ElasticSourceRepository
+from leaftracker.adapters.elastic_repository import ElasticSpeciesRepository, ElasticSourceOfStockRepository
 
 from leaftracker.adapters.elasticsearch import Document
 from leaftracker.domain.model import Species, TaxonName, SourceOfStock, SourceType
@@ -60,8 +60,8 @@ class TestSpeciesRepository:
 
 
 @pytest.fixture
-def source_repository(store) -> ElasticSourceRepository:
-    return ElasticSourceRepository(store)
+def source_repository(store) -> ElasticSourceOfStockRepository:
+    return ElasticSourceOfStockRepository(store)
 
 
 @pytest.fixture

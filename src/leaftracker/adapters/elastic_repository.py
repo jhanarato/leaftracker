@@ -91,7 +91,7 @@ def document_to_source(document: Document) -> SourceOfStock:
     return SourceOfStock(current_name, SourceType(source_type))
 
 
-class ElasticSourceRepository:
+class ElasticSourceOfStockRepository:
     def __init__(self, store: DocumentStore):
         self._store = store
         self._added: list[SourceOfStock] = []
