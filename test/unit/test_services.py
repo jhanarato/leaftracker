@@ -3,7 +3,7 @@ import pytest
 from fakes import FakeSpeciesRepository, FakeUnitOfWork
 from leaftracker.domain.model import Batch, BatchType, Stock, StockSize, TaxonName, SourceType
 from leaftracker.service_layer import services
-from leaftracker.service_layer.services import InvalidSource, ServiceError
+from leaftracker.service_layer.services import NotFoundError, ServiceError
 from leaftracker.service_layer.unit_of_work import UnitOfWork
 
 
@@ -41,9 +41,9 @@ def test_add_order(uow):
     assert uow.batches().get(batch_reference).batch_type == BatchType.ORDER
 
 
-def test_missing_source(uow):
-    with pytest.raises(InvalidSource, match="No such source: Rodeo Nursery"):
-        services.add_batch("Rodeo Nursery", "nursery", uow)
+def test_add_batch_with_missing_source(uow):
+    with pytest.raises(NotFoundError, match="No source with reference source-0001"):
+        services.add_batch("source-0001", "nursery", uow)
 
 
 def test_add_species(uow):

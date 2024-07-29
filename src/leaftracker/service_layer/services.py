@@ -6,7 +6,7 @@ class ServiceError(RuntimeError):
     pass
 
 
-class InvalidSource(Exception):
+class NotFoundError(Exception):
     pass
 
 
@@ -28,7 +28,7 @@ def add_batch(source_reference: str, batch_type: str, uow: UnitOfWork) -> str:
         source = uow.sources().get(source_reference)
 
         if not source:
-            raise InvalidSource(f"No such source: {source_reference}")
+            raise NotFoundError(f"No source with reference {source_reference}")
 
         batch = Batch(source_reference=source_reference, batch_type=BatchType(batch_type))
         reference = uow.batches().add(batch)
