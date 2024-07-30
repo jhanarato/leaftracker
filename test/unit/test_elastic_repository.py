@@ -95,6 +95,7 @@ class TestSourceRepository:
         store.add(source_document)
         retrieved = source_repository.get("source-0001")
         assert retrieved
+        assert retrieved.reference is not None
 
     def test_get_missing(self, store, source_repository):
         assert source_repository.get("No Such Source") is None

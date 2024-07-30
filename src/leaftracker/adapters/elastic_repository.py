@@ -85,10 +85,11 @@ def source_to_document(source: SourceOfStock) -> Document:
 
 
 def document_to_source(document: Document) -> SourceOfStock:
+    reference = document.document_id
     current_name = document.source["current_name"]
     source_type = document.source["source_type"]
 
-    return SourceOfStock(current_name, SourceType(source_type))
+    return SourceOfStock(current_name, SourceType(source_type), reference)
 
 
 class ElasticSourceOfStockRepository:
