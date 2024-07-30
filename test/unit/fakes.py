@@ -46,18 +46,23 @@ class FakeDocumentStore:
 
 class FakeBatchRepository:
     def __init__(self):
-        self._references = references("batch")
-        self._batches = set()
+        self._added = set()
+        self._committed = dict()
+        self.references = references("batch")
 
-    def add(self, batch: Batch) -> str:
-        batch.reference = next(self._references)
-        self._batches.add(batch)
-        return batch.reference
+    def add(self, batch: Batch):
+        self._added.add(batch)
 
-    def get(self, batch_ref: str) -> Batch | None:
-        matching = (batch for batch in self._batches
-                    if batch.reference == batch_ref)
-        return next(matching, None)
+    def get(self, reference: str) -> Batch | None:
+        return self._committed.get(reference)
+
+    def commit(self):
+        for batch in self._added:
+            batch.reference = next(self.references)
+            self._committed[batch.reference] = batch
+
+    def rollback(self):
+        self._added.clear()
 
 
 class FakeSpeciesRepository:
@@ -117,10 +122,12 @@ class FakeUnitOfWork:
     def commit(self) -> None:
         self._species.commit()
         self._sources.commit()
+        self._batches.commit()
 
     def rollback(self) -> None:
         self._species.rollback()
         self._sources.rollback()
+        self._batches.rollback()
 
     def batches(self) -> BatchRepository:
         return self._batches

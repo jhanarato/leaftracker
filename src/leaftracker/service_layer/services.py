@@ -31,10 +31,10 @@ def add_batch(source_reference: str, batch_type: str, uow: UnitOfWork) -> str:
             raise NotFoundError(f"No source with reference {source_reference}")
 
         batch = Batch(source_reference=source_reference, batch_type=BatchType(batch_type))
-        reference = uow.batches().add(batch)
+        uow.batches().add(batch)
         uow.commit()
 
-    return reference
+    return batch.reference
 
 
 def add_stock(batch_reference: str, species_reference: str,
