@@ -13,6 +13,11 @@ SPECIES_MAPPINGS = {
     }
 }
 
+SOURCE_OF_STOCK_INDEX = "source_of_stock"
+
+SOURCE_OF_STOCK_MAPPINGS = {
+
+}
 
 class ElasticUnitOfWork:
     def __init__(self, repository: ElasticSpeciesRepository):
