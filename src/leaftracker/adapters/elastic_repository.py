@@ -76,7 +76,7 @@ def source_to_document(source: SourceOfStock) -> Document:
     source_type = source.source_type.value
 
     return Document(
-        document_id=current_name,
+        document_id=source.reference,
         source={
             "current_name": current_name,
             "source_type": source_type,
