@@ -8,11 +8,11 @@ INDEX_PREFIX = "test_integration_"
 
 class TestElasticSpeciesRepository:
     def test_add_to_species_index(self):
-        species = Species(current_name="Machaerina juncea", reference="species-0001")
-        species.taxon_history.add_previous_name("Baumea juncea")
-
         lifecycle = Lifecycle(INDEX_PREFIX + SPECIES_INDEX, SPECIES_MAPPINGS)
         lifecycle.create()
+
+        species = Species(current_name="Machaerina juncea", reference="species-0001")
+        species.taxon_history.add_previous_name("Baumea juncea")
 
         store = DocumentStore(INDEX_PREFIX + SPECIES_INDEX)
         repository = ElasticSpeciesRepository(store)
