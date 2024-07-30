@@ -1,9 +1,10 @@
 import pytest
 
-from leaftracker.adapters.elastic_repository import ElasticSpeciesRepository, ElasticSourceOfStockRepository
+from leaftracker.adapters.elastic_repository import ElasticSpeciesRepository, ElasticSourceOfStockRepository, \
+    ElasticBatchRepository
 
 from leaftracker.adapters.elasticsearch import Document
-from leaftracker.domain.model import Species, TaxonName, SourceOfStock, SourceType
+from leaftracker.domain.model import Species, TaxonName, SourceOfStock, SourceType, Batch
 from fakes import FakeDocumentStore
 
 
@@ -104,3 +105,26 @@ class TestSourceRepository:
         source_repository.add(source_aggregate)
         source_repository.rollback()
         assert not source_repository.added()
+
+
+@pytest.fixture
+def batch_repository(store) -> ElasticBatchRepository:
+    return ElasticBatchRepository(store)
+
+
+@pytest.fixture
+def batch_aggregate() -> Batch:
+    pass
+
+
+@pytest.fixture
+def batch_document():
+    return Document(
+        document_id="batch-0001",
+        source={}
+    )
+
+
+class TestBatchRepository:
+    def test_add(self, store, source_repository, source_aggregate, source_document):
+        pass

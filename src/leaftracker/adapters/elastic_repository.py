@@ -118,3 +118,8 @@ class ElasticSourceOfStockRepository:
 
     def rollback(self):
         self._added.clear()
+
+
+class ElasticBatchRepository:
+    def __init__(self, store: DocumentStore):
+        pass
