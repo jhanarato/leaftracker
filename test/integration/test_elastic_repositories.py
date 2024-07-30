@@ -1,7 +1,8 @@
 from leaftracker.adapters.elastic_repository import ElasticSpeciesRepository
 from leaftracker.adapters.elasticsearch import DocumentStore, Document, Lifecycle
 from leaftracker.domain.model import Species
-from leaftracker.service_layer.elastic_uow import SPECIES_MAPPINGS, SPECIES_INDEX
+from leaftracker.service_layer.elastic_uow import SPECIES_MAPPINGS, SPECIES_INDEX, SOURCE_OF_STOCK_INDEX, \
+    SOURCE_OF_STOCK_MAPPINGS
 
 INDEX_PREFIX = "test_integration_"
 
@@ -34,4 +35,6 @@ class TestElasticSpeciesRepository:
 
 class TestElasticSourceOfStockRepository:
     def test_add_to_source_of_stock_index(self):
-        pass
+        lifecycle = Lifecycle(INDEX_PREFIX + SOURCE_OF_STOCK_INDEX, SOURCE_OF_STOCK_MAPPINGS)
+        lifecycle.create()
+        lifecycle.delete()
