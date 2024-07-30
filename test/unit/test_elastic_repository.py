@@ -66,13 +66,17 @@ def source_repository(store) -> ElasticSourceOfStockRepository:
 
 @pytest.fixture
 def source_aggregate() -> SourceOfStock:
-    return SourceOfStock("Trillion Trees", SourceType.NURSERY)
+    return SourceOfStock(
+        current_name="Trillion Trees",
+        source_type=SourceType.NURSERY,
+        reference="source-0001"
+    )
 
 
 @pytest.fixture
 def source_document():
     return Document(
-        document_id="Trillion Trees",
+        document_id="source-0001",
         source={
             "current_name": "Trillion Trees",
             "source_type": "nursery",
@@ -84,12 +88,12 @@ class TestSourceRepository:
     def test_add(self, store, source_repository, source_aggregate, source_document):
         source_repository.add(source_aggregate)
         source_repository.commit()
-        document = store.get("Trillion Trees")
+        document = store.get("source-0001")
         assert document == source_document
 
     def test_get(self, store, source_repository, source_document):
         store.add(source_document)
-        retrieved = source_repository.get("Trillion Trees")
+        retrieved = source_repository.get("source-0001")
         assert retrieved
 
     def test_get_missing(self, store, source_repository):
