@@ -152,8 +152,14 @@ def document_to_batch(document: Document) -> Batch:
     batch_reference = document.document_id
 
     batch = Batch(source_reference, BatchType(batch_type), batch_reference)
-    batch.add(Stock("species-0001", 20, StockSize.TUBE))
-    batch.add(Stock("species-0002", 5, StockSize.POT))
+
+    for stock in document.source["stock"]:
+        species_reference = stock["species_reference"]
+        quantity = stock["quantity"]
+        size = stock["size"]
+
+        batch.add(Stock(species_reference, quantity, size))
+
     return batch
 
 
