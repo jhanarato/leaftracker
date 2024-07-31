@@ -1,7 +1,7 @@
 from typing import Self
 
 from leaftracker.adapters.elastic_repository import ElasticSpeciesRepository
-from leaftracker.adapters.repository import BatchRepository, SourceRepository, SpeciesRepository
+from leaftracker.adapters.repository import BatchRepository, SourceOfStockRepository, SpeciesRepository
 
 SPECIES_INDEX = "species"
 SOURCE_OF_STOCK_INDEX = "source_of_stock"
@@ -57,7 +57,7 @@ class ElasticUnitOfWork:
     def batches(self) -> BatchRepository:  # type: ignore
         pass
 
-    def sources(self) -> SourceRepository:  # type: ignore
+    def sources(self) -> SourceOfStockRepository:  # type: ignore
         pass
 
     def species(self) -> SpeciesRepository:

@@ -3,7 +3,7 @@ from typing import Protocol
 from leaftracker.domain.model import Batch, Species, SourceOfStock
 
 
-class SourceRepository(Protocol):
+class SourceOfStockRepository(Protocol):
     def add(self, source: SourceOfStock): ...
 
     def get(self, reference: str) -> SourceOfStock | None: ...

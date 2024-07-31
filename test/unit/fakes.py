@@ -2,7 +2,7 @@ from itertools import count
 from typing import Iterator, Self
 
 from leaftracker.adapters.elasticsearch import Document
-from leaftracker.adapters.repository import BatchRepository, SourceRepository, SpeciesRepository
+from leaftracker.adapters.repository import BatchRepository, SourceOfStockRepository, SpeciesRepository
 from leaftracker.domain.model import Batch, Species, SourceOfStock
 
 
@@ -132,7 +132,7 @@ class FakeUnitOfWork:
     def batches(self) -> BatchRepository:
         return self._batches
 
-    def sources(self) -> SourceRepository:
+    def sources(self) -> SourceOfStockRepository:
         return self._sources
 
     def species(self) -> SpeciesRepository:
