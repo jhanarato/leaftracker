@@ -1,7 +1,7 @@
 from typing import Protocol
 
 from leaftracker.adapters.elasticsearch import Document
-from leaftracker.domain.model import Species, SourceOfStock, SourceType
+from leaftracker.domain.model import Species, SourceOfStock, SourceType, Batch
 
 
 class DocumentStore(Protocol):
@@ -122,4 +122,8 @@ class ElasticSourceOfStockRepository:
 
 class ElasticBatchRepository:
     def __init__(self, store: DocumentStore):
-        pass
+        self._store = store
+        self._added: list[Batch] = []
+
+    def add(self, batch: Batch):
+        self._added.append(batch)

@@ -4,7 +4,7 @@ from leaftracker.adapters.elastic_repository import ElasticSpeciesRepository, El
     ElasticBatchRepository
 
 from leaftracker.adapters.elasticsearch import Document
-from leaftracker.domain.model import Species, TaxonName, SourceOfStock, SourceType, Batch
+from leaftracker.domain.model import Species, TaxonName, SourceOfStock, SourceType, Batch, BatchType, Stock, StockSize
 from fakes import FakeDocumentStore
 
 
@@ -114,17 +114,35 @@ def batch_repository(store) -> ElasticBatchRepository:
 
 @pytest.fixture
 def batch_aggregate() -> Batch:
-    pass
+    batch = Batch("source-0001", BatchType.PICKUP, "batch-0001")
+    batch.add(Stock("species-0001", 20, StockSize.TUBE))
+    batch.add(Stock("species-0002", 5, StockSize.POT))
+    return batch
 
 
 @pytest.fixture
 def batch_document():
     return Document(
         document_id="batch-0001",
-        source={}
+        source={
+            "source_reference": "source-0001",
+            "batch_type": "pickup",
+            "stock": [
+                {
+                    "species_reference": "species-0001",
+                    "quantity": "20",
+                    "size": "tube",
+                },
+                {
+                    "species_reference": "species-0002",
+                    "quantity": "5",
+                    "size": "tube",
+                },
+            ]
+        }
     )
 
 
 class TestBatchRepository:
-    def test_add(self, store, source_repository, source_aggregate, source_document):
-        pass
+    def test_add(self, store, batch_repository, batch_aggregate, batch_document):
+        batch_repository.add(batch_aggregate)
