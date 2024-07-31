@@ -39,8 +39,8 @@ BATCH_MAPPINGS = {
 
 
 class ElasticUnitOfWork:
-    def __init__(self, repository: ElasticSpeciesRepository):
-        self._repository = repository
+    def __init__(self, species: ElasticSpeciesRepository):
+        self._species = species
 
     def __enter__(self) -> Self:
         return self
@@ -49,10 +49,10 @@ class ElasticUnitOfWork:
         self.rollback()
 
     def commit(self) -> None:
-        self._repository.commit()
+        self._species.commit()
 
     def rollback(self) -> None:
-        self._repository.rollback()
+        self._species.rollback()
 
     def batches(self) -> BatchRepository:  # type: ignore
         pass
@@ -61,4 +61,4 @@ class ElasticUnitOfWork:
         pass
 
     def species(self) -> SpeciesRepository:
-        return self._repository
+        return self._species
