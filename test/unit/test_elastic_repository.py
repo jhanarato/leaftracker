@@ -155,3 +155,11 @@ class TestBatchRepository:
         retrieved = batch_repository.get("batch-0001")
         assert retrieved
         assert retrieved.reference is not None
+
+    def test_get_missing(self, store, batch_repository):
+        assert batch_repository.get("No Such Source") is None
+
+    def test_rollback(self, store, batch_repository, batch_aggregate):
+        batch_repository.add(batch_aggregate)
+        batch_repository.rollback()
+        assert not batch_repository.added()

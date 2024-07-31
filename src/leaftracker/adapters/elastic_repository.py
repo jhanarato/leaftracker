@@ -186,3 +186,6 @@ class ElasticBatchRepository:
             self._store.add(document)
 
         self._added.clear()
+
+    def rollback(self):
+        self._added.clear()
