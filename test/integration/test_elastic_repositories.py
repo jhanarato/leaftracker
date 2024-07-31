@@ -1,8 +1,9 @@
-from leaftracker.adapters.elastic_repository import ElasticSpeciesRepository, ElasticSourceOfStockRepository
+from leaftracker.adapters.elastic_repository import ElasticSpeciesRepository, ElasticSourceOfStockRepository, \
+    ElasticBatchRepository
 from leaftracker.adapters.elasticsearch import DocumentStore, Document, Lifecycle
-from leaftracker.domain.model import Species, SourceOfStock, SourceType
+from leaftracker.domain.model import Species, SourceOfStock, SourceType, Batch, BatchType, Stock, StockSize
 from leaftracker.service_layer.elastic_uow import SPECIES_MAPPINGS, SPECIES_INDEX, SOURCE_OF_STOCK_INDEX, \
-    SOURCE_OF_STOCK_MAPPINGS
+    SOURCE_OF_STOCK_MAPPINGS, BATCH_INDEX, BATCH_MAPPINGS
 
 INDEX_PREFIX = "test_integration_"
 
@@ -52,6 +53,45 @@ class TestElasticSourceOfStockRepository:
             source={
                 "current_name": "Trillion Trees",
                 "source_type": "nursery",
+            }
+        )
+
+        lifecycle.delete()
+
+
+class TestElasticBatchRepository:
+    def test_add_to_batch_index(self):
+        lifecycle = Lifecycle(INDEX_PREFIX + BATCH_INDEX, BATCH_MAPPINGS)
+        lifecycle.create()
+
+        batch = Batch("source-0001", BatchType.PICKUP, "batch-0001")
+        batch.add(Stock("species-0001", 20, StockSize.TUBE))
+        batch.add(Stock("species-0002", 5, StockSize.POT))
+
+        store = DocumentStore(INDEX_PREFIX + BATCH_INDEX)
+        repository = ElasticBatchRepository(store)
+        repository.add(batch)
+        repository.commit()
+
+        document = store.get(batch.reference)
+
+        assert document == Document(
+            document_id="batch-0001",
+            source={
+                "source_reference": "source-0001",
+                "batch_type": "pickup",
+                "stock": [
+                    {
+                        "species_reference": "species-0001",
+                        "quantity": 20,
+                        "size": "tube",
+                    },
+                    {
+                        "species_reference": "species-0002",
+                        "quantity": 5,
+                        "size": "pot",
+                    },
+                ]
             }
         )
 
