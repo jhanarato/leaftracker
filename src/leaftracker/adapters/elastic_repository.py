@@ -147,7 +147,11 @@ def batch_to_document(batch: Batch) -> Document:
 
 
 def document_to_batch(document: Document) -> Batch:
-    batch = Batch("source-0001", BatchType.PICKUP, "batch-0001")
+    source_reference = document.source["source_reference"]
+    batch_type = document.source["batch_type"]
+    batch_reference = document.document_id
+
+    batch = Batch(source_reference, BatchType(batch_type), batch_reference)
     batch.add(Stock("species-0001", 20, StockSize.TUBE))
     batch.add(Stock("species-0002", 5, StockSize.POT))
     return batch
