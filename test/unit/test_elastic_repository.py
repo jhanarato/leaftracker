@@ -130,13 +130,13 @@ def batch_document():
             "stock": [
                 {
                     "species_reference": "species-0001",
-                    "quantity": "20",
+                    "quantity": 20,
                     "size": "tube",
                 },
                 {
                     "species_reference": "species-0002",
-                    "quantity": "5",
-                    "size": "tube",
+                    "quantity": 5,
+                    "size": "pot",
                 },
             ]
         }

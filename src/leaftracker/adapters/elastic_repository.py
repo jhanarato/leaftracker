@@ -120,27 +120,28 @@ class ElasticSourceOfStockRepository:
         self._added.clear()
 
 
+def stock_for_document(batch: Batch) -> list[dict]:
+    return [
+        {
+            "species_reference": stock.species_reference,
+            "quantity": stock.quantity,
+            "size": stock.size.value,
+        }
+        for stock in batch.stock
+    ]
+
+
 def batch_to_document(batch: Batch) -> Document:
     source_reference = batch.source_reference
     batch_type = batch.batch_type.value
+    stock = stock_for_document(batch)
 
     return Document(
         document_id=batch.reference,
         source={
             "source_reference": source_reference,
             "batch_type": batch_type,
-            "stock": [
-                {
-                    "species_reference": "species-0001",
-                    "quantity": "20",
-                    "size": "tube",
-                },
-                {
-                    "species_reference": "species-0002",
-                    "quantity": "5",
-                    "size": "tube",
-                },
-            ]
+            "stock": stock
         }
     )
 

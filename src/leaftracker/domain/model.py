@@ -142,23 +142,23 @@ class Batch:
         self.batch_type = batch_type
         self.source_reference = source_reference
 
-        self._stock: list[Stock] = []
+        self.stock: list[Stock] = []
 
     def add(self, stock: Stock):
-        self._stock.append(stock)
+        self.stock.append(stock)
 
     def species(self) -> list[str]:
-        return [stock.species_reference for stock in self._stock]
+        return [stock.species_reference for stock in self.stock]
 
     def quantity(self, species_ref: str) -> int:
         return sum(
-            [stock.quantity for stock in self._stock
+            [stock.quantity for stock in self.stock
              if stock.species_reference == species_ref]
         )
 
     def quantity_of_size(self, species_ref: str, size: StockSize) -> int:
         return sum(
-            [stock.quantity for stock in self._stock
+            [stock.quantity for stock in self.stock
              if stock.species_reference == species_ref and stock.size == size]
         )
 
