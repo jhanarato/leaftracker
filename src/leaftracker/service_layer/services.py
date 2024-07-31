@@ -34,6 +34,9 @@ def add_batch(source_reference: str, batch_type: str, uow: UnitOfWork) -> str:
         uow.batches().add(batch)
         uow.commit()
 
+    if batch.reference is None:
+        raise ServiceError("Batch was not assigned a reference.")
+
     return batch.reference
 
 
