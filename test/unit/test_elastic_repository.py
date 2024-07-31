@@ -149,3 +149,9 @@ class TestBatchRepository:
         batch_repository.commit()
         document = store.get("batch-0001")
         assert document == batch_document
+
+    def test_get(self, store, batch_repository, batch_document):
+        store.add(batch_document)
+        retrieved = batch_repository.get("batch-0001")
+        assert retrieved
+        assert retrieved.reference is not None

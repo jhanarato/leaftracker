@@ -1,7 +1,7 @@
 from typing import Protocol
 
 from leaftracker.adapters.elasticsearch import Document
-from leaftracker.domain.model import Species, SourceOfStock, SourceType, Batch
+from leaftracker.domain.model import Species, SourceOfStock, SourceType, Batch, BatchType, Stock, StockSize
 
 
 class DocumentStore(Protocol):
@@ -146,6 +146,13 @@ def batch_to_document(batch: Batch) -> Document:
     )
 
 
+def document_to_batch(document: Document) -> Batch:
+    batch = Batch("source-0001", BatchType.PICKUP, "batch-0001")
+    batch.add(Stock("species-0001", 20, StockSize.TUBE))
+    batch.add(Stock("species-0002", 5, StockSize.POT))
+    return batch
+
+
 class ElasticBatchRepository:
     def __init__(self, store: DocumentStore):
         self._store = store
@@ -153,6 +160,12 @@ class ElasticBatchRepository:
 
     def add(self, batch: Batch):
         self._added.append(batch)
+
+    def get(self, reference: str) -> Batch | None:
+        document = self._store.get(reference)
+        if document:
+            return document_to_batch(document)
+        return None
 
     def added(self) -> list[Batch]:
         return self._added
