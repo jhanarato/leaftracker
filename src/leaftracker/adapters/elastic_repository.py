@@ -100,8 +100,8 @@ class ElasticSourceOfStockRepository:
     def add(self, source: SourceOfStock):
         self._added.append(source)
 
-    def get(self, name: str) -> SourceOfStock | None:
-        document = self._store.get(name)
+    def get(self, reference: str) -> SourceOfStock | None:
+        document = self._store.get(reference)
         if document:
             return document_to_source(document)
         return None
