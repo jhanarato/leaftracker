@@ -146,3 +146,6 @@ def batch_document():
 class TestBatchRepository:
     def test_add(self, store, batch_repository, batch_aggregate, batch_document):
         batch_repository.add(batch_aggregate)
+        batch_repository.commit()
+        document = store.get("batch-0001")
+        assert document == batch_document

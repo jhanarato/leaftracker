@@ -120,6 +120,28 @@ class ElasticSourceOfStockRepository:
         self._added.clear()
 
 
+def batch_to_document(batch: Batch) -> Document:
+    return Document(
+        document_id="batch-0001",
+        source={
+            "source_reference": "source-0001",
+            "batch_type": "pickup",
+            "stock": [
+                {
+                    "species_reference": "species-0001",
+                    "quantity": "20",
+                    "size": "tube",
+                },
+                {
+                    "species_reference": "species-0002",
+                    "quantity": "5",
+                    "size": "tube",
+                },
+            ]
+        }
+    )
+
+
 class ElasticBatchRepository:
     def __init__(self, store: DocumentStore):
         self._store = store
@@ -127,3 +149,13 @@ class ElasticBatchRepository:
 
     def add(self, batch: Batch):
         self._added.append(batch)
+
+    def added(self) -> list[Batch]:
+        return self._added
+
+    def commit(self):
+        for batch in self.added():
+            document = batch_to_document(batch)
+            self._store.add(document)
+
+        self._added.clear()
