@@ -4,7 +4,8 @@ from leaftracker.adapters.elastic_repository import ElasticSpeciesRepository
 from leaftracker.adapters.repository import BatchRepository, SourceRepository, SpeciesRepository
 
 SPECIES_INDEX = "species"
-
+SOURCE_OF_STOCK_INDEX = "source_of_stock"
+BATCH_INDEX = "batch"
 
 SPECIES_MAPPINGS = {
     "properties": {
@@ -13,12 +14,26 @@ SPECIES_MAPPINGS = {
     }
 }
 
-SOURCE_OF_STOCK_INDEX = "source_of_stock"
 
 SOURCE_OF_STOCK_MAPPINGS = {
     "properties": {
         "current_name": {"type": "text"},
         "source_type": {"type": "keyword"}
+    }
+}
+
+
+BATCH_MAPPINGS = {
+    "properties": {
+        "source_reference": {"type": "keyword"},
+        "batch_type": {"type": "keyword"},
+        "stock": {
+            "properties": {
+                "species_reference": {"type": "keyword"},
+                "quantity": {"type": "integer"},
+                "size": {"type": "keyword"},
+            }
+        }
     }
 }
 
