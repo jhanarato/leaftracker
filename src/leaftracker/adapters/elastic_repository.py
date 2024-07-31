@@ -122,7 +122,7 @@ class ElasticSourceOfStockRepository:
 
 def batch_to_document(batch: Batch) -> Document:
     return Document(
-        document_id="batch-0001",
+        document_id=batch.reference,
         source={
             "source_reference": "source-0001",
             "batch_type": "pickup",
