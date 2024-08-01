@@ -44,7 +44,9 @@ class ElasticUnitOfWork:
                  sources: ElasticSourceOfStockRepository,
                  species: ElasticSpeciesRepository,
                  batches: ElasticBatchRepository):
+        self._sources = sources
         self._species = species
+        self._batches = batches
 
     def __enter__(self) -> Self:
         return self
@@ -58,11 +60,11 @@ class ElasticUnitOfWork:
     def rollback(self) -> None:
         self._species.rollback()
 
-    def batches(self) -> BatchRepository:  # type: ignore
-        pass
-
-    def sources(self) -> SourceOfStockRepository:  # type: ignore
-        pass
+    def sources(self) -> SourceOfStockRepository:
+        return self._sources
 
     def species(self) -> SpeciesRepository:
         return self._species
+
+    def batches(self) -> BatchRepository:
+        return self._batches
