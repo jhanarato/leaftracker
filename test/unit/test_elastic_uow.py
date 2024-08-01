@@ -6,18 +6,18 @@ from fakes import FakeDocumentStore
 
 
 @pytest.fixture
-def store() -> FakeDocumentStore:
-    return FakeDocumentStore("fake-index")
+def species_store() -> FakeDocumentStore:
+    return FakeDocumentStore("species")
 
 
 @pytest.fixture
-def repository(store) -> ElasticSpeciesRepository:
-    return ElasticSpeciesRepository(store)
+def species_repository(species_store) -> ElasticSpeciesRepository:
+    return ElasticSpeciesRepository(species_store)
 
 
 @pytest.fixture
-def uow(repository) -> ElasticUnitOfWork:
-    uow = ElasticUnitOfWork(repository)
+def uow(species_repository) -> ElasticUnitOfWork:
+    uow = ElasticUnitOfWork(species_repository)
     return uow
 
 
@@ -47,24 +47,24 @@ def test_should_add_two_species(uow, saligna, dentifera):
     assert saligna.reference != dentifera.reference
 
 
-def test_should_clear_queue_on_rollback(uow, repository, saligna):
+def test_should_clear_queue_on_rollback(uow, species_repository, saligna):
     with uow:
         uow.species().add(saligna)
 
-    assert not repository.added()
+    assert not species_repository.added()
 
 
-def test_should_rollback_explicitly(uow, repository, saligna):
+def test_should_rollback_explicitly(uow, species_repository, saligna):
     with uow:
         uow.species().add(saligna)
         uow.rollback()
 
-    assert not repository.added()
+    assert not species_repository.added()
 
 
-def test_should_clear_queue_after_commit(uow, repository, saligna):
+def test_should_clear_queue_after_commit(uow, species_repository, saligna):
     with uow:
         uow.species().add(saligna)
         uow.commit()
 
-    assert not repository.added()
+    assert not species_repository.added()
