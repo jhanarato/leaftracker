@@ -1,6 +1,7 @@
 from typing import Self
 
-from leaftracker.adapters.elastic_repository import ElasticSpeciesRepository
+from leaftracker.adapters.elastic_repository import ElasticSpeciesRepository, ElasticBatchRepository, \
+    ElasticSourceOfStockRepository
 from leaftracker.adapters.repository import BatchRepository, SourceOfStockRepository, SpeciesRepository
 
 SPECIES_INDEX = "species"
@@ -39,7 +40,10 @@ BATCH_MAPPINGS = {
 
 
 class ElasticUnitOfWork:
-    def __init__(self, species: ElasticSpeciesRepository):
+    def __init__(self,
+                 sources: ElasticSourceOfStockRepository,
+                 species: ElasticSpeciesRepository,
+                 batches: ElasticBatchRepository):
         self._species = species
 
     def __enter__(self) -> Self:
