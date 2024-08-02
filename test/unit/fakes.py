@@ -43,6 +43,9 @@ class FakeDocumentStore:
     def get(self, document_id) -> Document | None:
         return self._documents.get(document_id)
 
+    def ids(self) -> list[str]:
+        return [document.document_id for document in self._documents.values()]
+
 
 class FakeBatchRepository:
     def __init__(self):

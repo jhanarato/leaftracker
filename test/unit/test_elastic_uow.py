@@ -87,7 +87,7 @@ class TestCommit:
             uow.sources().add(trillion_trees)
             uow.commit()
 
-        assert source_store.get("source_of_stock-0001")
+        assert source_store.ids() == ["source_of_stock-0001"]
 
     def test_commit_species(self, uow, species_store, saligna):
         with uow:
