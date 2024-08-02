@@ -98,3 +98,18 @@ class TestCommit:
             uow.commit()
 
         assert batch_store.get("batch-0001")
+
+    def test_commit_all(self, uow, source_store, species_store, batch_store, saligna, trillion_trees):
+        batch = Batch("source_of_stock-xxxx", BatchType.PICKUP)
+        stock = Stock("species-xxxx", 20, StockSize.POT)
+        batch.add(stock)
+
+        with uow:
+            uow.sources().add(trillion_trees)
+            uow.species().add(saligna)
+            uow.batches().add(batch)
+            uow.commit()
+
+        assert source_store.get("source_of_stock-0001")
+        assert species_store.get("species-0001")
+        assert batch_store.get("batch-0001")
