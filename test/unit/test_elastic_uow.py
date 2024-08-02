@@ -73,6 +73,14 @@ def test_should_clear_queue_after_commit(uow, species_repository, saligna):
     assert not species_repository.added()
 
 
+@pytest.fixture
+def batch():
+    batch = Batch("source_of_stock-xxxx", BatchType.PICKUP)
+    stock = Stock("species-xxxx", 20, StockSize.POT)
+    batch.add(stock)
+    return batch
+
+
 class TestCommit:
     def test_commit_source_of_stock(self, uow, source_store, trillion_trees):
         with uow:
@@ -88,22 +96,14 @@ class TestCommit:
 
         assert species_store.get("species-0001")
 
-    def test_commit_batch(self, uow, batch_store):
-        batch = Batch("source_of_stock-xxxx", BatchType.PICKUP)
-        stock = Stock("species-xxxx", 20, StockSize.POT)
-        batch.add(stock)
-
+    def test_commit_batch(self, uow, batch_store, batch):
         with uow:
             uow.batches().add(batch)
             uow.commit()
 
         assert batch_store.get("batch-0001")
 
-    def test_commit_all(self, uow, source_store, species_store, batch_store, saligna, trillion_trees):
-        batch = Batch("source_of_stock-xxxx", BatchType.PICKUP)
-        stock = Stock("species-xxxx", 20, StockSize.POT)
-        batch.add(stock)
-
+    def test_commit_all(self, uow, source_store, species_store, batch_store, saligna, trillion_trees, batch):
         with uow:
             uow.sources().add(trillion_trees)
             uow.species().add(saligna)
