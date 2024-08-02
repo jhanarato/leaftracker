@@ -37,10 +37,12 @@ def species_repository(store) -> ElasticSpeciesRepository:
 
 
 class TestSpeciesRepository:
-    def test_add(self, store, species_repository, species_aggregate, species_document):
-        species_repository.add(species_aggregate)
-        species_repository.commit()
-        document = store.get("species-0001")
+    def test_add(self, uow, species_store, species_aggregate, species_document):
+        with uow:
+            uow.species().add(species_aggregate)
+            uow.commit()
+
+        document = species_store.get("species-0001")
         assert document == species_document
 
     def test_get(self, store, species_repository, species_document):
