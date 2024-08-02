@@ -55,6 +55,7 @@ class ElasticUnitOfWork:
         self.rollback()
 
     def commit(self) -> None:
+        self._sources.commit()
         self._species.commit()
 
     def rollback(self) -> None:

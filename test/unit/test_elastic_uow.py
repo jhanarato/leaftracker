@@ -73,7 +73,9 @@ def test_should_clear_queue_after_commit(uow, species_repository, saligna):
 
 
 class TestCommit:
-    def test_commit_source_of_stock(self, uow, trillion_trees):
+    def test_commit_source_of_stock(self, uow, source_store, trillion_trees):
         with uow:
             uow.sources().add(trillion_trees)
             uow.commit()
+
+        assert source_store.get("source_of_stock-0001")
