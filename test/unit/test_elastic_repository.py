@@ -37,33 +37,34 @@ def species_repository(store) -> ElasticSpeciesRepository:
 
 
 class TestSpeciesRepository:
-    def test_add(self, uow, species_store, species_aggregate, species_document):
-        with uow:
-            uow.species().add(species_aggregate)
-            uow.commit()
+    def test_add(self, species_store, species_aggregate, species_document):
+        repository = ElasticSpeciesRepository(species_store)
+        repository.add(species_aggregate)
+        repository.commit()
 
         document = species_store.get("species-0001")
         assert document == species_document
 
-    def test_get(self, uow, species_store, species_aggregate, species_document):
-        with uow:
-            uow.species().add(species_aggregate)
-            uow.commit()
+    def test_get(self, species_store, species_aggregate, species_document):
+        repository = ElasticSpeciesRepository(species_store)
+        repository.add(species_aggregate)
+        repository.commit()
 
-        with uow:
-            species = uow.species().get("species-0001")
+        retrieved = repository.get("species-0001")
 
-        assert species.taxon_history.current() == TaxonName("Machaerina juncea")
-        assert list(species.taxon_history.previous()) == [TaxonName("Baumea juncea")]
+        assert retrieved.taxon_history.current() == TaxonName("Machaerina juncea")
+        assert list(retrieved.taxon_history.previous()) == [TaxonName("Baumea juncea")]
 
-    def test_get_missing(self, uow):
-        with uow:
-            assert uow.species().get("species-xxxx") is None
+    def test_get_missing(self, species_store, species_aggregate):
+        repository = ElasticSpeciesRepository(species_store)
+        repository.add(species_aggregate)
+        assert repository.get("species-xxxx") is None
 
-    def test_rollback(self, store, species_repository, species_aggregate):
-        species_repository.add(species_aggregate)
-        species_repository.rollback()
-        assert not species_repository.added()
+    def test_rollback(self, species_store, species_aggregate):
+        repository = ElasticSpeciesRepository(species_store)
+        repository.add(species_aggregate)
+        repository.rollback()
+        assert not repository.added()
 
 
 @pytest.fixture
