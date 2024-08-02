@@ -43,7 +43,7 @@ def batch_store() -> FakeDocumentStore:
 
 
 @pytest.fixture
-def fake_uow(source_store, species_store, batch_store):
+def uow(source_store, species_store, batch_store):
     return ElasticUnitOfWork(
         ElasticSourceOfStockRepository(source_store),
         ElasticSpeciesRepository(species_store),

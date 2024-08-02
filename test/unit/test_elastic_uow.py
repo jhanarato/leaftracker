@@ -1,22 +1,6 @@
 import pytest
 
-from leaftracker.adapters.elastic_repository import (
-    ElasticSpeciesRepository,
-    ElasticSourceOfStockRepository,
-    ElasticBatchRepository,
-)
 from leaftracker.domain.model import Batch, BatchType, StockSize, Stock
-
-from leaftracker.service_layer.elastic_uow import ElasticUnitOfWork
-
-
-@pytest.fixture
-def uow(source_store, batch_store, species_store) -> ElasticUnitOfWork:
-    return ElasticUnitOfWork(
-        ElasticSourceOfStockRepository(source_store),
-        ElasticSpeciesRepository(species_store),
-        ElasticBatchRepository(batch_store)
-    )
 
 
 def test_should_add_two_species(uow, saligna, dentifera):
