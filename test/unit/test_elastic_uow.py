@@ -12,8 +12,18 @@ from leaftracker.service_layer.elastic_uow import (
 
 
 @pytest.fixture
+def source_store() -> FakeDocumentStore:
+    return FakeDocumentStore(SOURCE_OF_STOCK_INDEX)
+
+
+@pytest.fixture
 def species_store() -> FakeDocumentStore:
     return FakeDocumentStore(SPECIES_INDEX)
+
+
+@pytest.fixture
+def batch_store() -> FakeDocumentStore:
+    return FakeDocumentStore(BATCH_INDEX)
 
 
 @pytest.fixture
@@ -22,12 +32,9 @@ def species_repository(species_store) -> ElasticSpeciesRepository:
 
 
 @pytest.fixture
-def uow(species_repository) -> ElasticUnitOfWork:
-    sources_store = FakeDocumentStore(SOURCE_OF_STOCK_INDEX)
-    sources_repository = ElasticSourceOfStockRepository(sources_store)
-
-    batches_store = FakeDocumentStore(BATCH_INDEX)
-    batches_repository = ElasticBatchRepository(batches_store)
+def uow(source_store, batch_store, species_repository) -> ElasticUnitOfWork:
+    sources_repository = ElasticSourceOfStockRepository(source_store)
+    batches_repository = ElasticBatchRepository(batch_store)
 
     uow = ElasticUnitOfWork(sources_repository, species_repository, batches_repository)
     return uow
@@ -80,3 +87,10 @@ def test_should_clear_queue_after_commit(uow, species_repository, saligna):
         uow.commit()
 
     assert not species_repository.added()
+
+
+class TestCommit:
+    def test_commit_source_of_stock(self, uow, trillion_trees):
+        with uow:
+            uow.sources().add(trillion_trees)
+            uow.commit()

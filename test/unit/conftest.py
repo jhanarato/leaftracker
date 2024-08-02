@@ -3,10 +3,8 @@ import pytest
 from fakes import FakeDocumentStore
 from leaftracker.adapters.elastic_repository import ElasticSpeciesRepository, ElasticSourceOfStockRepository, \
     ElasticBatchRepository
-from leaftracker.domain.model import Species
+from leaftracker.domain.model import Species, SourceOfStock, SourceType
 from leaftracker.service_layer.elastic_uow import ElasticUnitOfWork
-
-INDEX_TEST_PREFIX = "test_"
 
 
 @pytest.fixture
@@ -19,6 +17,11 @@ def saligna() -> Species:
 def dentifera() -> Species:
     species = Species("Acacia dentifera")
     return species
+
+
+@pytest.fixture
+def trillion_trees() -> SourceOfStock:
+    return SourceOfStock("Trillion Trees", SourceType.NURSERY)
 
 
 @pytest.fixture
