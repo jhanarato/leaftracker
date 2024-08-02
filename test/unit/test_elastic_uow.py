@@ -94,14 +94,14 @@ class TestCommit:
             uow.species().add(saligna)
             uow.commit()
 
-        assert species_store.get("species-0001")
+        assert species_store.ids() == ["species-0001"]
 
     def test_commit_batch(self, uow, batch_store, batch):
         with uow:
             uow.batches().add(batch)
             uow.commit()
 
-        assert batch_store.get("batch-0001")
+        assert batch_store.ids() == ["batch-0001"]
 
     def test_commit_all(self, uow, source_store, species_store, batch_store, saligna, trillion_trees, batch):
         with uow:
@@ -110,6 +110,6 @@ class TestCommit:
             uow.batches().add(batch)
             uow.commit()
 
-        assert source_store.get("source_of_stock-0001")
-        assert species_store.get("species-0001")
-        assert batch_store.get("batch-0001")
+        assert source_store.ids() == ["source_of_stock-0001"]
+        assert species_store.ids() == ["species-0001"]
+        assert batch_store.ids() == ["batch-0001"]
