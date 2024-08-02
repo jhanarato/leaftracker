@@ -11,20 +11,6 @@ def references(prefix: str) -> Iterator[str]:
         yield f"{prefix}-{i:04}"
 
 
-class FakeLifecycle:
-    def __init__(self, exists: bool):
-        self._exists = exists
-
-    def create(self) -> None:
-        self._exists = True
-
-    def delete(self) -> None:
-        self._exists = False
-
-    def exists(self) -> bool:
-        return self._exists
-
-
 class FakeDocumentStore:
     def __init__(self, index: str):
         self._index = index
