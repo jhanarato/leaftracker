@@ -6,7 +6,9 @@ from leaftracker.adapters.elastic_repository import (
     ElasticBatchRepository,
 )
 from leaftracker.domain.model import Species, SourceOfStock, SourceType
-from leaftracker.service_layer.elastic_uow import ElasticUnitOfWork, SOURCE_OF_STOCK_INDEX, SPECIES_INDEX, BATCH_INDEX
+from leaftracker.service_layer.elastic_uow import (
+    ElasticUnitOfWork, SOURCE_OF_STOCK_INDEX, SPECIES_INDEX, BATCH_INDEX
+)
 from fakes import FakeDocumentStore
 
 
