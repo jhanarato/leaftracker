@@ -1,14 +1,19 @@
 import pytest
 
-from leaftracker.adapters.elastic_repository import ElasticSpeciesRepository, ElasticSourceOfStockRepository, \
-    ElasticBatchRepository
-from leaftracker.service_layer.elastic_uow import ElasticUnitOfWork
 from fakes import FakeDocumentStore
+from leaftracker.adapters.elastic_repository import (
+    ElasticSpeciesRepository,
+    ElasticSourceOfStockRepository,
+    ElasticBatchRepository,
+)
+from leaftracker.service_layer.elastic_uow import (
+    ElasticUnitOfWork, SPECIES_INDEX, SOURCE_OF_STOCK_INDEX, BATCH_INDEX
+)
 
 
 @pytest.fixture
 def species_store() -> FakeDocumentStore:
-    return FakeDocumentStore("species")
+    return FakeDocumentStore(SPECIES_INDEX)
 
 
 @pytest.fixture
@@ -18,10 +23,10 @@ def species_repository(species_store) -> ElasticSpeciesRepository:
 
 @pytest.fixture
 def uow(species_repository) -> ElasticUnitOfWork:
-    sources_store = FakeDocumentStore("source_of_stock")
+    sources_store = FakeDocumentStore(SOURCE_OF_STOCK_INDEX)
     sources_repository = ElasticSourceOfStockRepository(sources_store)
 
-    batches_store = FakeDocumentStore("batches")
+    batches_store = FakeDocumentStore(BATCH_INDEX)
     batches_repository = ElasticBatchRepository(batches_store)
 
     uow = ElasticUnitOfWork(sources_repository, species_repository, batches_repository)
