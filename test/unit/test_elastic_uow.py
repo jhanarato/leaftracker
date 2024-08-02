@@ -103,7 +103,8 @@ class TestCommit:
 
         assert batch_store.ids() == ["batch-0001"]
 
-    def test_commit_all(self, uow, source_store, species_store, batch_store, saligna, trillion_trees, batch):
+    def test_commit_all(self, uow, source_store, species_store, batch_store,
+                        saligna, trillion_trees, batch):
         with uow:
             uow.sources().add(trillion_trees)
             uow.species().add(saligna)
@@ -113,3 +114,19 @@ class TestCommit:
         assert source_store.ids() == ["source_of_stock-0001"]
         assert species_store.ids() == ["species-0001"]
         assert batch_store.ids() == ["batch-0001"]
+
+
+class TestRollback:
+    def test_implicit_rollback(self, uow, source_store, species_store, batch_store,
+                               saligna, trillion_trees, batch):
+        with uow:
+            uow.sources().add(trillion_trees)
+            uow.species().add(saligna)
+            uow.batches().add(batch)
+
+        with uow:
+            uow.commit()
+
+        assert not source_store.ids()
+        assert not species_store.ids()
+        assert not batch_store.ids()

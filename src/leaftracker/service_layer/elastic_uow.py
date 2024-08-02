@@ -60,7 +60,9 @@ class ElasticUnitOfWork:
         self._batches.commit()
 
     def rollback(self) -> None:
+        self._sources.rollback()
         self._species.rollback()
+        self._batches.rollback()
 
     def sources(self) -> SourceOfStockRepository:
         return self._sources
