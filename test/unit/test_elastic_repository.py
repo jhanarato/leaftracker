@@ -55,7 +55,7 @@ class TestSpeciesRepository:
         repository.commit()
 
         retrieved = repository.get("species-0001")
-
+        assert retrieved
         assert retrieved.taxon_history.current() == TaxonName("Machaerina juncea")
         assert list(retrieved.taxon_history.previous()) == [TaxonName("Baumea juncea")]
 
