@@ -130,3 +130,16 @@ class TestRollback:
         assert not source_store.ids()
         assert not species_store.ids()
         assert not batch_store.ids()
+
+    def test_explicit_rollback(self, uow, source_store, species_store, batch_store,
+                               saligna, trillion_trees, batch):
+        with uow:
+            uow.sources().add(trillion_trees)
+            uow.species().add(saligna)
+            uow.batches().add(batch)
+            uow.rollback()
+            uow.commit()
+
+        assert not source_store.ids()
+        assert not species_store.ids()
+        assert not batch_store.ids()
