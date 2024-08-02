@@ -31,11 +31,6 @@ def species_document() -> Document:
     )
 
 
-@pytest.fixture
-def species_repository(store) -> ElasticSpeciesRepository:
-    return ElasticSpeciesRepository(store)
-
-
 class TestSpeciesRepository:
     def test_add(self, species_store, species_aggregate, species_document):
         repository = ElasticSpeciesRepository(species_store)
