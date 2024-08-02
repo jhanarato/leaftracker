@@ -32,13 +32,22 @@ def species_document() -> Document:
 
 
 class TestSpeciesRepository:
-    def test_add(self, species_store, species_aggregate, species_document):
+    def test_add_without_reference(self, species_store, species_aggregate, species_document):
         repository = ElasticSpeciesRepository(species_store)
         repository.add(species_aggregate)
         repository.commit()
 
         document = species_store.get("species-0001")
         assert document == species_document
+
+    def test_add_with_reference(self, species_store, species_aggregate, species_document):
+        species_aggregate.reference = "species-yyyy"
+        repository = ElasticSpeciesRepository(species_store)
+        repository.add(species_aggregate)
+        repository.commit()
+
+        document = species_store.get("species-yyyy")
+        assert document.document_id == "species-yyyy"
 
     def test_get(self, species_store, species_aggregate, species_document):
         repository = ElasticSpeciesRepository(species_store)
