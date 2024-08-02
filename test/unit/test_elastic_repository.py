@@ -56,8 +56,9 @@ class TestSpeciesRepository:
         assert species.taxon_history.current() == TaxonName("Machaerina juncea")
         assert list(species.taxon_history.previous()) == [TaxonName("Baumea juncea")]
 
-    def test_get_missing(self, store, species_repository):
-        assert species_repository.get("no-such-species") is None
+    def test_get_missing(self, uow):
+        with uow:
+            assert uow.species().get("species-xxxx") is None
 
     def test_rollback(self, store, species_repository, species_aggregate):
         species_repository.add(species_aggregate)
