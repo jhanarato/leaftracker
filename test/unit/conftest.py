@@ -26,20 +26,6 @@ def trillion_trees() -> SourceOfStock:
 
 
 @pytest.fixture
-def fake_uow():
-    sources_store = FakeDocumentStore("source_of_stock")
-    sources_repository = ElasticSourceOfStockRepository(sources_store)
-
-    species_store = FakeDocumentStore("species")
-    species_repository = ElasticSpeciesRepository(species_store)
-
-    batches_store = FakeDocumentStore("batches")
-    batches_repository = ElasticBatchRepository(batches_store)
-
-    return ElasticUnitOfWork(sources_repository, species_repository, batches_repository)
-
-
-@pytest.fixture
 def source_store() -> FakeDocumentStore:
     return FakeDocumentStore(SOURCE_OF_STOCK_INDEX)
 
@@ -52,3 +38,12 @@ def species_store() -> FakeDocumentStore:
 @pytest.fixture
 def batch_store() -> FakeDocumentStore:
     return FakeDocumentStore(BATCH_INDEX)
+
+
+@pytest.fixture
+def fake_uow(source_store, species_store, batch_store):
+    sources_repository = ElasticSourceOfStockRepository(source_store)
+    species_repository = ElasticSpeciesRepository(species_store)
+    batches_repository = ElasticBatchRepository(batch_store)
+
+    return ElasticUnitOfWork(sources_repository, species_repository, batches_repository)
