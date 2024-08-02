@@ -5,6 +5,7 @@ from leaftracker.adapters.elastic_repository import (
     ElasticSourceOfStockRepository,
     ElasticBatchRepository,
 )
+from leaftracker.domain.model import Batch, BatchType, StockSize, Stock
 
 from leaftracker.service_layer.elastic_uow import ElasticUnitOfWork
 
@@ -79,3 +80,21 @@ class TestCommit:
             uow.commit()
 
         assert source_store.get("source_of_stock-0001")
+
+    def test_commit_species(self, uow, species_store, saligna):
+        with uow:
+            uow.species().add(saligna)
+            uow.commit()
+
+        assert species_store.get("species-0001")
+
+    def test_commit_batch(self, uow, batch_store):
+        batch = Batch("source_of_stock-xxxx", BatchType.PICKUP)
+        stock = Stock("species-xxxx", 20, StockSize.POT)
+        batch.add(stock)
+
+        with uow:
+            uow.batches().add(batch)
+            uow.commit()
+
+        assert batch_store.get("batch-0001")

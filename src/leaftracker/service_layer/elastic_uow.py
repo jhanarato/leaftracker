@@ -57,6 +57,7 @@ class ElasticUnitOfWork:
     def commit(self) -> None:
         self._sources.commit()
         self._species.commit()
+        self._batches.commit()
 
     def rollback(self) -> None:
         self._species.rollback()
