@@ -45,13 +45,16 @@ class TestSpeciesRepository:
         document = species_store.get("species-0001")
         assert document == species_document
 
-    def test_get(self, store, species_repository, species_document):
-        store.add(species_document)
-        retrieved = species_repository.get("species-0001")
+    def test_get(self, uow, species_store, species_aggregate, species_document):
+        with uow:
+            uow.species().add(species_aggregate)
+            uow.commit()
 
-        assert retrieved
-        assert retrieved.taxon_history.current() == TaxonName("Machaerina juncea")
-        assert list(retrieved.taxon_history.previous()) == [TaxonName("Baumea juncea")]
+        with uow:
+            species = uow.species().get("species-0001")
+
+        assert species.taxon_history.current() == TaxonName("Machaerina juncea")
+        assert list(species.taxon_history.previous()) == [TaxonName("Baumea juncea")]
 
     def test_get_missing(self, store, species_repository):
         assert species_repository.get("no-such-species") is None
