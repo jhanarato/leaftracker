@@ -1,7 +1,7 @@
 import pytest
 
 from fakes import FakeDocumentStore
-from leaftracker.adapters.elastic.elastic_repository import (
+from leaftracker.adapters.elastic.repository import (
     ElasticSpeciesRepository,
     ElasticSourceOfStockRepository,
     ElasticBatchRepository

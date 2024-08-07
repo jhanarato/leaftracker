@@ -1,6 +1,6 @@
 from typing import Self
 
-from leaftracker.adapters.elastic.elastic_repository import ElasticSpeciesRepository, ElasticBatchRepository, \
+from leaftracker.adapters.elastic.repository import ElasticSpeciesRepository, ElasticBatchRepository, \
     ElasticSourceOfStockRepository
 from leaftracker.adapters.repository import BatchRepository, SourceOfStockRepository, SpeciesRepository
 
