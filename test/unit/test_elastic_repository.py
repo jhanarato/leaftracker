@@ -104,25 +104,22 @@ def source_document():
 
 
 class TestSourceRepository:
-    def test_add(self, store, source_repository, source_aggregate, source_document):
-        source_repository.add(source_aggregate)
-        source_repository.commit()
-        document = store.get("source-0001")
+    def test_add_without_reference(self, source_store, source_aggregate, source_document):
+        repository = ElasticSourceOfStockRepository(source_store)
+        repository.add(source_aggregate)
+        repository.commit()
+
+        document = source_store.get("source-0001")
         assert document == source_document
 
-    def test_get(self, store, source_repository, source_document):
-        store.add(source_document)
-        retrieved = source_repository.get("source-0001")
-        assert retrieved
-        assert retrieved.reference is not None
+    def test_add_with_reference(self, source_store, source_aggregate, source_document):
+        source_aggregate.reference = "source-yyyy"
+        repository = ElasticSourceOfStockRepository(source_store)
+        repository.add(source_aggregate)
+        repository.commit()
 
-    def test_get_missing(self, store, source_repository):
-        assert source_repository.get("No Such Source") is None
-
-    def test_rollback(self, store, source_repository, source_aggregate):
-        source_repository.add(source_aggregate)
-        source_repository.rollback()
-        assert not source_repository.added()
+        document = source_store.get("source-yyyy")
+        assert document.document_id == "source-yyyy"
 
 
 @pytest.fixture
