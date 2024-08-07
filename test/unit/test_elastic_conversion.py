@@ -1,6 +1,6 @@
 import pytest
 
-from leaftracker.adapters.elastic.convert import batch_to_document
+from leaftracker.adapters.elastic.convert import batch_to_document, document_to_batch
 from leaftracker.adapters.elastic.elasticsearch import Document
 from leaftracker.domain.model import Batch, BatchType, Stock, StockSize
 
@@ -31,5 +31,9 @@ def batch_document() -> Document:
 
 
 class TestConvertBatch:
-    def test_with_one_stock(self, batch, batch_document):
+    def test_with_stock_to_document(self, batch, batch_document):
         assert batch_to_document(batch) == batch_document
+
+    def test_from_document_with_stock(self, batch, batch_document):
+        batch = document_to_batch(batch_document)
+        assert batch.quantity("species-xyz") == 20
