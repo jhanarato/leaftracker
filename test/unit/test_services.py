@@ -4,12 +4,6 @@ from fakes import FakeSpeciesRepository, FakeUnitOfWork
 from leaftracker.domain.model import BatchType, TaxonName, SourceType
 from leaftracker.service_layer import services
 from leaftracker.service_layer.services import NotFoundError, ServiceError
-from leaftracker.service_layer.unit_of_work import UnitOfWork
-
-
-@pytest.fixture
-def uow() -> UnitOfWork:
-    return FakeUnitOfWork()
 
 
 def test_add_source_of_stock():
@@ -51,7 +45,8 @@ def test_add_stock_with_missing_species():
         services.add_stock(batch_ref, "species-xxxx", 20, "tube", uow)
 
 
-def test_add_order(uow):
+def test_add_order():
+    uow = FakeUnitOfWork()
     source_reference = services.add_source_of_stock("Habitat Links", "program", uow)
     batch_reference = services.add_batch(source_reference, "order", uow)
     assert batch_reference == "batch-0001"
