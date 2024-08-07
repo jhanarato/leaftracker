@@ -101,7 +101,7 @@ def source_document():
     )
 
 
-class TestSourceRepository:
+class TestSourceOfStockRepository:
     def test_add_without_reference(self, source_store, source_aggregate, source_document):
         repository = ElasticSourceOfStockRepository(source_store)
         repository.add(source_aggregate)
