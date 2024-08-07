@@ -34,8 +34,7 @@ def test_add_stock_to_missing_batch(uow):
         services.add_stock("batch-xxxx", species_ref, 20, "tube", uow)
 
 
-def test_add_stock_with_missing_species():
-    uow = FakeUnitOfWork()
+def test_add_stock_with_missing_species(uow):
     source_ref = services.add_source_of_stock("Trillion Trees", "nursery", uow)
     batch_ref = services.add_batch(source_ref, "order", uow)
 
