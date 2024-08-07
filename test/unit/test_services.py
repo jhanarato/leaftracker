@@ -42,8 +42,7 @@ def test_add_stock_with_missing_species(uow):
         services.add_stock(batch_ref, "species-xxxx", 20, "tube", uow)
 
 
-def test_add_order():
-    uow = FakeUnitOfWork()
+def test_add_order(uow):
     source_reference = services.add_source_of_stock("Habitat Links", "program", uow)
     batch_reference = services.add_batch(source_reference, "order", uow)
     assert batch_reference == "batch-0001"
