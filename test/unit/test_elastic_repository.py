@@ -86,14 +86,14 @@ def source_aggregate() -> SourceOfStock:
     return SourceOfStock(
         current_name="Trillion Trees",
         source_type=SourceType.NURSERY,
-        reference="source-0001"
+        reference="source_of_stock-0001"
     )
 
 
 @pytest.fixture
 def source_document():
     return Document(
-        document_id="source-0001",
+        document_id="source_of_stock-0001",
         source={
             "current_name": "Trillion Trees",
             "source_type": "nursery",
@@ -107,7 +107,7 @@ class TestSourceRepository:
         repository.add(source_aggregate)
         repository.commit()
 
-        document = source_store.get("source-0001")
+        document = source_store.get("source_of_stock-0001")
         assert document == source_document
 
     def test_add_with_reference(self, source_store, source_aggregate, source_document):
@@ -125,6 +125,14 @@ class TestSourceRepository:
         repository.add(SourceOfStock("APACE", SourceType.NURSERY))
         repository.commit()
         assert source_store.ids() == ['source_of_stock-0001', 'source_of_stock-0002']
+        
+    def test_get_existing(self, source_store, source_aggregate, source_document):
+        repository = ElasticSourceOfStockRepository(source_store)
+        repository.add(source_aggregate)
+        repository.commit()
+
+        retrieved = repository.get("source_of_stock-0001")
+        assert retrieved is not None
         
 
 @pytest.fixture
