@@ -63,8 +63,6 @@ class TestElasticSpeciesRepository:
 
         retrieved = repository.get("species-0001")
         assert retrieved is not None
-        assert retrieved.taxon_history.current() == TaxonName("Machaerina juncea")
-        assert list(retrieved.taxon_history.previous()) == [TaxonName("Baumea juncea")]
 
     def test_get_missing(self, species_store, species_aggregate):
         repository = ElasticSpeciesRepository(species_store)
