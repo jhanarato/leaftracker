@@ -59,6 +59,13 @@ class TestElasticSpeciesRepository:
         repository.commit()
         assert species_store.ids() == ["species-0001", "species-0002"]
 
+    def test_commit_assigns_reference_to_aggregate(self, species_store):
+        aggregate = Species("Acacia saligna", None)
+        repository = ElasticSpeciesRepository(species_store)
+        repository.add(aggregate)
+        repository.commit()
+        assert aggregate.reference == "species-0001"
+
     def test_get_existing(self, species_store, species_aggregate, species_document):
         repository = ElasticSpeciesRepository(species_store)
         repository.add(species_aggregate)
