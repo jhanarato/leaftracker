@@ -31,7 +31,7 @@ def species_document() -> Document:
     )
 
 
-class TestSpeciesRepository:
+class TestElasticSpeciesRepository:
     def test_add_without_reference(self, species_store, species_aggregate, species_document):
         repository = ElasticSpeciesRepository(species_store)
         repository.add(species_aggregate)
