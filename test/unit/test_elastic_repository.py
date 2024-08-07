@@ -56,7 +56,7 @@ class TestElasticSpeciesRepository:
         repository.commit()
         assert species_store.ids() == ["species-0001", "species-0002"]
 
-    def test_get(self, species_store, species_aggregate, species_document):
+    def test_get_existing(self, species_store, species_aggregate, species_document):
         repository = ElasticSpeciesRepository(species_store)
         repository.add(species_aggregate)
         repository.commit()
