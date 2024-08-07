@@ -162,6 +162,14 @@ def batch_aggregate() -> Batch:
 
 
 @pytest.fixture
+def batch_aggregate_2() -> Batch:
+    batch = Batch("source-0001", BatchType.PICKUP, "batch-0002")
+    batch.add(Stock("species-0001", 20, StockSize.TUBE))
+    batch.add(Stock("species-0002", 5, StockSize.POT))
+    return batch
+
+
+@pytest.fixture
 def batch_document():
     return Document(
         document_id="batch-0001",
@@ -202,8 +210,12 @@ class TestBatchRepository:
         document = batch_store.get("batch-yyyy")
         assert document.document_id == "batch-yyyy"
 
-    def test_add_two_without_references(self, batch_store, batch_document):
-        pass
+    def test_add_two_without_references(self, batch_store, batch_document, batch_aggregate, batch_aggregate_2):
+        repository = ElasticBatchRepository(batch_store)
+        repository.add(batch_aggregate)
+        repository.add(batch_aggregate_2)
+        repository.commit()
+        assert batch_store.ids() == ['batch-0001', 'batch-0002']
 
     def test_get_existing(self, batch_store, batch_aggregate, batch_document):
         repository = ElasticBatchRepository(batch_store)
