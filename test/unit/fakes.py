@@ -1,7 +1,7 @@
 from itertools import count
 from typing import Iterator, Self
 
-from leaftracker.adapters.elasticsearch import Document
+from leaftracker.adapters.elastic.elasticsearch import Document
 from leaftracker.adapters.repository import BatchRepository, SourceOfStockRepository, SpeciesRepository
 from leaftracker.domain.model import Batch, Species, SourceOfStock
 

@@ -1,7 +1,6 @@
 import pytest
-from elasticsearch import NotFoundError
 
-from leaftracker.adapters.elasticsearch import DocumentStore, Document, Lifecycle
+from leaftracker.adapters.elastic.elasticsearch import DocumentStore, Document, Lifecycle
 
 INDEX_NAME = "test_index"
 MAPPINGS = {"properties": {"content": {"type": "text"}}}

@@ -1,7 +1,7 @@
 from typing import Protocol
 
-from leaftracker.adapters.elasticsearch import Document
-from leaftracker.domain.model import Species, SourceOfStock, SourceType, Batch, BatchType, Stock, StockSize
+from leaftracker.adapters.elastic.elasticsearch import Document
+from leaftracker.domain.model import Species, SourceOfStock, SourceType, Batch, BatchType, Stock
 
 
 class DocumentStore(Protocol):

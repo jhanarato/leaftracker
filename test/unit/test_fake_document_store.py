@@ -1,5 +1,5 @@
 from fakes import FakeDocumentStore
-from leaftracker.adapters.elasticsearch import Document
+from leaftracker.adapters.elastic.elasticsearch import Document
 
 
 class TestFakeDocumentStore:

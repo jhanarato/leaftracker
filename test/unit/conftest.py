@@ -1,6 +1,6 @@
 import pytest
 
-from leaftracker.adapters.elastic_repository import (
+from leaftracker.adapters.elastic.elastic_repository import (
     ElasticSpeciesRepository,
     ElasticSourceOfStockRepository,
     ElasticBatchRepository,
