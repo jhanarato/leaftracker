@@ -1,11 +1,13 @@
 import pytest
 
-from leaftracker.adapters.elastic_repository import ElasticSpeciesRepository, ElasticSourceOfStockRepository, \
-    ElasticBatchRepository
-
-from leaftracker.adapters.elasticsearch import Document
-from leaftracker.domain.model import Species, TaxonName, SourceOfStock, SourceType, Batch, BatchType, Stock, StockSize
 from fakes import FakeDocumentStore
+from leaftracker.adapters.elastic_repository import (
+    ElasticSpeciesRepository,
+    ElasticSourceOfStockRepository,
+    ElasticBatchRepository
+)
+from leaftracker.adapters.elasticsearch import Document
+from leaftracker.domain.model import Species, SourceOfStock, SourceType, Batch, BatchType, Stock, StockSize
 
 
 @pytest.fixture
@@ -183,22 +185,41 @@ def batch_document():
 
 
 class TestBatchRepository:
-    def test_add(self, store, batch_repository, batch_aggregate, batch_document):
-        batch_repository.add(batch_aggregate)
-        batch_repository.commit()
-        document = store.get("batch-0001")
+    def test_add_without_reference(self, batch_store, batch_aggregate, batch_document):
+        repository = ElasticBatchRepository(batch_store)
+        repository.add(batch_aggregate)
+        repository.commit()
+
+        document = batch_store.get("batch-0001")
         assert document == batch_document
 
-    def test_get(self, store, batch_repository, batch_document):
-        store.add(batch_document)
-        retrieved = batch_repository.get("batch-0001")
-        assert retrieved
-        assert retrieved.reference is not None
+    def test_add_with_reference(self, batch_store, batch_aggregate, batch_document):
+        batch_aggregate.reference = "batch-yyyy"
+        repository = ElasticBatchRepository(batch_store)
+        repository.add(batch_aggregate)
+        repository.commit()
 
-    def test_get_missing(self, store, batch_repository):
-        assert batch_repository.get("No Such Source") is None
+        document = batch_store.get("batch-yyyy")
+        assert document.document_id == "batch-yyyy"
 
-    def test_rollback(self, store, batch_repository, batch_aggregate):
-        batch_repository.add(batch_aggregate)
-        batch_repository.rollback()
-        assert not batch_repository.added()
+    def test_add_two_without_references(self, batch_store, batch_document):
+        pass
+
+    def test_get_existing(self, batch_store, batch_aggregate, batch_document):
+        repository = ElasticBatchRepository(batch_store)
+        repository.add(batch_aggregate)
+        repository.commit()
+
+        retrieved = repository.get("batch-0001")
+        assert retrieved is not None
+
+    def test_get_missing(self, batch_store, batch_aggregate):
+        repository = ElasticBatchRepository(batch_store)
+        repository.add(batch_aggregate)
+        assert repository.get("batch-xxxx") is None
+
+    def test_rollback(self, batch_store, batch_aggregate):
+        repository = ElasticBatchRepository(batch_store)
+        repository.add(batch_aggregate)
+        repository.rollback()
+        assert not repository.added()
