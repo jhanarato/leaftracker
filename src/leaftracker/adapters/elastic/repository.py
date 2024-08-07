@@ -112,7 +112,7 @@ class ElasticSourceOfStockRepository:
     def commit(self):
         for source in self.added():
             document = source_to_document(source)
-            self._store.add(document)
+            source.reference = self._store.add(document)
 
         self._added.clear()
 
