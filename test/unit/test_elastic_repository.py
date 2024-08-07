@@ -79,7 +79,6 @@ class TestElasticSpeciesRepository:
         repository.commit()
         assert aggregate.reference == "species-0001"
 
-
     def test_rollback(self, species_store, species_aggregate):
         repository = ElasticSpeciesRepository(species_store)
         repository.add(species_aggregate)
