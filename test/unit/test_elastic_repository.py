@@ -134,6 +134,11 @@ class TestSourceRepository:
         retrieved = repository.get("source_of_stock-0001")
         assert retrieved is not None
         
+    def test_get_missing(self, source_store, source_aggregate):
+        repository = ElasticSourceOfStockRepository(source_store)
+        repository.add(source_aggregate)
+        assert repository.get("source-xxxx") is None
+        
 
 @pytest.fixture
 def batch_repository(store) -> ElasticBatchRepository:
