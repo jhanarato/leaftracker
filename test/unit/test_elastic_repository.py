@@ -121,6 +121,13 @@ class TestSourceRepository:
         document = source_store.get("source-yyyy")
         assert document.document_id == "source-yyyy"
 
+    def test_add_two_without_references(self, source_store, source_document):
+        repository = ElasticSourceOfStockRepository(source_store)
+        repository.add(SourceOfStock("Trillion Trees", SourceType.NURSERY))
+        repository.add(SourceOfStock("APACE", SourceType.NURSERY))
+        repository.commit()
+        assert source_store.ids() == ['source_of_stock-0001', 'source_of_stock-0002']
+        
 
 @pytest.fixture
 def batch_repository(store) -> ElasticBatchRepository:
