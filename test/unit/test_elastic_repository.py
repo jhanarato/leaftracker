@@ -35,6 +35,7 @@ def species_document() -> Document:
 
 class TestElasticSpeciesRepository:
     def test_add_without_reference(self, species_store, species_aggregate, species_document):
+        species_aggregate.reference = None
         repository = ElasticSpeciesRepository(species_store)
         repository.add(species_aggregate)
         repository.commit()
@@ -53,8 +54,8 @@ class TestElasticSpeciesRepository:
 
     def test_add_two_without_references(self, species_store, species_document):
         repository = ElasticSpeciesRepository(species_store)
-        repository.add(Species("Acacia saligna"))
-        repository.add(Species("Acacia dentifera"))
+        repository.add(Species("Acacia saligna", None))
+        repository.add(Species("Acacia dentifera", None))
         repository.commit()
         assert species_store.ids() == ["species-0001", "species-0002"]
 
