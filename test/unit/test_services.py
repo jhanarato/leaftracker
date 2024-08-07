@@ -83,8 +83,6 @@ def test_reference_not_assigned_when_adding_species():
         _ = services.add_species("Baumea juncea", uow)
 
 
-def test_rename_non_existent_species():
-    uow = FakeUnitOfWork()
-
+def test_rename_non_existent_species(uow):
     with pytest.raises(ServiceError):
         services.rename_species("xyz", "Machaerina juncea", uow)
