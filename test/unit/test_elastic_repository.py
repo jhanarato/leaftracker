@@ -246,6 +246,13 @@ class TestBatchRepository:
         repository.add(batch_aggregate)
         assert repository.get("batch-xxxx") is None
 
+    def test_commit_assigns_reference_to_aggregate(self, batch_store, batch_aggregate):
+        batch_aggregate.reference = None
+        repository = ElasticBatchRepository(batch_store)
+        repository.add(batch_aggregate)
+        repository.commit()
+        assert batch_aggregate.reference == "batch-0001"
+
     def test_rollback(self, batch_store, batch_aggregate):
         repository = ElasticBatchRepository(batch_store)
         repository.add(batch_aggregate)

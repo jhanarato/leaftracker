@@ -183,7 +183,7 @@ class ElasticBatchRepository:
     def commit(self):
         for batch in self.added():
             document = batch_to_document(batch)
-            self._store.add(document)
+            batch.reference = self._store.add(document)
 
         self._added.clear()
 
