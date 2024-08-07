@@ -6,8 +6,7 @@ from leaftracker.service_layer import services
 from leaftracker.service_layer.services import NotFoundError, ServiceError
 
 
-def test_add_source_of_stock():
-    uow = FakeUnitOfWork()
+def test_add_source_of_stock(uow):
     reference = services.add_source_of_stock("Trillion Trees", "nursery", uow)
     retrieved = uow.sources().get(reference)
     assert retrieved is not None
