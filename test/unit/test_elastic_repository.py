@@ -4,7 +4,7 @@ from fakes import FakeDocumentStore
 from leaftracker.adapters.elastic.repository import (
     ElasticSpeciesRepository,
     ElasticSourceOfStockRepository,
-    ElasticBatchRepository, PendingChanges
+    ElasticBatchRepository, AggregateWriter
 )
 from leaftracker.adapters.elastic.elasticsearch import Document
 from leaftracker.domain.model import Species, SourceOfStock, SourceType, Batch, BatchType, Stock, StockSize
@@ -265,19 +265,19 @@ def to_document(species):
 
 class TestPendingChanges:
     def test_add_pending_change(self, species_aggregate, species_store):
-        changes = PendingChanges(to_document)
+        changes = AggregateWriter(to_document)
         changes.add(species_aggregate)
         assert next(changes.added()) == species_aggregate
 
     def test_clears_after_write(self, species_aggregate, species_store):
-        changes = PendingChanges(to_document)
+        changes = AggregateWriter(to_document)
         changes.add(species_aggregate)
         changes.write(species_store)
 
         assert list(changes.added()) == []
 
     def test_writes_to_document(self, species_aggregate, species_store):
-        changes = PendingChanges(to_document)
+        changes = AggregateWriter(to_document)
         changes.add(species_aggregate)
         changes.write(species_store)
 
