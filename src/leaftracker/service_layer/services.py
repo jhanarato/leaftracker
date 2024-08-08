@@ -55,6 +55,7 @@ def add_stock(batch_reference: str, species_reference: str,
 
         stock = Stock(species_reference, quantity, StockSize(stock_size))
         batch.add(stock)
+        uow.batches().add(batch)
         uow.commit()
 
 

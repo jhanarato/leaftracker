@@ -13,9 +13,7 @@ def test_add_source_of_stock(uow):
     assert retrieved.source_type == SourceType.NURSERY
 
 
-def test_add_stock():
-    uow = FakeUnitOfWork()
-
+def test_add_stock(uow, batch_store):
     source_ref = services.add_source_of_stock("Trillion Trees", "nursery", uow)
     species_ref = services.add_species("Acacia saligna", uow)
     batch_ref = services.add_batch(source_ref, "order", uow)
