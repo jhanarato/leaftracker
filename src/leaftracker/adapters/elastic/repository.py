@@ -31,6 +31,9 @@ class PendingChanges:
     def added(self):
         yield from self._added
 
+    def write(self, store: DocumentStore):
+        self._added.clear()
+
 
 class ElasticSpeciesRepository:
     def __init__(self, store: DocumentStore):

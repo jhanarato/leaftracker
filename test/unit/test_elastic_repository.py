@@ -264,3 +264,10 @@ class TestPendingChanges:
         changes = PendingChanges()
         changes.add(species_aggregate)
         assert next(changes.added()) == species_aggregate
+
+    def test_clears_after_write(self, species_aggregate, species_store):
+        changes = PendingChanges()
+        changes.add(species_aggregate)
+        changes.write(species_store)
+
+        assert list(changes.added()) == []
