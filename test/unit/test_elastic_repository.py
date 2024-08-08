@@ -4,7 +4,7 @@ from fakes import FakeDocumentStore
 from leaftracker.adapters.elastic.repository import (
     ElasticSpeciesRepository,
     ElasticSourceOfStockRepository,
-    ElasticBatchRepository
+    ElasticBatchRepository, PendingChanges
 )
 from leaftracker.adapters.elastic.elasticsearch import Document
 from leaftracker.domain.model import Species, SourceOfStock, SourceType, Batch, BatchType, Stock, StockSize
@@ -257,3 +257,10 @@ class TestBatchRepository:
         repository.add(batch_aggregate)
         repository.rollback()
         assert not repository.added()
+
+
+class TestPendingChanges:
+    def test_add_pending_change(self, species_aggregate, species_store):
+        changes = PendingChanges()
+        changes.add(species_aggregate)
+        assert next(changes.added()) == species_aggregate

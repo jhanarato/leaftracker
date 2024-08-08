@@ -21,6 +21,17 @@ class DocumentStore(Protocol):
         ...
 
 
+class PendingChanges:
+    def __init__(self):
+        self._added = []
+
+    def add(self, aggregate):
+        self._added.append(aggregate)
+
+    def added(self):
+        yield from self._added
+
+
 class ElasticSpeciesRepository:
     def __init__(self, store: DocumentStore):
         self._store = store
