@@ -24,7 +24,7 @@ class DocumentStore(Protocol):
 class PendingChanges:
     def __init__(self, to_document):
         self._added = []
-        self.to_document = to_document
+        self._to_document = to_document
 
     def add(self, aggregate):
         self._added.append(aggregate)
@@ -32,12 +32,15 @@ class PendingChanges:
     def added(self):
         yield from self._added
 
+    def clear(self):
+        self._added.clear()
+
     def write(self, store: DocumentStore):
         for aggregate in self.added():
-            document = self.to_document(aggregate)
+            document = self._to_document(aggregate)
             store.add(document)
 
-        self._added.clear()
+        self.clear()
 
 
 class ElasticSpeciesRepository:
