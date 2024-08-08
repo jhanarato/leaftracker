@@ -22,8 +22,9 @@ class DocumentStore(Protocol):
 
 
 class PendingChanges:
-    def __init__(self):
+    def __init__(self, to_document):
         self._added = []
+        self.to_document = to_document
 
     def add(self, aggregate):
         self._added.append(aggregate)
@@ -32,6 +33,10 @@ class PendingChanges:
         yield from self._added
 
     def write(self, store: DocumentStore):
+        for aggregate in self.added():
+            document = self.to_document(aggregate)
+            store.add(document)
+
         self._added.clear()
 
 

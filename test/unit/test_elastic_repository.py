@@ -259,15 +259,26 @@ class TestBatchRepository:
         assert not repository.added()
 
 
+def to_document(species):
+    return Document("id_1", {"key": "value"})
+
+
 class TestPendingChanges:
     def test_add_pending_change(self, species_aggregate, species_store):
-        changes = PendingChanges()
+        changes = PendingChanges(to_document)
         changes.add(species_aggregate)
         assert next(changes.added()) == species_aggregate
 
     def test_clears_after_write(self, species_aggregate, species_store):
-        changes = PendingChanges()
+        changes = PendingChanges(to_document)
         changes.add(species_aggregate)
         changes.write(species_store)
 
         assert list(changes.added()) == []
+
+    def test_writes_to_document(self, species_aggregate, species_store):
+        changes = PendingChanges(to_document)
+        changes.add(species_aggregate)
+        changes.write(species_store)
+
+        assert species_store.get("id_1") == Document("id_1", {"key": "value"})
