@@ -57,8 +57,7 @@ def test_add_species(uow):
     assert reference == "species-0001"
 
 
-def test_rename_species():
-    uow = FakeUnitOfWork()
+def test_rename_species(uow):
     reference = services.add_species("Baumea juncea", uow)
     assert reference == "species-0001"
     species = uow.species().get("species-0001")
