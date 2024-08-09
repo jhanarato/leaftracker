@@ -60,9 +60,8 @@ class ElasticUnitOfWork:
             writer.write()
 
     def rollback(self) -> None:
-        self._sources.rollback()
-        self._species.rollback()
-        self._batches.rollback()
+        for writer in self._writers:
+            writer.discard()
 
     def sources(self) -> SourceOfStockRepository:
         return self._sources
