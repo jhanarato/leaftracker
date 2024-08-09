@@ -21,7 +21,7 @@ class DocumentStore(Protocol):
         ...
 
 
-class AggregateWriter:
+class AggregateWriter[Aggregate]:
     def __init__(self, to_document):
         self._added = []
         self._to_document = to_document
