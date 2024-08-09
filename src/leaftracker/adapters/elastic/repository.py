@@ -48,7 +48,14 @@ class AggregateWriter[Aggregate]:
 
 class AggregateReader[Aggregate]:
     def __init__(self, store: DocumentStore, to_aggregate: Callable[[Document], Aggregate]):
-        pass
+        self._store = store
+        self._to_aggregate = to_aggregate
+
+    def read(self, reference: str) -> Aggregate | None:
+        document = self._store.get(reference)
+        if document:
+            return self._to_aggregate(document)
+        return None
 
 
 class ElasticSpeciesRepository:

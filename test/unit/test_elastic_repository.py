@@ -256,6 +256,7 @@ def to_document(aggregate: Aggregate) -> Document:
 
 REFERENCE = "aggregate-xxxx"
 
+
 @pytest.fixture
 def aggregate() -> Aggregate:
     return Aggregate(123, REFERENCE)
@@ -312,6 +313,10 @@ def reader(store) -> AggregateReader:
 
 
 class TestAggregateReader:
-    def test_read_succeeds(self, reader, store):
-        pass
+    def test_read_existing_document(self, reader, store, document):
+        store.add(document)
+        aggregate = reader.read(document.document_id)
+        assert aggregate is not None
+        assert aggregate.reference == document.document_id
+        assert aggregate.number == 123
 
