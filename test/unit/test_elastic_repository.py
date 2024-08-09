@@ -82,11 +82,6 @@ class TestElasticSpeciesRepository:
 
 
 @pytest.fixture
-def source_repository(source_store) -> ElasticSourceOfStockRepository:
-    return ElasticSourceOfStockRepository(source_store)
-
-
-@pytest.fixture
 def source_aggregate() -> SourceOfStock:
     return SourceOfStock(
         current_name="Trillion Trees",
