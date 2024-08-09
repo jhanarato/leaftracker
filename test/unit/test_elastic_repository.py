@@ -259,26 +259,41 @@ class TestBatchRepository:
         assert not repository.added()
 
 
-def to_document(species):
+class Aggregate:
+    def __init__(self):
+        pass
+
+
+def to_document(aggregate):
+    return Document("id_1", {"key": "value"})
+
+
+@pytest.fixture
+def aggregate() -> Aggregate:
+    return Aggregate()
+
+
+@pytest.fixture
+def document() -> Document:
     return Document("id_1", {"key": "value"})
 
 
 class TestAggregateWriter:
-    def test_add_pending_change(self, species_aggregate, species_store):
+    def test_add_pending_change(self, aggregate, store):
         writer = AggregateWriter(to_document)
-        writer.add(species_aggregate)
-        assert next(writer.added()) == species_aggregate
+        writer.add(aggregate)
+        assert next(writer.added()) == aggregate
 
-    def test_clears_after_write(self, species_aggregate, species_store):
+    def test_clears_after_write(self, aggregate, store):
         writer = AggregateWriter(to_document)
-        writer.add(species_aggregate)
-        writer.write(species_store)
+        writer.add(aggregate)
+        writer.write(store)
 
         assert list(writer.added()) == []
 
-    def test_writes_to_document(self, species_aggregate, species_store):
+    def test_writes_to_document(self, aggregate, store):
         writer = AggregateWriter(to_document)
-        writer.add(species_aggregate)
-        writer.write(species_store)
+        writer.add(aggregate)
+        writer.write(store)
 
-        assert species_store.get("id_1") == Document("id_1", {"key": "value"})
+        assert store.get("id_1") == Document("id_1", {"key": "value"})
