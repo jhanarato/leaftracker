@@ -1,4 +1,4 @@
-from collections.abc import Callable
+from collections.abc import Callable, Iterator
 from typing import Protocol
 
 from leaftracker.adapters.elastic.convert import(
@@ -27,16 +27,16 @@ class AggregateWriter[Aggregate]:
         self._added: list[Aggregate] = []
         self._to_document = to_document
 
-    def add(self, aggregate):
+    def add(self, aggregate: Aggregate) -> None:
         self._added.append(aggregate)
 
-    def added(self):
+    def added(self) -> Iterator:
         yield from self._added
 
-    def discard(self):
+    def discard(self) -> None:
         self._added.clear()
 
-    def write(self, store: DocumentStore):
+    def write(self, store: DocumentStore) -> None:
         for aggregate in self.added():
             document = self._to_document(aggregate)
             store.add(document)
