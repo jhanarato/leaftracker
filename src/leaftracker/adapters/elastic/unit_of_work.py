@@ -1,7 +1,7 @@
-from typing import Self
+from typing import Self, Any
 
 from leaftracker.adapters.elastic.repository import ElasticSpeciesRepository, ElasticBatchRepository, \
-    ElasticSourceOfStockRepository
+    ElasticSourceOfStockRepository, AggregateWriter
 from leaftracker.adapters.repository import BatchRepository, SourceOfStockRepository, SpeciesRepository
 
 SPECIES_INDEX = "species"
@@ -47,7 +47,7 @@ class ElasticUnitOfWork:
         self._sources = sources
         self._species = species
         self._batches = batches
-        self._writers = [sources.writer, species.writer, batches.writer]
+        self._writers: list[AggregateWriter[Any]] = [sources.writer, species.writer, batches.writer]
 
     def __enter__(self) -> Self:
         return self
