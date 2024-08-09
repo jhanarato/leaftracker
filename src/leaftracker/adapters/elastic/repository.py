@@ -82,17 +82,14 @@ class ElasticSpeciesRepository:
 
 class ElasticSourceOfStockRepository:
     def __init__(self, store: DocumentStore):
-        self._store = store
         self.writer = AggregateWriter[SourceOfStock](store, source_to_document)
+        self.reader = AggregateReader[SourceOfStock](store, document_to_source)
 
     def add(self, source: SourceOfStock):
         self.writer.add(source)
 
     def get(self, reference: str) -> SourceOfStock | None:
-        document = self._store.get(reference)
-        if document:
-            return document_to_source(document)
-        return None
+        return self.reader.read(reference)
 
     def added(self) -> list[SourceOfStock]:
         return list(self.writer.added())
