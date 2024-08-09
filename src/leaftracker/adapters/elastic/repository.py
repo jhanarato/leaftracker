@@ -1,3 +1,4 @@
+from collections.abc import Callable
 from typing import Protocol
 
 from leaftracker.adapters.elastic.convert import(
@@ -22,8 +23,8 @@ class DocumentStore(Protocol):
 
 
 class AggregateWriter[Aggregate]:
-    def __init__(self, to_document):
-        self._added = []
+    def __init__(self, to_document: Callable[[Aggregate], Document]):
+        self._added: list[Aggregate] = []
         self._to_document = to_document
 
     def add(self, aggregate):
