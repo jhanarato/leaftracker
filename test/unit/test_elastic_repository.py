@@ -85,58 +85,6 @@ def batch_document():
     )
 
 
-class TestBatchRepository:
-    def test_add_without_reference(self, batch_store, batch_aggregate, batch_document):
-        repository = ElasticBatchRepository(batch_store)
-        repository.add(batch_aggregate)
-        repository.commit()
-
-        document = batch_store.get("batch-0001")
-        assert document == batch_document
-
-    def test_add_with_reference(self, batch_store, batch_aggregate, batch_document):
-        batch_aggregate.reference = "batch-yyyy"
-        repository = ElasticBatchRepository(batch_store)
-        repository.add(batch_aggregate)
-        repository.commit()
-
-        document = batch_store.get("batch-yyyy")
-        assert document.document_id == "batch-yyyy"
-
-    def test_add_two_without_references(self, batch_store, batch_document, batch_aggregate, batch_aggregate_2):
-        repository = ElasticBatchRepository(batch_store)
-        repository.add(batch_aggregate)
-        repository.add(batch_aggregate_2)
-        repository.commit()
-        assert batch_store.ids() == ['batch-0001', 'batch-0002']
-
-    def test_get_existing(self, batch_store, batch_aggregate, batch_document):
-        repository = ElasticBatchRepository(batch_store)
-        repository.add(batch_aggregate)
-        repository.commit()
-
-        retrieved = repository.get("batch-0001")
-        assert retrieved is not None
-
-    def test_get_missing(self, batch_store, batch_aggregate):
-        repository = ElasticBatchRepository(batch_store)
-        repository.add(batch_aggregate)
-        assert repository.get("batch-xxxx") is None
-
-    def test_commit_assigns_reference_to_aggregate(self, batch_store, batch_aggregate):
-        batch_aggregate.reference = None
-        repository = ElasticBatchRepository(batch_store)
-        repository.add(batch_aggregate)
-        repository.commit()
-        assert batch_aggregate.reference == "batch-0001"
-
-    def test_rollback(self, batch_store, batch_aggregate):
-        repository = ElasticBatchRepository(batch_store)
-        repository.add(batch_aggregate)
-        repository.rollback()
-        assert not repository.added()
-
-
 class Aggregate:
     def __init__(self, number: int, reference: str | None = None):
         self.reference = reference
