@@ -47,6 +47,7 @@ class ElasticUnitOfWork:
         self._sources = sources
         self._species = species
         self._batches = batches
+        self._writers = [sources.writer, species.writer, batches.writer]
 
     def __enter__(self) -> Self:
         return self
@@ -55,9 +56,8 @@ class ElasticUnitOfWork:
         self.rollback()
 
     def commit(self) -> None:
-        self._sources.commit()
-        self._species.commit()
-        self._batches.commit()
+        for writer in self._writers:
+            writer.write()
 
     def rollback(self) -> None:
         self._sources.rollback()
