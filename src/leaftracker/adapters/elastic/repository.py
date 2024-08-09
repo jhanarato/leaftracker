@@ -70,9 +70,6 @@ class ElasticSpeciesRepository:
     def get(self, reference: str) -> Species | None:
         return self.reader.read(reference)
 
-    def added(self) -> list[Species]:
-        return list(self.writer.added())
-
     def commit(self):
         self.writer.write()
 
