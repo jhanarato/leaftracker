@@ -11,11 +11,6 @@ from leaftracker.domain.model import Species, SourceOfStock, SourceType, Batch, 
 
 
 @pytest.fixture
-def store() -> FakeDocumentStore:
-    return FakeDocumentStore("fake-index")
-
-
-@pytest.fixture
 def species_aggregate() -> Species:
     species = Species(current_name="Machaerina juncea", reference="species-0001")
     species.taxon_history.add_previous_name("Baumea juncea")
@@ -87,8 +82,8 @@ class TestElasticSpeciesRepository:
 
 
 @pytest.fixture
-def source_repository(store) -> ElasticSourceOfStockRepository:
-    return ElasticSourceOfStockRepository(store)
+def source_repository(source_store) -> ElasticSourceOfStockRepository:
+    return ElasticSourceOfStockRepository(source_store)
 
 
 @pytest.fixture
@@ -164,8 +159,8 @@ class TestSourceOfStockRepository:
 
 
 @pytest.fixture
-def batch_repository(store) -> ElasticBatchRepository:
-    return ElasticBatchRepository(store)
+def batch_repository(batch_store) -> ElasticBatchRepository:
+    return ElasticBatchRepository(batch_store)
 
 
 @pytest.fixture
@@ -271,13 +266,17 @@ def to_document(aggregate: Aggregate) -> Document:
 
 @pytest.fixture
 def aggregate() -> Aggregate:
-    return Aggregate(123, "agg-001")
+    return Aggregate(123, "agg-0001")
 
 
 @pytest.fixture
 def document() -> Document:
-    return Document("agg-001", {"number": 123})
+    return Document("agg-0001", {"number": 123})
 
+
+@pytest.fixture
+def store() -> FakeDocumentStore:
+    return FakeDocumentStore("agg")
 
 @pytest.fixture
 def writer(store) -> AggregateWriter:
@@ -298,4 +297,4 @@ class TestAggregateWriter:
         writer.add(aggregate)
         writer.write()
 
-        assert store.get("agg-001") == document
+        assert store.get("agg-0001") == document
