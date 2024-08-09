@@ -78,7 +78,7 @@ class TestRollback:
             uow.sources().add(trillion_trees)
             uow.species().add(saligna)
             uow.batches().add(batch)
-            uow.rollback()
+            uow.writer.discard()
             uow.commit()
 
         assert not source_store.ids()

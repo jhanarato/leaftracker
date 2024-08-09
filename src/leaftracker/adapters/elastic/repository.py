@@ -76,9 +76,6 @@ class ElasticSpeciesRepository:
     def commit(self):
         self.writer.write()
 
-    def rollback(self):
-        self.writer.discard()
-
 
 class ElasticSourceOfStockRepository:
     def __init__(self, store: DocumentStore):
