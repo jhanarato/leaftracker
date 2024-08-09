@@ -71,7 +71,7 @@ class TestElasticBatchRepository:
         store = DocumentStore(INDEX_PREFIX + BATCH_INDEX)
         repository = ElasticBatchRepository(store)
         repository.add(batch)
-        repository.commit()
+        repository.writer.write()
 
         document = store.get(batch.reference)
 

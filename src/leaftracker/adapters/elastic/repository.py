@@ -93,12 +93,3 @@ class ElasticBatchRepository:
 
     def get(self, reference: str) -> Batch | None:
         return self.reader.read(reference)
-
-    def added(self) -> list[Batch]:
-        return list(self.writer.added())
-
-    def commit(self):
-        self.writer.write()
-
-    def rollback(self):
-        self.writer.discard()
