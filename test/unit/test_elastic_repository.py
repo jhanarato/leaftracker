@@ -154,11 +154,6 @@ class TestSourceOfStockRepository:
 
 
 @pytest.fixture
-def batch_repository(batch_store) -> ElasticBatchRepository:
-    return ElasticBatchRepository(batch_store)
-
-
-@pytest.fixture
 def batch_aggregate() -> Batch:
     batch = Batch("source-0001", BatchType.PICKUP, "batch-0001")
     batch.add(Stock("species-0001", 20, StockSize.TUBE))
