@@ -263,22 +263,22 @@ def to_document(species):
     return Document("id_1", {"key": "value"})
 
 
-class TestPendingChanges:
+class TestAggregateWriter:
     def test_add_pending_change(self, species_aggregate, species_store):
-        changes = AggregateWriter(to_document)
-        changes.add(species_aggregate)
-        assert next(changes.added()) == species_aggregate
+        writer = AggregateWriter(to_document)
+        writer.add(species_aggregate)
+        assert next(writer.added()) == species_aggregate
 
     def test_clears_after_write(self, species_aggregate, species_store):
-        changes = AggregateWriter(to_document)
-        changes.add(species_aggregate)
-        changes.write(species_store)
+        writer = AggregateWriter(to_document)
+        writer.add(species_aggregate)
+        writer.write(species_store)
 
-        assert list(changes.added()) == []
+        assert list(writer.added()) == []
 
     def test_writes_to_document(self, species_aggregate, species_store):
-        changes = AggregateWriter(to_document)
-        changes.add(species_aggregate)
-        changes.write(species_store)
+        writer = AggregateWriter(to_document)
+        writer.add(species_aggregate)
+        writer.write(species_store)
 
         assert species_store.get("id_1") == Document("id_1", {"key": "value"})
