@@ -52,10 +52,11 @@ class AggregateReader[Aggregate]:
         self._to_aggregate = to_aggregate
 
     def read(self, reference: str) -> Aggregate | None:
+        aggregate = None
         document = self._store.get(reference)
         if document:
-            return self._to_aggregate(document)
-        return None
+            aggregate = self._to_aggregate(document)
+        return aggregate
 
 
 class ElasticSpeciesRepository:
