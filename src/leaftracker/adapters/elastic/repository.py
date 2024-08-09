@@ -103,17 +103,14 @@ class ElasticSourceOfStockRepository:
 
 class ElasticBatchRepository:
     def __init__(self, store: DocumentStore):
-        self._store = store
         self.writer = AggregateWriter[Batch](store, batch_to_document)
+        self.reader = AggregateReader[Batch](store, document_to_batch)
 
     def add(self, batch: Batch):
         self.writer.add(batch)
 
     def get(self, reference: str) -> Batch | None:
-        document = self._store.get(reference)
-        if document:
-            return document_to_batch(document)
-        return None
+        return self.reader.read(reference)
 
     def added(self) -> list[Batch]:
         return list(self.writer.added())
