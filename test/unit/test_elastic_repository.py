@@ -254,7 +254,7 @@ def to_document(aggregate: Aggregate) -> Document:
     return Document(aggregate.reference, {"number": aggregate.number})
 
 
-REFERENCE = "agg-xxxx"
+REFERENCE = "aggregate-xxxx"
 
 @pytest.fixture
 def aggregate() -> Aggregate:
@@ -268,7 +268,7 @@ def document() -> Document:
 
 @pytest.fixture
 def store() -> FakeDocumentStore:
-    return FakeDocumentStore("agg")
+    return FakeDocumentStore("aggregate")
 
 @pytest.fixture
 def writer(store) -> AggregateWriter:
@@ -290,3 +290,9 @@ class TestAggregateWriter:
         writer.write()
 
         assert store.get(REFERENCE) == document
+
+    def test_assigns_reference_when_missing(self, writer, aggregate, store):
+        aggregate.reference = None
+        writer.add(aggregate)
+        writer.write()
+        assert aggregate.reference == "aggregate-0001"

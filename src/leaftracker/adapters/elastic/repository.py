@@ -40,7 +40,8 @@ class AggregateWriter[Aggregate]:
     def write(self) -> None:
         for aggregate in self.added():
             document = self._to_document(aggregate)
-            self._store.add(document)
+            reference = self._store.add(document)
+            aggregate.reference = reference
 
         self.discard()
 
