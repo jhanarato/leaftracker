@@ -97,10 +97,10 @@ class ElasticSourceOfStockRepository:
 class ElasticBatchRepository:
     def __init__(self, store: DocumentStore):
         self._store = store
-        self._added: list[Batch] = []
+        self.writer = AggregateWriter[Batch](store, batch_to_document)
 
     def add(self, batch: Batch):
-        self._added.append(batch)
+        self.writer.add(batch)
 
     def get(self, reference: str) -> Batch | None:
         document = self._store.get(reference)
@@ -109,14 +109,10 @@ class ElasticBatchRepository:
         return None
 
     def added(self) -> list[Batch]:
-        return self._added
+        return list(self.writer.added())
 
     def commit(self):
-        for batch in self.added():
-            document = batch_to_document(batch)
-            batch.reference = self._store.add(document)
-
-        self._added.clear()
+        self.writer.write()
 
     def rollback(self):
-        self._added.clear()
+        self.writer.discard()
