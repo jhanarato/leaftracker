@@ -2,7 +2,6 @@ import pytest
 
 from fakes import FakeDocumentStore
 from leaftracker.adapters.elastic.repository import (
-    ElasticSourceOfStockRepository,
     ElasticBatchRepository, AggregateWriter, AggregateReader
 )
 from leaftracker.adapters.elastic.elasticsearch import Document
@@ -45,58 +44,6 @@ def source_document():
             "source_type": "nursery",
         }
     )
-
-
-class TestSourceOfStockRepository:
-    def test_add_without_reference(self, source_store, source_aggregate, source_document):
-        repository = ElasticSourceOfStockRepository(source_store)
-        repository.add(source_aggregate)
-        repository.commit()
-
-        document = source_store.get("source_of_stock-0001")
-        assert document == source_document
-
-    def test_add_with_reference(self, source_store, source_aggregate, source_document):
-        source_aggregate.reference = "source-yyyy"
-        repository = ElasticSourceOfStockRepository(source_store)
-        repository.add(source_aggregate)
-        repository.commit()
-
-        document = source_store.get("source-yyyy")
-        assert document.document_id == "source-yyyy"
-
-    def test_add_two_without_references(self, source_store, source_document):
-        repository = ElasticSourceOfStockRepository(source_store)
-        repository.add(SourceOfStock("Trillion Trees", SourceType.NURSERY))
-        repository.add(SourceOfStock("APACE", SourceType.NURSERY))
-        repository.commit()
-        assert source_store.ids() == ['source_of_stock-0001', 'source_of_stock-0002']
-        
-    def test_get_existing(self, source_store, source_aggregate, source_document):
-        repository = ElasticSourceOfStockRepository(source_store)
-        repository.add(source_aggregate)
-        repository.commit()
-
-        retrieved = repository.get("source_of_stock-0001")
-        assert retrieved is not None
-        
-    def test_get_missing(self, source_store, source_aggregate):
-        repository = ElasticSourceOfStockRepository(source_store)
-        repository.add(source_aggregate)
-        assert repository.get("source-xxxx") is None
-
-    def test_commit_assigns_reference_to_aggregate(self, source_store):
-        aggregate = SourceOfStock("Trillion Trees", SourceType.NURSERY, None)
-        repository = ElasticSourceOfStockRepository(source_store)
-        repository.add(aggregate)
-        repository.commit()
-        assert aggregate.reference == "source_of_stock-0001"
-
-    def test_rollback(self, source_store, source_aggregate):
-        repository = ElasticSourceOfStockRepository(source_store)
-        repository.add(source_aggregate)
-        repository.rollback()
-        assert not repository.added()
 
 
 @pytest.fixture
