@@ -32,7 +32,7 @@ class AggregateWriter:
     def added(self):
         yield from self._added
 
-    def clear(self):
+    def discard(self):
         self._added.clear()
 
     def write(self, store: DocumentStore):
@@ -40,7 +40,7 @@ class AggregateWriter:
             document = self._to_document(aggregate)
             store.add(document)
 
-        self.clear()
+        self.discard()
 
 
 class ElasticSpeciesRepository:
