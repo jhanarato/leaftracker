@@ -60,17 +60,14 @@ class AggregateReader[Aggregate]:
 
 class ElasticSpeciesRepository:
     def __init__(self, store: DocumentStore):
-        self._store = store
         self.writer = AggregateWriter[Species](store, species_to_document)
+        self.reader = AggregateReader[Species](store, document_to_species)
 
     def add(self, species: Species):
         self.writer.add(species)
 
     def get(self, reference: str) -> Species | None:
-        document = self._store.get(reference)
-        if document:
-            return document_to_species(document)
-        return None
+        return self.reader.read(reference)
 
     def added(self) -> list[Species]:
         return list(self.writer.added())
