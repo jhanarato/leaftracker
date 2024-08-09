@@ -2,7 +2,6 @@ import pytest
 
 from fakes import FakeDocumentStore
 from leaftracker.adapters.elastic.repository import (
-    ElasticSpeciesRepository,
     ElasticSourceOfStockRepository,
     ElasticBatchRepository, AggregateWriter, AggregateReader
 )
@@ -26,53 +25,6 @@ def species_document() -> Document:
             "previous_scientific_names": ["Baumea juncea"]
         }
     )
-
-
-class TestElasticSpeciesRepository:
-    def test_add_without_reference(self, species_store, species_aggregate, species_document):
-        species_aggregate.reference = None
-        repository = ElasticSpeciesRepository(species_store)
-        repository.add(species_aggregate)
-        repository.commit()
-
-        document = species_store.get("species-0001")
-        assert document == species_document
-
-    def test_add_with_reference(self, species_store, species_aggregate, species_document):
-        species_aggregate.reference = "species-yyyy"
-        repository = ElasticSpeciesRepository(species_store)
-        repository.add(species_aggregate)
-        repository.commit()
-
-        document = species_store.get("species-yyyy")
-        assert document.document_id == "species-yyyy"
-
-    def test_add_two_without_references(self, species_store, species_document):
-        repository = ElasticSpeciesRepository(species_store)
-        repository.add(Species("Acacia saligna", None))
-        repository.add(Species("Acacia dentifera", None))
-        repository.commit()
-        assert species_store.ids() == ["species-0001", "species-0002"]
-
-    def test_get_existing(self, species_store, species_aggregate, species_document):
-        repository = ElasticSpeciesRepository(species_store)
-        repository.add(species_aggregate)
-        repository.commit()
-
-        retrieved = repository.get("species-0001")
-        assert retrieved is not None
-
-    def test_get_missing(self, species_store, species_aggregate):
-        repository = ElasticSpeciesRepository(species_store)
-        repository.add(species_aggregate)
-        assert repository.get("species-xxxx") is None
-
-    def test_commit_assigns_reference_to_aggregate(self, species_store):
-        aggregate = Species("Acacia saligna", None)
-        repository = ElasticSpeciesRepository(species_store)
-        repository.add(aggregate)
-        repository.commit()
-        assert aggregate.reference == "species-0001"
 
 
 @pytest.fixture
