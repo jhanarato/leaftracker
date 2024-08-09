@@ -23,7 +23,8 @@ class DocumentStore(Protocol):
 
 
 class AggregateWriter[Aggregate]:
-    def __init__(self, to_document: Callable[[Aggregate], Document]):
+    def __init__(self, store: DocumentStore, to_document: Callable[[Aggregate], Document]):
+        self._store = store
         self._added: list[Aggregate] = []
         self._to_document = to_document
 
@@ -36,10 +37,10 @@ class AggregateWriter[Aggregate]:
     def discard(self) -> None:
         self._added.clear()
 
-    def write(self, store: DocumentStore) -> None:
+    def write(self) -> None:
         for aggregate in self.added():
             document = self._to_document(aggregate)
-            store.add(document)
+            self._store.add(document)
 
         self.discard()
 

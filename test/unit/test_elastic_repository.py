@@ -281,20 +281,20 @@ def document() -> Document:
 
 class TestAggregateWriter:
     def test_add_pending_change(self, store, aggregate):
-        writer = AggregateWriter[Aggregate](to_document)
+        writer = AggregateWriter[Aggregate](store, to_document)
         writer.add(aggregate)
         assert next(writer.added()) == aggregate
 
     def test_clears_after_write(self, store, aggregate):
-        writer = AggregateWriter[Aggregate](to_document)
+        writer = AggregateWriter[Aggregate](store, to_document)
         writer.add(aggregate)
-        writer.write(store)
+        writer.write()
 
         assert list(writer.added()) == []
 
     def test_writes_to_document(self, store, aggregate, document):
-        writer = AggregateWriter[Aggregate](to_document)
+        writer = AggregateWriter[Aggregate](store, to_document)
         writer.add(aggregate)
-        writer.write(store)
+        writer.write()
 
         assert store.get("agg-001") == document
