@@ -19,7 +19,7 @@ class TestElasticSpeciesRepository:
         store = DocumentStore(INDEX_PREFIX + SPECIES_INDEX)
         repository = ElasticSpeciesRepository(store)
         repository.add(species)
-        repository.commit()
+        repository.writer.write()
 
         document = store.get(species.reference)
 
@@ -44,7 +44,7 @@ class TestElasticSourceOfStockRepository:
         store = DocumentStore(INDEX_PREFIX + SOURCE_OF_STOCK_INDEX)
         repository = ElasticSourceOfStockRepository(store)
         repository.add(source)
-        repository.commit()
+        repository.writer.write()
 
         document = store.get(source.reference)
 

@@ -70,9 +70,6 @@ class ElasticSpeciesRepository:
     def get(self, reference: str) -> Species | None:
         return self.reader.read(reference)
 
-    def commit(self):
-        self.writer.write()
-
 
 class ElasticSourceOfStockRepository:
     def __init__(self, store: DocumentStore):
@@ -84,15 +81,6 @@ class ElasticSourceOfStockRepository:
 
     def get(self, reference: str) -> SourceOfStock | None:
         return self.reader.read(reference)
-
-    def added(self) -> list[SourceOfStock]:
-        return list(self.writer.added())
-
-    def commit(self):
-        self.writer.write()
-
-    def rollback(self):
-        self.writer.discard()
 
 
 class ElasticBatchRepository:
