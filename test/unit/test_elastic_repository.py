@@ -271,6 +271,7 @@ def document() -> Document:
 def store() -> FakeDocumentStore:
     return FakeDocumentStore("aggregate")
 
+
 @pytest.fixture
 def writer(store) -> AggregateWriter:
     return AggregateWriter[Aggregate](store, to_document)
@@ -320,3 +321,5 @@ class TestAggregateReader:
         assert aggregate.reference == document.document_id
         assert aggregate.number == 123
 
+    def test_read_missing_document(self, reader):
+        assert reader.read("aggregate-xxxx") is None
