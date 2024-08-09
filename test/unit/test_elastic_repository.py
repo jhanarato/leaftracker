@@ -4,7 +4,7 @@ from fakes import FakeDocumentStore
 from leaftracker.adapters.elastic.repository import (
     ElasticSpeciesRepository,
     ElasticSourceOfStockRepository,
-    ElasticBatchRepository, AggregateWriter
+    ElasticBatchRepository, AggregateWriter, AggregateReader
 )
 from leaftracker.adapters.elastic.elasticsearch import Document
 from leaftracker.domain.model import Species, SourceOfStock, SourceType, Batch, BatchType, Stock, StockSize
@@ -245,7 +245,7 @@ class TestBatchRepository:
 
 
 class Aggregate:
-    def __init__(self, number: int, reference: str):
+    def __init__(self, number: int, reference: str | None = None):
         self.reference = reference
         self.number = number
 
@@ -296,3 +296,22 @@ class TestAggregateWriter:
         writer.add(aggregate)
         writer.write()
         assert aggregate.reference == "aggregate-0001"
+
+
+def to_aggregate(document: Document) -> Aggregate:
+    aggregate = Aggregate(
+        reference=document.document_id,
+        number=document.source["number"]
+    )
+    return aggregate
+
+
+@pytest.fixture
+def reader(store) -> AggregateReader:
+    return AggregateReader[Aggregate](store, to_aggregate)
+
+
+class TestAggregateReader:
+    def test_read_succeeds(self, reader, store):
+        pass
+

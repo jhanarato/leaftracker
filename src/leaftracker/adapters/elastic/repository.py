@@ -46,6 +46,11 @@ class AggregateWriter[Aggregate]:
         self.discard()
 
 
+class AggregateReader[Aggregate]:
+    def __init__(self, store: DocumentStore, to_aggregate: Callable[[Document], Aggregate]):
+        pass
+
+
 class ElasticSpeciesRepository:
     def __init__(self, store: DocumentStore):
         self._store = store
