@@ -49,10 +49,10 @@ class AggregateWriter[Aggregate]:
 class ElasticSpeciesRepository:
     def __init__(self, store: DocumentStore):
         self._store = store
-        self._added: list[Species] = []
+        self.writer = AggregateWriter[Species](store, species_to_document)
 
     def add(self, species: Species):
-        self._added.append(species)
+        self.writer.add(species)
 
     def get(self, reference: str) -> Species | None:
         document = self._store.get(reference)
@@ -61,17 +61,13 @@ class ElasticSpeciesRepository:
         return None
 
     def added(self) -> list[Species]:
-        return self._added
+        return list(self.writer.added())
 
     def commit(self):
-        for species in self.added():
-            document = species_to_document(species)
-            species.reference = self._store.add(document)
-
-        self._added.clear()
+        self.writer.write()
 
     def rollback(self):
-        self._added.clear()
+        self.writer.discard()
 
 
 class ElasticSourceOfStockRepository:
