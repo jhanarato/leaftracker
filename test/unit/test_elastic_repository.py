@@ -254,14 +254,16 @@ def to_document(aggregate: Aggregate) -> Document:
     return Document(aggregate.reference, {"number": aggregate.number})
 
 
+REFERENCE = "agg-xxxx"
+
 @pytest.fixture
 def aggregate() -> Aggregate:
-    return Aggregate(123, "agg-0001")
+    return Aggregate(123, REFERENCE)
 
 
 @pytest.fixture
 def document() -> Document:
-    return Document("agg-0001", {"number": 123})
+    return Document(REFERENCE, {"number": 123})
 
 
 @pytest.fixture
@@ -287,4 +289,4 @@ class TestAggregateWriter:
         writer.add(aggregate)
         writer.write()
 
-        assert store.get("agg-0001") == document
+        assert store.get(REFERENCE) == document
