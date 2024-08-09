@@ -260,40 +260,41 @@ class TestBatchRepository:
 
 
 class Aggregate:
-    def __init__(self):
-        pass
+    def __init__(self, number: int, reference: str):
+        self.reference = reference
+        self.number = number
 
 
-def to_document(aggregate):
-    return Document("id_1", {"key": "value"})
+def to_document(aggregate: Aggregate) -> Document:
+    return Document(aggregate.reference, {"number": aggregate.number})
 
 
 @pytest.fixture
 def aggregate() -> Aggregate:
-    return Aggregate()
+    return Aggregate(123, "agg-001")
 
 
 @pytest.fixture
 def document() -> Document:
-    return Document("id_1", {"key": "value"})
+    return Document("agg-001", {"number": 123})
 
 
 class TestAggregateWriter:
-    def test_add_pending_change(self, aggregate, store):
+    def test_add_pending_change(self, store, aggregate):
         writer = AggregateWriter(to_document)
         writer.add(aggregate)
         assert next(writer.added()) == aggregate
 
-    def test_clears_after_write(self, aggregate, store):
+    def test_clears_after_write(self, store, aggregate):
         writer = AggregateWriter(to_document)
         writer.add(aggregate)
         writer.write(store)
 
         assert list(writer.added()) == []
 
-    def test_writes_to_document(self, aggregate, store):
+    def test_writes_to_document(self, store, aggregate, document):
         writer = AggregateWriter(to_document)
         writer.add(aggregate)
         writer.write(store)
 
-        assert store.get("id_1") == Document("id_1", {"key": "value"})
+        assert store.get("agg-001") == document
