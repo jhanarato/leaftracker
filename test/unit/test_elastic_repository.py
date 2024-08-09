@@ -279,21 +279,22 @@ def document() -> Document:
     return Document("agg-001", {"number": 123})
 
 
-class TestAggregateWriter:
-    def test_add_pending_change(self, store, aggregate):
-        writer = AggregateWriter[Aggregate](store, to_document)
-        writer.add(aggregate)
-        assert next(writer.added()) == aggregate
+@pytest.fixture
+def writer(store) -> AggregateWriter:
+    return AggregateWriter[Aggregate](store, to_document)
 
-    def test_clears_after_write(self, store, aggregate):
-        writer = AggregateWriter[Aggregate](store, to_document)
+
+class TestAggregateWriter:
+    def test_add_pending_change(self, writer, aggregate):
+        writer.add(aggregate)
+        assert list(writer.added()) == [aggregate]
+
+    def test_discards_added_after_write(self, writer, aggregate):
         writer.add(aggregate)
         writer.write()
-
         assert list(writer.added()) == []
 
-    def test_writes_to_document(self, store, aggregate, document):
-        writer = AggregateWriter[Aggregate](store, to_document)
+    def test_writes_to_document(self, writer, store, aggregate, document):
         writer.add(aggregate)
         writer.write()
 
