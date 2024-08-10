@@ -1,8 +1,8 @@
 import pytest
 
 from fakes import FakeDocumentStore
-from leaftracker.adapters.elastic.elasticsearch import Document
 from leaftracker.adapters.elastic.aggregate_io import AggregateWriter, AggregateReader
+from leaftracker.adapters.elastic.elasticsearch import Document
 
 
 class Aggregate:
