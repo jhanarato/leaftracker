@@ -1,9 +1,9 @@
 from typing import Self, Any
 
+from leaftracker.adapters.elastic.repositories.batch import ElasticBatchRepository
 from leaftracker.adapters.elastic.repositories.source_of_stock import ElasticSourceOfStockRepository
 from leaftracker.adapters.elastic.repositories.species import ElasticSpeciesRepository
 from leaftracker.adapters.elastic.repository import AggregateWriter
-from leaftracker.adapters.elastic.repositories.batch import ElasticBatchRepository
 from leaftracker.adapters.repository import BatchRepository, SourceOfStockRepository, SpeciesRepository
 
 
