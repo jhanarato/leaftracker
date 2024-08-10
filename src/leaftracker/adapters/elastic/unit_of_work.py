@@ -2,19 +2,11 @@ from typing import Self, Any
 
 from leaftracker.adapters.elastic.repositories.source_of_stock import ElasticSourceOfStockRepository
 from leaftracker.adapters.elastic.repositories.species import ElasticSpeciesRepository
-from leaftracker.adapters.elastic.repository import ElasticBatchRepository, AggregateWriter
+from leaftracker.adapters.elastic.repository import AggregateWriter
+from leaftracker.adapters.elastic.repositories.batch import ElasticBatchRepository
 from leaftracker.adapters.repository import BatchRepository, SourceOfStockRepository, SpeciesRepository
 
-SPECIES_INDEX = "species"
 BATCH_INDEX = "batch"
-
-SPECIES_MAPPINGS = {
-    "properties": {
-        "current_scientific_name": {"type": "text"},
-        "previous_scientific_names": {"type": "text"},
-    }
-}
-
 BATCH_MAPPINGS = {
     "properties": {
         "source_reference": {"type": "keyword"},
