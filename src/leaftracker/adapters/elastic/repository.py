@@ -1,6 +1,18 @@
 from collections.abc import Callable, Iterator
+from typing import Protocol
 
-from leaftracker.adapters.elastic.elasticsearch import Document, DocumentStore
+from leaftracker.adapters.elastic.elasticsearch import Document
+
+
+class DocumentStore(Protocol):
+    def index(self) -> str:
+        ...
+
+    def add(self, document: Document) -> str:
+        ...
+
+    def get(self, document_id) -> Document | None:
+        ...
 
 
 class AggregateWriter[Aggregate]:
