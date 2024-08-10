@@ -1,6 +1,6 @@
 import pytest
 
-from leaftracker.adapters.elastic.convert import batch_to_document, document_to_batch
+from leaftracker.adapters.elastic.repositories.batch import batch_to_document, document_to_batch
 from leaftracker.adapters.elastic.elasticsearch import Document
 from leaftracker.domain.model import Batch, BatchType, Stock, StockSize
 
