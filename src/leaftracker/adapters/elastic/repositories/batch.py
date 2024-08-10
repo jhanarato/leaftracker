@@ -3,6 +3,21 @@ from leaftracker.adapters.elastic.repository import DocumentStore, AggregateWrit
 from leaftracker.domain.model import Batch
 
 
+BATCH_INDEX = "batch"
+BATCH_MAPPINGS = {
+    "properties": {
+        "source_reference": {"type": "keyword"},
+        "batch_type": {"type": "keyword"},
+        "stock": {
+            "properties": {
+                "species_reference": {"type": "keyword"},
+                "quantity": {"type": "integer"},
+                "size": {"type": "keyword"},
+            }
+        }
+    }
+}
+
 class ElasticBatchRepository:
     def __init__(self, store: DocumentStore):
         self.writer = AggregateWriter[Batch](store, batch_to_document)

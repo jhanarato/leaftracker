@@ -6,21 +6,6 @@ from leaftracker.adapters.elastic.repository import AggregateWriter
 from leaftracker.adapters.elastic.repositories.batch import ElasticBatchRepository
 from leaftracker.adapters.repository import BatchRepository, SourceOfStockRepository, SpeciesRepository
 
-BATCH_INDEX = "batch"
-BATCH_MAPPINGS = {
-    "properties": {
-        "source_reference": {"type": "keyword"},
-        "batch_type": {"type": "keyword"},
-        "stock": {
-            "properties": {
-                "species_reference": {"type": "keyword"},
-                "quantity": {"type": "integer"},
-                "size": {"type": "keyword"},
-            }
-        }
-    }
-}
-
 
 class ElasticUnitOfWork:
     def __init__(self,

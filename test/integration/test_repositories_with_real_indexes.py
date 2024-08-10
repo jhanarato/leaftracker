@@ -1,9 +1,8 @@
 from leaftracker.adapters.elastic.elasticsearch import DocumentStore, Document, Lifecycle
-from leaftracker.adapters.elastic.repositories.batch import ElasticBatchRepository
+from leaftracker.adapters.elastic.repositories.batch import ElasticBatchRepository, BATCH_INDEX, BATCH_MAPPINGS
 from leaftracker.adapters.elastic.repositories.source_of_stock import ElasticSourceOfStockRepository, \
     SOURCE_OF_STOCK_INDEX, SOURCE_OF_STOCK_MAPPINGS
 from leaftracker.adapters.elastic.repositories.species import ElasticSpeciesRepository, SPECIES_INDEX, SPECIES_MAPPINGS
-from leaftracker.adapters.elastic.unit_of_work import BATCH_INDEX, BATCH_MAPPINGS
 from leaftracker.domain.model import Species, SourceOfStock, SourceType, Batch, BatchType, Stock, StockSize
 
 INDEX_PREFIX = "test_integration_"
