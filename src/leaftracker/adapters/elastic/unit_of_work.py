@@ -4,7 +4,7 @@ from leaftracker.adapters.elastic.repositories.batch import ElasticBatchReposito
 from leaftracker.adapters.elastic.repositories.source_of_stock import ElasticSourceOfStockRepository
 from leaftracker.adapters.elastic.repositories.species import ElasticSpeciesRepository
 from leaftracker.adapters.elastic.aggregate_io import AggregateWriter
-from leaftracker.adapters.repository import BatchRepository, SourceOfStockRepository, SpeciesRepository
+from leaftracker.service_layer.unit_of_work import SourceOfStockRepository, SpeciesRepository, BatchRepository
 
 
 class ElasticUnitOfWork:

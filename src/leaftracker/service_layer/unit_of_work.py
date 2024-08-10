@@ -1,6 +1,24 @@
 from typing import Protocol, Self
 
-from leaftracker.adapters.repository import BatchRepository, SourceOfStockRepository, SpeciesRepository
+from leaftracker.domain.model import SourceOfStock, Species, Batch
+
+
+class SourceOfStockRepository(Protocol):
+    def add(self, source: SourceOfStock): ...
+
+    def get(self, reference: str) -> SourceOfStock | None: ...
+
+
+class SpeciesRepository(Protocol):
+    def add(self, species: Species): ...
+
+    def get(self, reference: str) -> Species | None: ...
+
+
+class BatchRepository(Protocol):
+    def add(self, batch: Batch): ...
+
+    def get(self, reference: str) -> Batch | None: ...
 
 
 class UnitOfWork(Protocol):
