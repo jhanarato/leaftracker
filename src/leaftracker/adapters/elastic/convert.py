@@ -1,5 +1,5 @@
 from leaftracker.adapters.elastic.elasticsearch import Document
-from leaftracker.domain.model import Species, SourceOfStock, SourceType, Batch, BatchType, Stock
+from leaftracker.domain.model import Species, Batch, BatchType, Stock
 
 
 def document_to_species(document: Document) -> Species:
@@ -28,27 +28,6 @@ def species_to_document(species: Species) -> Document:
             "previous_scientific_names": other_scientific_names,
         }
     )
-
-
-def source_to_document(source: SourceOfStock) -> Document:
-    current_name = source.current_name
-    source_type = source.source_type.value
-
-    return Document(
-        document_id=source.reference,
-        source={
-            "current_name": current_name,
-            "source_type": source_type,
-        }
-    )
-
-
-def document_to_source(document: Document) -> SourceOfStock:
-    reference = document.document_id
-    current_name = document.source["current_name"]
-    source_type = document.source["source_type"]
-
-    return SourceOfStock(current_name, SourceType(source_type), reference)
 
 
 def stock_for_document(batch: Batch) -> list[dict]:

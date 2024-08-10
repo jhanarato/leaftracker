@@ -1,7 +1,6 @@
-from leaftracker.adapters.elastic.convert import source_to_document, document_to_source
+from leaftracker.adapters.elastic.elasticsearch import Document
 from leaftracker.adapters.elastic.repository import DocumentStore, AggregateWriter, AggregateReader
-from leaftracker.domain.model import SourceOfStock
-
+from leaftracker.domain.model import SourceOfStock, SourceType
 
 SOURCE_OF_STOCK_INDEX = "source_of_stock"
 SOURCE_OF_STOCK_MAPPINGS = {
@@ -10,6 +9,27 @@ SOURCE_OF_STOCK_MAPPINGS = {
         "source_type": {"type": "keyword"}
     }
 }
+
+
+def source_to_document(source: SourceOfStock) -> Document:
+    current_name = source.current_name
+    source_type = source.source_type.value
+
+    return Document(
+        document_id=source.reference,
+        source={
+            "current_name": current_name,
+            "source_type": source_type,
+        }
+    )
+
+
+def document_to_source(document: Document) -> SourceOfStock:
+    reference = document.document_id
+    current_name = document.source["current_name"]
+    source_type = document.source["source_type"]
+
+    return SourceOfStock(current_name, SourceType(source_type), reference)
 
 
 class ElasticSourceOfStockRepository:
