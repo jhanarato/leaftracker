@@ -3,12 +3,11 @@ from typing import Protocol
 
 from leaftracker.adapters.elastic.convert import(
     document_to_species, species_to_document,
-    source_to_document, document_to_source,
     batch_to_document, document_to_batch,
 )
 
 from leaftracker.adapters.elastic.elasticsearch import Document
-from leaftracker.domain.model import Species, SourceOfStock, Batch
+from leaftracker.domain.model import Species, Batch
 
 
 class DocumentStore(Protocol):
@@ -68,18 +67,6 @@ class ElasticSpeciesRepository:
         self.writer.add(species)
 
     def get(self, reference: str) -> Species | None:
-        return self.reader.read(reference)
-
-
-class ElasticSourceOfStockRepository:
-    def __init__(self, store: DocumentStore):
-        self.writer = AggregateWriter[SourceOfStock](store, source_to_document)
-        self.reader = AggregateReader[SourceOfStock](store, document_to_source)
-
-    def add(self, source: SourceOfStock):
-        self.writer.add(source)
-
-    def get(self, reference: str) -> SourceOfStock | None:
         return self.reader.read(reference)
 
 

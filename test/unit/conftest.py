@@ -2,12 +2,13 @@ import pytest
 
 from leaftracker.adapters.elastic.repository import (
     ElasticSpeciesRepository,
-    ElasticSourceOfStockRepository,
     ElasticBatchRepository,
 )
+from leaftracker.adapters.elastic.repositories.source_of_stock import ElasticSourceOfStockRepository, \
+    SOURCE_OF_STOCK_INDEX
 from leaftracker.domain.model import Species, SourceOfStock, SourceType
 from leaftracker.adapters.elastic.unit_of_work import (
-    ElasticUnitOfWork, SOURCE_OF_STOCK_INDEX, SPECIES_INDEX, BATCH_INDEX
+    ElasticUnitOfWork, SPECIES_INDEX, BATCH_INDEX
 )
 from fakes import FakeDocumentStore
 

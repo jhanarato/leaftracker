@@ -1,11 +1,11 @@
 from typing import Self, Any
 
 from leaftracker.adapters.elastic.repository import ElasticSpeciesRepository, ElasticBatchRepository, \
-    ElasticSourceOfStockRepository, AggregateWriter
+    AggregateWriter
+from leaftracker.adapters.elastic.repositories.source_of_stock import ElasticSourceOfStockRepository
 from leaftracker.adapters.repository import BatchRepository, SourceOfStockRepository, SpeciesRepository
 
 SPECIES_INDEX = "species"
-SOURCE_OF_STOCK_INDEX = "source_of_stock"
 BATCH_INDEX = "batch"
 
 SPECIES_MAPPINGS = {
@@ -14,15 +14,6 @@ SPECIES_MAPPINGS = {
         "previous_scientific_names": {"type": "text"},
     }
 }
-
-
-SOURCE_OF_STOCK_MAPPINGS = {
-    "properties": {
-        "current_name": {"type": "text"},
-        "source_type": {"type": "keyword"}
-    }
-}
-
 
 BATCH_MAPPINGS = {
     "properties": {
