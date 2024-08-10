@@ -3,7 +3,7 @@ import pytest
 from fakes import FakeDocumentStore
 from leaftracker.adapters.elastic.elasticsearch import Document
 from leaftracker.adapters.elastic.aggregate_io import AggregateWriter, AggregateReader
-from leaftracker.domain.model import Species, SourceOfStock, SourceType, Batch, BatchType, Stock, StockSize
+from leaftracker.domain.model import Species, Batch, BatchType, Stock, StockSize
 
 
 @pytest.fixture
@@ -20,26 +20,6 @@ def species_document() -> Document:
         source={
             "current_scientific_name": "Machaerina juncea",
             "previous_scientific_names": ["Baumea juncea"]
-        }
-    )
-
-
-@pytest.fixture
-def source_aggregate() -> SourceOfStock:
-    return SourceOfStock(
-        current_name="Trillion Trees",
-        source_type=SourceType.NURSERY,
-        reference="source_of_stock-0001"
-    )
-
-
-@pytest.fixture
-def source_document():
-    return Document(
-        document_id="source_of_stock-0001",
-        source={
-            "current_name": "Trillion Trees",
-            "source_type": "nursery",
         }
     )
 
