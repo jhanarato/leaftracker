@@ -18,18 +18,6 @@ BATCH_MAPPINGS = {
 }
 
 
-class ElasticBatchRepository:
-    def __init__(self, store: DocumentStore):
-        self.writer = AggregateWriter[Batch](store, batch_to_document)
-        self.reader = AggregateReader[Batch](store, document_to_batch)
-
-    def add(self, batch: Batch):
-        self.writer.add(batch)
-
-    def get(self, reference: str) -> Batch | None:
-        return self.reader.read(reference)
-
-
 def stock_for_document(batch: Batch) -> list[dict]:
     return [
         {
@@ -71,3 +59,15 @@ def document_to_batch(document: Document) -> Batch:
         batch.add(Stock(species_reference, quantity, size))
 
     return batch
+
+
+class ElasticBatchRepository:
+    def __init__(self, store: DocumentStore):
+        self.writer = AggregateWriter[Batch](store, batch_to_document)
+        self.reader = AggregateReader[Batch](store, document_to_batch)
+
+    def add(self, batch: Batch):
+        self.writer.add(batch)
+
+    def get(self, reference: str) -> Batch | None:
+        return self.reader.read(reference)
