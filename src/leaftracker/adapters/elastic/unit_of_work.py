@@ -1,8 +1,8 @@
 from typing import Self, Any
 
-from leaftracker.adapters.elastic.repository import ElasticSpeciesRepository, ElasticBatchRepository, \
-    AggregateWriter
 from leaftracker.adapters.elastic.repositories.source_of_stock import ElasticSourceOfStockRepository
+from leaftracker.adapters.elastic.repositories.species import ElasticSpeciesRepository
+from leaftracker.adapters.elastic.repository import ElasticBatchRepository, AggregateWriter
 from leaftracker.adapters.repository import BatchRepository, SourceOfStockRepository, SpeciesRepository
 
 SPECIES_INDEX = "species"

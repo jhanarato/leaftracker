@@ -1,4 +1,5 @@
-from leaftracker.adapters.elastic.repository import ElasticSpeciesRepository, ElasticBatchRepository
+from leaftracker.adapters.elastic.repositories.species import ElasticSpeciesRepository
+from leaftracker.adapters.elastic.repository import ElasticBatchRepository
 from leaftracker.adapters.elastic.repositories.source_of_stock import ElasticSourceOfStockRepository, \
     SOURCE_OF_STOCK_INDEX, SOURCE_OF_STOCK_MAPPINGS
 from leaftracker.adapters.elastic.elasticsearch import DocumentStore, Document, Lifecycle

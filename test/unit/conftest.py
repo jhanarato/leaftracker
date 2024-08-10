@@ -1,7 +1,7 @@
 import pytest
 
+from leaftracker.adapters.elastic.repositories.species import ElasticSpeciesRepository
 from leaftracker.adapters.elastic.repository import (
-    ElasticSpeciesRepository,
     ElasticBatchRepository,
 )
 from leaftracker.adapters.elastic.repositories.source_of_stock import ElasticSourceOfStockRepository, \

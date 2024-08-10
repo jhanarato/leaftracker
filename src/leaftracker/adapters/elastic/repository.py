@@ -2,7 +2,6 @@ from collections.abc import Callable, Iterator
 from typing import Protocol
 
 from leaftracker.adapters.elastic.convert import(
-    document_to_species, species_to_document,
     batch_to_document, document_to_batch,
 )
 
@@ -57,17 +56,6 @@ class AggregateReader[Aggregate]:
             aggregate = self._to_aggregate(document)
         return aggregate
 
-
-class ElasticSpeciesRepository:
-    def __init__(self, store: DocumentStore):
-        self.writer = AggregateWriter[Species](store, species_to_document)
-        self.reader = AggregateReader[Species](store, document_to_species)
-
-    def add(self, species: Species):
-        self.writer.add(species)
-
-    def get(self, reference: str) -> Species | None:
-        return self.reader.read(reference)
 
 
 class ElasticBatchRepository:

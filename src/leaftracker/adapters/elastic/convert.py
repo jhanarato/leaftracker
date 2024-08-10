@@ -2,34 +2,6 @@ from leaftracker.adapters.elastic.elasticsearch import Document
 from leaftracker.domain.model import Species, Batch, BatchType, Stock
 
 
-def document_to_species(document: Document) -> Species:
-    current_name = document.source["current_scientific_name"]
-    previous_names = document.source["previous_scientific_names"]
-
-    species = Species(
-        current_name=current_name,
-        reference=document.document_id
-    )
-
-    for previous_name in previous_names:
-        species.taxon_history.add_previous_name(previous_name)
-
-    return species
-
-
-def species_to_document(species: Species) -> Document:
-    current_scientific_name = str(species.taxon_history.current())
-    other_scientific_names = [str(name) for name in species.taxon_history.previous()]
-
-    return Document(
-        document_id=species.reference,
-        source={
-            "current_scientific_name": current_scientific_name,
-            "previous_scientific_names": other_scientific_names,
-        }
-    )
-
-
 def stock_for_document(batch: Batch) -> list[dict]:
     return [
         {
