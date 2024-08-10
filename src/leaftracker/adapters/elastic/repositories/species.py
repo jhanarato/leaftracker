@@ -1,6 +1,6 @@
 from leaftracker.adapters.elastic.elasticsearch import Document
 from leaftracker.adapters.elastic.repository import DocumentStore, AggregateWriter, AggregateReader
-from leaftracker.domain.model import Species, Batch
+from leaftracker.domain.model import Species
 
 SPECIES_INDEX = "species"
 SPECIES_MAPPINGS = {
