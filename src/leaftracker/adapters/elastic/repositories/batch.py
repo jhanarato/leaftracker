@@ -18,6 +18,7 @@ BATCH_MAPPINGS = {
     }
 }
 
+
 class ElasticBatchRepository:
     def __init__(self, store: DocumentStore):
         self.writer = AggregateWriter[Batch](store, batch_to_document)
