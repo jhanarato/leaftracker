@@ -1,5 +1,5 @@
 from leaftracker.adapters.elastic.elasticsearch import Document
-from leaftracker.adapters.elastic.repository import DocumentStore, AggregateWriter, AggregateReader
+from leaftracker.adapters.elastic.aggregate_io import DocumentStore, AggregateWriter, AggregateReader
 from leaftracker.domain.model import SourceOfStock, SourceType
 
 SOURCE_OF_STOCK_INDEX = "source_of_stock"

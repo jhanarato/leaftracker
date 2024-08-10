@@ -2,7 +2,7 @@ import pytest
 
 from fakes import FakeDocumentStore
 from leaftracker.adapters.elastic.elasticsearch import Document
-from leaftracker.adapters.elastic.repository import AggregateWriter, AggregateReader
+from leaftracker.adapters.elastic.aggregate_io import AggregateWriter, AggregateReader
 from leaftracker.domain.model import Species, SourceOfStock, SourceType, Batch, BatchType, Stock, StockSize
 
 
