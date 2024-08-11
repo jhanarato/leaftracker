@@ -8,6 +8,7 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.12"
 elasticsearch = "^8.13.0"
+pygobject = "^3.48.2"
 
 
 [tool.poetry.group.dev.dependencies]
