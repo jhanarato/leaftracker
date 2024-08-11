@@ -1,7 +1,6 @@
 import pytest
 
 from leaftracker.adapters.elastic.elasticsearch import Document
-from leaftracker.adapters.elastic.repositories.batch import batch_to_document, document_to_batch
 from leaftracker.domain.model import Batch, BatchType, Stock, StockSize
 
 
@@ -122,7 +121,7 @@ class TestElasticBatchRepository:
         with uow:
             batch = uow.batches().get(document_with_one.document_id)
 
-        assert len(batch.stock)
+        assert len(batch.stock) == 1
         assert batch.stock[0].species_reference == "species-0001"
         assert batch.stock[0].quantity == 20
         assert batch.batch_type == BatchType.PICKUP
