@@ -124,4 +124,19 @@ class TestElasticBatchRepository:
         assert len(batch.stock) == 1
         assert batch.stock[0].species_reference == "species-0001"
         assert batch.stock[0].quantity == 20
-        assert batch.batch_type == BatchType.PICKUP
+        assert batch.stock[0].size == StockSize.TUBE
+
+    def test_get_batch_with_two_stock(self, uow, batch_store, document_with_two):
+        batch_store.add(document_with_two)
+
+        with uow:
+            batch = uow.batches().get(document_with_two.document_id)
+
+        assert len(batch.stock) == 2
+        assert batch.stock[0].species_reference == "species-0001"
+        assert batch.stock[0].quantity == 20
+        assert batch.stock[0].size == StockSize.TUBE
+
+        assert batch.stock[1].species_reference == "species-0002"
+        assert batch.stock[1].quantity == 5
+        assert batch.stock[1].size == StockSize.POT

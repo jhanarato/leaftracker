@@ -1,6 +1,6 @@
 from leaftracker.adapters.elastic.elasticsearch import Document
 from leaftracker.adapters.elastic.aggregate_io import DocumentStore, AggregateWriter, AggregateReader
-from leaftracker.domain.model import Batch, BatchType, Stock
+from leaftracker.domain.model import Batch, BatchType, Stock, StockSize
 
 BATCH_INDEX = "batch"
 BATCH_MAPPINGS = {
@@ -54,7 +54,7 @@ def document_to_batch(document: Document) -> Batch:
     for stock in document.source["stock"]:
         species_reference = stock["species_reference"]
         quantity = stock["quantity"]
-        size = stock["size"]
+        size = StockSize(stock["size"])
 
         batch.add(Stock(species_reference, quantity, size))
 
