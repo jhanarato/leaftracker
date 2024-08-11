@@ -88,6 +88,15 @@ class TestElasticBatchRepository:
 
         assert stored == document_with_none
 
+    def test_add_batch_with_one_stock(self, uow, batch_store, batch_with_one, document_with_one):
+        with uow:
+            uow.batches().add(batch_with_one)
+            uow.commit()
+
+        stored = batch_store.get(document_with_one.document_id)
+
+        assert stored == document_with_one
+
     def test_get_batch_with_no_stock(self, uow, batch_store, document_with_none):
         batch_store.add(document_with_none)
 
