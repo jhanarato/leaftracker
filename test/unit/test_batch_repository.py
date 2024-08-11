@@ -97,6 +97,15 @@ class TestElasticBatchRepository:
 
         assert stored == document_with_one
 
+    def test_add_batch_with_two_stock(self, uow, batch_store, batch_with_two, document_with_two):
+        with uow:
+            uow.batches().add(batch_with_two)
+            uow.commit()
+
+        stored = batch_store.get(document_with_two.document_id)
+
+        assert stored == document_with_two
+
     def test_get_batch_with_no_stock(self, uow, batch_store, document_with_none):
         batch_store.add(document_with_none)
 
@@ -106,3 +115,14 @@ class TestElasticBatchRepository:
         assert batch.reference == "batch-0001"
         assert batch.batch_type == BatchType.PICKUP
         assert batch.stock == []
+
+    def test_get_batch_with_one_stock(self, uow, batch_store, document_with_one):
+        batch_store.add(document_with_one)
+
+        with uow:
+            batch = uow.batches().get(document_with_one.document_id)
+
+        assert len(batch.stock)
+        assert batch.stock[0].species_reference == "species-0001"
+        assert batch.stock[0].quantity == 20
+        assert batch.batch_type == BatchType.PICKUP
