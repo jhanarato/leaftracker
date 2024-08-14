@@ -196,6 +196,19 @@ dev = ["flake8", "pytest", "pytest-cov"]
 docs = ["sphinx (>=4.0,<5.0)", "sphinx-rtd-theme (>=0.5,<2.0)"]
 
 [[package]]
+name = "pygobject-stubs"
+version = "2.11.0"
+description = "Typing stubs for PyGObject"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "PyGObject-stubs-2.11.0.tar.gz", hash = "sha256:e1c7e32658213ae711d8afc5ea083a434231b8b588d1de23f50d5705a9c8eefe"},
+]
+
+[package.extras]
+dev = ["PyGObject", "black (>=24.1.1)", "codespell", "isort (>=5.13.2)", "pre-commit", "ruff"]
+
+[[package]]
 name = "pytest"
 version = "7.4.4"
 description = "pytest: simple powerful testing with Python"
@@ -246,4 +259,4 @@ zstd = ["zstandard (>=0.18.0)"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "5682405541ebd60e5b811d55fa60206c9f8724cee9e028e221e913b79d052c2f"
+content-hash = "9708b8d542dfea382fd5e391d422a1ec5f5ac47f02605c2960f6927d3438a328"
