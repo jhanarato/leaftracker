@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <interface>
     <template class="SpeciesDialog" parent="AdwApplicationWindow">
-        <property name="title">Form Window</property>
+        <property name="title">New Species</property>
         <property name="content">
             <object class="GtkBox">
                 <property name="orientation">vertical</property>
@@ -17,8 +17,8 @@
                         </child>
                         <child type="end">
                             <object class="GtkButton" id="apply-button">
-                                <property name="label">Add Species</property>
-                                <signal name="clicked" handler="add"/>
+                                <property name="label">Apply</property>
+                                <signal name="clicked" handler="apply"/>
                                 <style>
                                     <class name="suggested-action"/>
                                 </style>

@@ -15,7 +15,7 @@ class SpeciesDialog(Adw.ApplicationWindow):
         self.close()
 
     @Gtk.Template.Callback()
-    def add(self, button):
+    def apply(self, button):
         print("Added")
         self.close()
 
