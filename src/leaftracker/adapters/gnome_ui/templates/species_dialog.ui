@@ -27,7 +27,7 @@
                     </object>
                 </child>
                 <child>
-                    <object class="SpeciesForm"/>
+                    <object class="SpeciesForm" id="species_form"/>
                 </child>
             </object>
         </property>
