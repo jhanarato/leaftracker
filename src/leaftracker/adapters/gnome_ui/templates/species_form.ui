@@ -4,25 +4,11 @@
         <property name="vexpand">True</property>
         <child>
             <object class="AdwPreferencesGroup">
-                <property name="title">A Form</property>
-                <property name="description">Fill me out!</property>
+                <property name="title">Taxon Name</property>
                 <child>
-                    <object class="AdwActionRow" id="action_row_1">
-                        <property name="title">First Entry</property>
+                    <object class="AdwPreferencesRow" id="taxon-name-row">
                         <child>
-                            <object class="GtkEntry" id="entry_1">
-                                <property name="text">Some text</property>
-                            </object>
-                        </child>
-                    </object>
-                </child>
-                <child>
-                    <object class="AdwActionRow" id="action_row_2">
-                        <property name="title">Second Entry</property>
-                        <child>
-                            <object class="GtkEntry" id="entry_2">
-                                <property name="text">Other stuff</property>
-                            </object>
+                            <object class="GtkEntry" id="taxon-name-entry"/>
                         </child>
                     </object>
                 </child>
