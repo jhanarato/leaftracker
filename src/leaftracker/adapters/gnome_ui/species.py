@@ -18,3 +18,8 @@ class SpeciesDialog(Adw.ApplicationWindow):
     def add(self, button):
         print("Added")
         self.close()
+
+
+@Gtk.Template(filename="templates/species_form.ui")
+class SpeciesForm(Adw.PreferencesPage):
+    __gtype_name__ = "SpeciesForm"

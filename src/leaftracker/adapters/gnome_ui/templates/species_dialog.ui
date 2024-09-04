@@ -26,6 +26,11 @@
                         </child>
                     </object>
                 </child>
+                <child>
+                    <object class="SpeciesForm">
+
+                    </object>
+                </child>
             </object>
         </property>
   </template>
