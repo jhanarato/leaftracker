@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<interface>
+    <template class="SpeciesDialog" parent="AdwApplicationWindow">
+        <property name="title">Form Window</property>
+        <property name="content">
+            <object class="GtkBox">
+                <property name="orientation">vertical</property>
+                <child>
+                    <object class="AdwHeaderBar">
+                        <property name="show_start_title_buttons">False</property>
+                        <property name="show_end_title_buttons">False</property>
+                        <child>
+                            <object class="GtkButton" id="cancel-button">
+                                <property name="label">Cancel</property>
+                                <signal name="clicked" handler="cancel"/>
+                            </object>
+                        </child>
+                        <child type="end">
+                            <object class="GtkButton" id="apply-button">
+                                <property name="label">Apply</property>
+                                <style>
+                                    <class name="suggested-action"/>
+                                </style>
+                            </object>
+                        </child>
+                    </object>
+                </child>
+            </object>
+        </property>
+  </template>
+</interface>

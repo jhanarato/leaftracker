@@ -4,14 +4,14 @@ gi.require_version('Gtk', '4.0')
 gi.require_version('Adw', '1')
 from gi.repository import Adw, Gtk
 
+from leaftracker.adapters.gnome_ui.species import SpeciesDialog
+
 
 def on_activate(app):
-    pass
-    # win = NestingWindow(application=app)
-    # win.present()
+    species_dialog = SpeciesDialog(application=app)
+    species_dialog.present()
 
 
 app = Adw.Application(application_id='org.bswa.jhanarato.LeafTracker')
 app.connect('activate', on_activate)
-
 app.run(None)
