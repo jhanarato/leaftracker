@@ -17,7 +17,8 @@
                         </child>
                         <child type="end">
                             <object class="GtkButton" id="apply-button">
-                                <property name="label">Apply</property>
+                                <property name="label">Add Species</property>
+                                <signal name="clicked" handler="add"/>
                                 <style>
                                     <class name="suggested-action"/>
                                 </style>
