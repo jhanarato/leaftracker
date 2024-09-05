@@ -2,6 +2,8 @@ import gi
 
 from integration.test_elasticsearch import lifecycle
 from leaftracker.adapters.elastic.elasticsearch import Lifecycle
+from leaftracker.adapters.elastic.repositories.batch import BATCH_INDEX, BATCH_MAPPINGS
+from leaftracker.adapters.elastic.repositories.source_of_stock import SOURCE_OF_STOCK_INDEX, SOURCE_OF_STOCK_MAPPINGS
 from leaftracker.adapters.elastic.repositories.species import SPECIES_INDEX, SPECIES_MAPPINGS
 
 gi.require_version('Gtk', '4.0')
@@ -13,6 +15,8 @@ from leaftracker.adapters.gnome_ui.species import SpeciesDialog
 
 def create_indexes():
     Lifecycle(SPECIES_INDEX, SPECIES_MAPPINGS).create()
+    Lifecycle(SOURCE_OF_STOCK_INDEX, SOURCE_OF_STOCK_MAPPINGS).create()
+    Lifecycle(BATCH_INDEX, BATCH_MAPPINGS).create()
 
 
 def on_activate(app):
