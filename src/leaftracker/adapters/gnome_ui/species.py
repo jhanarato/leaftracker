@@ -1,5 +1,7 @@
 import gi
 
+from leaftracker.adapters.elastic.unit_of_work import ElasticUnitOfWork
+
 gi.require_version('Gtk', '4.0')
 gi.require_version('Adw', '1')
 from gi.repository import Adw, Gtk
@@ -18,6 +20,10 @@ class SpeciesDialog(Adw.ApplicationWindow):
     __gtype_name__ = "SpeciesDialog"
 
     species_form: SpeciesForm = Gtk.Template.Child()
+
+    def __init__(self, application: Adw.Application, uow: ElasticUnitOfWork):
+        super().__init__(application=application)
+        self._uow = uow
 
     @Gtk.Template.Callback()
     def cancel(self, button):
