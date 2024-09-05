@@ -1,4 +1,5 @@
-from leaftracker.domain.model import SourceOfStock, SourceType, Batch, BatchType, Species, Stock, StockSize
+from leaftracker.domain.model import SourceOfStock, SourceType, Batch, BatchType, Species, Stock, StockSize, TaxonName, \
+    MalformedTaxonName
 from leaftracker.service_layer.unit_of_work import UnitOfWork
 
 
@@ -82,3 +83,11 @@ def rename_species(reference: str, name: str, uow: UnitOfWork) -> None:
         species.taxon_history.new_current_name(name)
         uow.species().add(species)
         uow.commit()
+
+
+def validate_taxon_name(name: str) -> bool:
+    try:
+        taxon_name = TaxonName(name)
+    except MalformedTaxonName:
+        return False
+    return True

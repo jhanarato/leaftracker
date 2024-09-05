@@ -69,3 +69,8 @@ def test_rename_species(uow):
 def test_rename_non_existent_species(uow):
     with pytest.raises(ServiceError):
         services.rename_species("xyz", "Machaerina juncea", uow)
+
+
+def test_validate_taxon_name():
+    assert services.validate_taxon_name("Acacia saligna")
+    assert not services.validate_taxon_name("one_word")
