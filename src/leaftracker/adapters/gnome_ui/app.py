@@ -1,6 +1,5 @@
 import gi
 
-from integration.test_elasticsearch import lifecycle
 from leaftracker.adapters.elastic.elasticsearch import Lifecycle
 from leaftracker.adapters.elastic.repositories.batch import BATCH_INDEX, BATCH_MAPPINGS
 from leaftracker.adapters.elastic.repositories.source_of_stock import SOURCE_OF_STOCK_INDEX, SOURCE_OF_STOCK_MAPPINGS
