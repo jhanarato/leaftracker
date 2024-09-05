@@ -12,8 +12,10 @@ from gi.repository import Adw, Gtk
 class SpeciesForm(Adw.PreferencesPage):
     __gtype_name__ = "SpeciesForm"
 
+    taxon_name_entry: Gtk.Entry = Gtk.Template.Child()
+
     def get_name(self):
-        return "Acacia saligna"
+        return self.taxon_name_entry.get_text()
 
 
 @Gtk.Template(filename="templates/species_dialog.ui")
@@ -32,5 +34,7 @@ class SpeciesDialog(Adw.ApplicationWindow):
 
     @Gtk.Template.Callback()
     def apply(self, button):
-        services.add_species(self.species_form.get_name(), self._uow)
+        taxon_name = self.species_form.get_name()
+        services.add_species(taxon_name, self._uow)
         self.close()
+

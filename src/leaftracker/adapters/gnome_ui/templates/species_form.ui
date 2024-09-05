@@ -8,7 +8,7 @@
                 <child>
                     <object class="AdwPreferencesRow" id="taxon-name-row">
                         <child>
-                            <object class="GtkEntry" id="taxon-name-entry"/>
+                            <object class="GtkEntry" id="taxon_name_entry"/>
                         </child>
                     </object>
                 </child>
