@@ -21,7 +21,6 @@ class SpeciesDialog(Adw.ApplicationWindow):
 
     @Gtk.Template.Callback()
     def cancel(self, button):
-        print("Cancelled")
         self.close()
 
     @Gtk.Template.Callback()
