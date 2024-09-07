@@ -8,14 +8,21 @@ gi.require_version('Adw', '1')
 from gi.repository import Adw, Gtk
 
 
-@Gtk.Template(filename="templates/species_form.ui")
-class SpeciesForm(Adw.PreferencesPage):
-    __gtype_name__ = "SpeciesForm"
+@Gtk.Template(filename="templates/scientific_names_group.ui")
+class ScientificNamesGroup(Adw.PreferencesGroup):
+    __gtype_name__ = "ScientificNamesGroup"
 
     taxon_name_entry: Gtk.Entry = Gtk.Template.Child()
 
     def get_name(self):
         return self.taxon_name_entry.get_text()
+
+
+@Gtk.Template(filename="templates/species_form.ui")
+class SpeciesForm(Adw.PreferencesPage):
+    __gtype_name__ = "SpeciesForm"
+
+    scientific_names_group: Gtk.Entry = Gtk.Template.Child()
 
 
 @Gtk.Template(filename="templates/species_dialog.ui")
@@ -34,7 +41,6 @@ class SpeciesDialog(Adw.ApplicationWindow):
 
     @Gtk.Template.Callback()
     def apply(self, button):
-        taxon_name = self.species_form.get_name()
+        taxon_name = self.species_form.scientific_names_group.get_name()
         services.add_species(taxon_name, self._uow)
         self.close()
-

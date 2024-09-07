@@ -3,35 +3,7 @@
     <template class="SpeciesForm" parent="AdwPreferencesPage">
         <property name="vexpand">True</property>
         <child>
-            <object class="AdwPreferencesGroup">
-                <property name="title">Scientific Name</property>
-                <property name="header-suffix">
-                    <object class="GtkButton">
-                        <property name="label">New Current Name</property>
-                    </object>
-                </property>
-                <child>
-                    <object class="AdwPreferencesRow">
-                        <property name="title">Current</property>
-                        <child>
-                            <object class="GtkEntry" id="taxon_name_entry"/>
-                        </child>
-                    </object>
-                </child>
-                <child>
-                    <object class="AdwExpanderRow">
-                        <property name="title">Previous Names</property>
-                        <child>
-                            <object class="AdwPreferencesRow">
-                                <property name="title">Previous</property>
-                                <child>
-                                    <object class="GtkEntry" id="previous_taxon_name_entry"/>
-                                </child>
-                            </object>
-                        </child>
-                    </object>
-                </child>
-            </object>
+            <object class="ScientificNamesGroup" id="scientific_names_group"/>
         </child>
         <child>
             <object class="AdwPreferencesGroup">
