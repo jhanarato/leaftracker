@@ -5,6 +5,11 @@
         <child>
             <object class="AdwPreferencesGroup">
                 <property name="title">Taxon Names</property>
+                <property name="header-suffix">
+                    <object class="GtkButton">
+                        <property name="label">Rename</property>
+                    </object>
+                </property>
                 <child>
                     <object class="AdwPreferencesRow">
                         <property name="title">Current</property>
