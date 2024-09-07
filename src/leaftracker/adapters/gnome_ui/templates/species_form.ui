@@ -7,6 +7,7 @@
                 <property name="title">Taxon Names</property>
                 <child>
                     <object class="AdwPreferencesRow">
+                        <property name="title">Current</property>
                         <child>
                             <object class="GtkEntry" id="taxon_name_entry"/>
                         </child>
@@ -14,6 +15,7 @@
                 </child>
                 <child>
                     <object class="AdwPreferencesRow">
+                        <property name="title">Previous</property>
                         <child>
                             <object class="GtkEntry" id="previous_taxon_name_entry"/>
                         </child>
