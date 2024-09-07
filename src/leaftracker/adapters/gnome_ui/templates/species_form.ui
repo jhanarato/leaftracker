@@ -14,10 +14,15 @@
                     </object>
                 </child>
                 <child>
-                    <object class="AdwPreferencesRow">
-                        <property name="title">Previous</property>
+                    <object class="AdwExpanderRow">
+                        <property name="title">Previous Names</property>
                         <child>
-                            <object class="GtkEntry" id="previous_taxon_name_entry"/>
+                            <object class="AdwPreferencesRow">
+                                <property name="title">Previous</property>
+                                <child>
+                                    <object class="GtkEntry" id="previous_taxon_name_entry"/>
+                                </child>
+                            </object>
                         </child>
                     </object>
                 </child>
