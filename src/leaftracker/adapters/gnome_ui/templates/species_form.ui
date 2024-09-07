@@ -12,6 +12,13 @@
                         </child>
                     </object>
                 </child>
+                <child>
+                    <object class="AdwPreferencesRow">
+                        <child>
+                            <object class="GtkEntry" id="previous_taxon_name_entry"/>
+                        </child>
+                    </object>
+                </child>
             </object>
         </child>
     </template>
