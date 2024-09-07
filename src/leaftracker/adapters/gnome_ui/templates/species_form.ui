@@ -4,9 +4,9 @@
         <property name="vexpand">True</property>
         <child>
             <object class="AdwPreferencesGroup">
-                <property name="title">Taxon Name</property>
+                <property name="title">Taxon Names</property>
                 <child>
-                    <object class="AdwPreferencesRow" id="taxon-name-row">
+                    <object class="AdwPreferencesRow">
                         <child>
                             <object class="GtkEntry" id="taxon_name_entry"/>
                         </child>
