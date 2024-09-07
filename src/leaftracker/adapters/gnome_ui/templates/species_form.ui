@@ -44,6 +44,7 @@
                 </child>
                 <child>
                     <object class="GtkLinkButton" id="florabase_link_button">
+                        <property name="label">Open Florabase Page</property>
                         <property name="uri">https://florabase.dbca.wa.gov.au/browse/profile/50619</property>
                     </object>
                 </child>
