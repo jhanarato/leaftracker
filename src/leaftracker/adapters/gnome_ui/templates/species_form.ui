@@ -4,10 +4,10 @@
         <property name="vexpand">True</property>
         <child>
             <object class="AdwPreferencesGroup">
-                <property name="title">Taxon Names</property>
+                <property name="title">Scientific Name</property>
                 <property name="header-suffix">
                     <object class="GtkButton">
-                        <property name="label">Rename</property>
+                        <property name="label">New Current Name</property>
                     </object>
                 </property>
                 <child>
