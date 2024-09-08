@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<interface>
+    <template class="DialogTest" parent="AdwPreferencesDialog">
+        <property name="visible-page">
+            <object class="AdwPreferencesPage">
+                <child>
+                    <object class="GtkLabel">
+                        <property name="label">The label text.</property>
+                    </object>
+                </child>
+            </object>
+        </property>
+    </template>
+</interface>
