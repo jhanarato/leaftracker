@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=leaftracker-gtk
+Exec=leaftracker-gtk
+Icon=org.bswa.jhanarato.Leaftracker
+Terminal=false
+Type=Application
+Categories=GTK;
+StartupNotify=true

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist gettext-domain="leaftracker-gtk">
+	<schema id="org.bswa.jhanarato.Leaftracker" path="/org/bswa/jhanarato/Leaftracker/">
+	</schema>
+</schemalist>
