@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<gresources>
-  <gresource prefix="/org/bswa/jhanarato/Leaftracker">
-    <file>dialog_test.ui</file>
-    <file>window_test.ui</file>
-  </gresource>
-</gresources>
