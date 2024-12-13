@@ -3,11 +3,11 @@ from dataclasses import dataclass
 from elasticsearch import Elasticsearch, NotFoundError
 
 HOST = "http://localhost:9200"
-APIKEY = "ZUJWOHNKTUJkWE16WFF6S0dtZVA6UmZkYmdvR3ZUa3VKRmZNS05LVmxSdw=="
+YES_I_KNOW_YOU_SHOULDNT_DO_THIS_IN_PRODUCTION_APIKEY = "ZUJWOHNKTUJkWE16WFF6S0dtZVA6UmZkYmdvR3ZUa3VKRmZNS05LVmxSdw=="
 
 class Lifecycle:
     def __init__(self, name: str, mappings: dict):
-        self._client = Elasticsearch(hosts=HOST, api_key=APIKEY)
+        self._client = Elasticsearch(hosts=HOST, api_key=YES_I_KNOW_YOU_SHOULDNT_DO_THIS_IN_PRODUCTION_APIKEY)
         self._name = name
         self._mappings = mappings
 
@@ -32,7 +32,7 @@ class Document:
 
 class DocumentStore:
     def __init__(self, index: str):
-        self._client = Elasticsearch(hosts=HOST, api_key=APIKEY)
+        self._client = Elasticsearch(hosts=HOST, api_key=YES_I_KNOW_YOU_SHOULDNT_DO_THIS_IN_PRODUCTION_APIKEY)
         self._index = index
 
     def index(self) -> str:
