@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from elasticsearch import Elasticsearch, NotFoundError
 
 HOST = "http://localhost:9200"
-YES_I_KNOW_YOU_SHOULDNT_DO_THIS_IN_PRODUCTION_APIKEY = "ZUJWOHNKTUJkWE16WFF6S0dtZVA6UmZkYmdvR3ZUa3VKRmZNS05LVmxSdw=="
+YES_I_KNOW_YOU_SHOULDNT_DO_THIS_IN_PRODUCTION_APIKEY = "NWEyU1o1UUJobjNaZ2kxWDdaeUs6aHh6YXZ4M0pRbVNCVWlpSWNXcHJlQQ"
 
 class Lifecycle:
     def __init__(self, name: str, mappings: dict):
